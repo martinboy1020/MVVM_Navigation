@@ -2,7 +2,11 @@ package com.example.mvvm_navigation.datacenter
 
 import android.content.Context
 import com.example.dexlight.datacenter.network.DataCenter
+import com.example.dexlight.datacenter.network.RetrofitClient
+import com.example.mvvm_navigation.datacenter.network.HttpResult
+import com.example.mvvm_navigation.datacenter.network.StatusCode
 import com.example.mvvm_navigation.datacenter.network.response.RoomInfo
+import com.example.mvvm_navigation.datacenter.network.response.UserData
 
 class Repository constructor(val context: Context){
 
@@ -11,6 +15,15 @@ class Repository constructor(val context: Context){
     companion object{
         fun getInstance(context: Context) = Repository(context)
     }
+
+    suspend fun getUser(): HttpResult<List<UserData.User>> =
+        try {
+            val response = RetrofitClient.getInstance(context).getApiMethod().getUsers().await()
+            if (!response.isNullOrEmpty()) HttpResult.onSuccess(response)
+            else HttpResult.onError((-1000).toString(), "List is Empty")
+        } catch (e: Throwable) {
+            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
+        }
 
     fun getDeviceList(): MutableList<RoomInfo.Room>{
         /**
