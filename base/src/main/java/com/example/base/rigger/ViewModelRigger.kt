@@ -14,4 +14,5 @@ open class ViewModelRigger constructor(application: Application, val context: Co
     fun transFragment(node: NavDirections){ this.navController.navigate(node) }
 
     fun transActivity(id: Int, args: Bundle? = null){ (this.context as ActivityRigger).transActivity(id, args) }
+
 }

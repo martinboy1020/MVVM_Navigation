@@ -48,10 +48,17 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
 
+    //DI
+    implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
+    implementation "org.kodein.di:kodein-di-framework-android-support:$kodein_version"
+
     //Navigation Component
     implementation "androidx.navigation:navigation-fragment:2.0.0"
     implementation "androidx.navigation:navigation-ui:2.0.0"
     implementation "androidx.navigation:navigation-fragment-ktx:2.0.0"
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

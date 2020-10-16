@@ -7,7 +7,7 @@ import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseActivity
 
 @LayoutId(R.layout.activity_main)
-@NavHosttId(R.id.activity_main_container)
+@NavHosttId(R.id.mainActivityNavHostFragment)
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
