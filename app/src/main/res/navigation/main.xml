@@ -20,6 +20,10 @@
             android:id="@+id/action_mainFragment_to_secondFragment"
             app:destination="@+id/secondFragment" />
 
+        <action
+            android:id="@+id/action_mainFragment_open_bottom_sheet_detail"
+            app:destination="@+id/bottomSheetDetailFragment" />
+
     </fragment>
 
     <fragment
@@ -47,6 +51,13 @@
             app:popUpToInclusive="true"/>
 
     </fragment>
+
+    <dialog
+        android:id="@+id/bottomSheetDetailFragment"
+        android:name="com.example.mvvm_navigation.ui.main.BottomSheetDetailFragment"
+        android:label="BottomSheetDetailFragment"
+        tools:layout="@layout/fragment_bottom_sheet_detail"/>
+
 
     <!--使用show_hide_fragment頁籤 在Activity XML裡面必須要使用自定義的TabNavHostFragment -->
 

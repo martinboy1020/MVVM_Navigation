@@ -6,6 +6,7 @@ class Contract {
             const val MAIN = "MainModule"
             const val SECOND = "SecondModule"
             const val THIRD = "ThirdModule"
+            const val BOTTOM_SHEET = "BottomSheetDetailModule"
         }
     }
 

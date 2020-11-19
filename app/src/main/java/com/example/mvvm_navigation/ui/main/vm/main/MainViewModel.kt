@@ -50,6 +50,10 @@ class MainViewModel constructor(application: Application, context: Context, val 
                 //No args
                 this.transFragment(R.id.action_mainFragment_to_secondFragment)
             }
+
+            R.id.btn_open_bottom_sheet_dialog -> {
+                this.transFragment(R.id.action_mainFragment_open_bottom_sheet_detail)
+            }
         }
     }
 
