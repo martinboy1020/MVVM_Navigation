@@ -13,15 +13,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.example.mvvm_navigation.widget.GoalAndLostDataWidget
+            android:id="@+id/test_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:transitionName="header_view"/>
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:text="This is Third page"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.453"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/test_view"
+            android:visibility="@{viewModel.visible}"/>
 
         <Button
             android:id="@+id/btn_go_to_main_fragment"
@@ -32,7 +42,8 @@
             android:text="Go To Main Fragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            android:visibility="@{viewModel.visible}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

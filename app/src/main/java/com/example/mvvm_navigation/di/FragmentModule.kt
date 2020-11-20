@@ -55,6 +55,7 @@ private fun getSecondViewModel(fragment: SecondFragment): SecondViewModelImpl {
     val factory = SecondViewModel.Factory(
         fragment.requireActivity().application,
         fragment.requireContext(),
+        fragment,
         model,
         findNavController(fragment)
     )

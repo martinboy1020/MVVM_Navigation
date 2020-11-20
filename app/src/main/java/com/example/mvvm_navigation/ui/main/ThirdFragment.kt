@@ -1,6 +1,14 @@
 package com.example.mvvm_navigation.ui.main
 
+import android.app.SharedElementCallback
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import androidx.annotation.RequiresApi
+import androidx.transition.Transition
+import androidx.transition.TransitionInflater
+import androidx.transition.TransitionListenerAdapter
+import androidx.transition.TransitionSet
 import com.example.base.components.LayoutId
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
@@ -30,6 +38,20 @@ class ThirdFragment : BaseFragment() {
     }
 
     private val viewModel by kodein.instance<ThirdContract.ViewModelImpl>()
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = TransitionInflater.from(this.context).inflateTransition(android.R.transition.move)
+        setHasOptionsMenu(true)
+        (sharedElementEnterTransition as TransitionSet).addListener((object :
+            TransitionListenerAdapter() {
+            override fun onTransitionEnd(transition: Transition) {
+                super.onTransitionEnd(transition)
+                viewModel.getSubmitter().visible.value = View.VISIBLE
+            }
+        }))
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
