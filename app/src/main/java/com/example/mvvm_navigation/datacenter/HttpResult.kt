@@ -1,4 +1,4 @@
-package com.example.dexlight.datacenter
+package com.example.mvvm_navigation.datacenter
 
 sealed class HttpResult <out T: Any>{
     class onSuccess<out T: Any>(val data: T? = null): HttpResult<T>()

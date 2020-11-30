@@ -2,11 +2,20 @@ package com.example.mvvm_navigation.ui.main.model
 
 import com.example.mvvm_navigation.base.BaseModel
 import com.example.mvvm_navigation.datacenter.Repository
+import com.example.mvvm_navigation.datacenter.network.HttpResult
+import com.example.mvvm_navigation.datacenter.network.response.UserData
 import com.example.mvvm_navigation.ui.main.vm.second.SecondContract
 
 class SecondModel constructor(val repository: Repository): BaseModel(), SecondContract.ModelImpl{
     companion object{
         fun getInstance(repository: Repository) = SecondModel(repository)
+    }
+
+    override suspend fun getUser(): HttpResult<List<UserData.User>> {
+        return when(val response = this@SecondModel.repository.getUser()){
+            is HttpResult.onSuccess -> HttpResult.onSuccess(response.data)
+            is HttpResult.onError -> HttpResult.onError(response.errorCode, response.errorMsg)
+        }
     }
 
 //    override fun getAllDevice(): MutableList<RoomInfo.Room> {

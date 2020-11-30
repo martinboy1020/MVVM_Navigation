@@ -4,28 +4,29 @@ import android.app.Application
 import android.content.Context
 import android.os.CountDownTimer
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseViewModel
-import com.example.mvvm_navigation.datacenter.network.HttpResult
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.mvvm_navigation.datacenter.data.GoalAndLostData
+import com.example.mvvm_navigation.ui.main.MainFragmentDirections
+import com.example.mvvm_navigation.widget.GoalAndLostDataWidget
 
 class MainViewModel constructor(application: Application, context: Context, val model: MainContract.ModelImpl, navController: NavController) : BaseViewModel(application, context, navController), MainContract.ViewModelImpl, View.OnClickListener {
 
-    private val submitter =
-        MainFragmentSubmitter()
     private lateinit var timer: CountDownTimer
 
+    private val submitter =
+        MainFragmentSubmitter()
+
     init {
-        this.submitter.onClickListener.value = this
-        getUserList()
         startCountDown()
+        this.submitter.onClickListener.value = this
+        val goalData = GoalAndLostData(GoalAndLostDataWidget.Type.GOAL, 2.5f, 0f)
+        val lostData = GoalAndLostData(GoalAndLostDataWidget.Type.LOST, 0f, 3.1f)
+        this.submitter.goalData.value = goalData
+        this.submitter.lostData.value = lostData
     }
 
     companion object{
@@ -52,7 +53,10 @@ class MainViewModel constructor(application: Application, context: Context, val 
             }
 
             R.id.btn_open_bottom_sheet_dialog -> {
-                this.transFragment(R.id.action_mainFragment_open_bottom_sheet_detail)
+                val action = MainFragmentDirections.actionMainFragmentOpenBottomSheetDetail(this.submitter.goalData.value!!,
+                    this.submitter.lostData.value!!
+                )
+                this.transFragment(action)
             }
         }
     }
@@ -67,21 +71,6 @@ class MainViewModel constructor(application: Application, context: Context, val 
 
             }
         }.start()
-    }
-
-    private fun getUserList() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = this@MainViewModel.model.getUserData()
-            withContext(Dispatchers.Main) {
-                when (response) {
-                    is HttpResult.onSuccess -> {
-                        Toast.makeText(context, "Get User List From Api Size: " + response.data.size, Toast.LENGTH_SHORT).show()
-                    }
-                    is HttpResult.onError -> {
-                    }
-                }
-            }
-        }
     }
 
     class Factory(val application: Application, val context: Context, val model: MainContract.ModelImpl, val navController: NavController): ViewModelProvider.NewInstanceFactory() {

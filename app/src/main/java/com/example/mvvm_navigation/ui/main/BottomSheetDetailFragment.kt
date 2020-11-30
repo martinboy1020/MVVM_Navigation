@@ -50,6 +50,10 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogRoundCorner)
+        val goalData = arguments?.let { BottomSheetDetailFragmentArgs.fromBundle(it).goalData }
+        val lostData = arguments?.let { BottomSheetDetailFragmentArgs.fromBundle(it).lostData }
+        this.viewModel.getSubmitter().goalData.value = goalData
+        this.viewModel.getSubmitter().lostData.value = lostData
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.graphics.drawable.Drawable" />
+        <variable name="user_name" type="String" />
+        <variable name="real_name" type="String" />
+        <variable name="email" type="String" />
+    </data>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/img_test_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@mipmap/ic_launcher"-->
+<!--        android:transitionName="test"-->
+<!--        tools:targetApi="lollipop" />-->
+
+    <com.example.mvvm_navigation.widget.UserItemWidget
+        android:id="@+id/user_item_widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:name="@{user_name}"
+        app:realName="@{real_name}"
+        app:email="@{email}"/>
+
+</layout>

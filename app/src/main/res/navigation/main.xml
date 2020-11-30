@@ -24,6 +24,14 @@
             android:id="@+id/action_mainFragment_open_bottom_sheet_detail"
             app:destination="@+id/bottomSheetDetailFragment" />
 
+        <argument
+            android:name="goal_data"
+            app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
+
+        <argument
+            android:name="lost_data"
+            app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
+
     </fragment>
 
     <fragment
@@ -56,7 +64,17 @@
         android:id="@+id/bottomSheetDetailFragment"
         android:name="com.example.mvvm_navigation.ui.main.BottomSheetDetailFragment"
         android:label="BottomSheetDetailFragment"
-        tools:layout="@layout/fragment_bottom_sheet_detail"/>
+        tools:layout="@layout/fragment_bottom_sheet_detail">
+
+        <argument
+            android:name="goal_data"
+            app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
+
+        <argument
+            android:name="lost_data"
+            app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
+
+    </dialog>
 
 
     <!--使用show_hide_fragment頁籤 在Activity XML裡面必須要使用自定義的TabNavHostFragment -->

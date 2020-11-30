@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.mvvm_navigation.ui.main.vm.bottom_sheet.BottomSheetDetailFragmentSubmitter" />
@@ -23,9 +24,9 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/ic_baseline_close"
+            android:onClick="@{viewModel.onClickListener}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="@{viewModel.onClickListener}"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -86,21 +87,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="300dp"
-                            android:layout_height="200dp"
-                            android:background="@android:color/holo_red_light"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                        <com.example.mvvm_navigation.widget.GoalAndLostDataWidget
+                            android:id="@+id/goal_ball_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:data="@{viewModel.goalData}"/>
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="300dp"
-                            android:layout_height="200dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:background="@android:color/holo_red_light"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
+                        <com.example.mvvm_navigation.widget.GoalAndLostDataWidget
+                            android:id="@+id/lost_ball_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            app:data="@{viewModel.lostData}"/>
 
                     </LinearLayout>
 
