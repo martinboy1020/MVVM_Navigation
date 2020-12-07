@@ -12,6 +12,10 @@ import com.example.mvvm_navigation.base.BaseViewModel
 import com.example.mvvm_navigation.datacenter.data.GoalAndLostData
 import com.example.mvvm_navigation.ui.main.MainFragmentDirections
 import com.example.mvvm_navigation.widget.GoalAndLostDataWidget
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel constructor(application: Application, context: Context, val model: MainContract.ModelImpl, navController: NavController) : BaseViewModel(application, context, navController), MainContract.ViewModelImpl, View.OnClickListener {
 
@@ -27,6 +31,12 @@ class MainViewModel constructor(application: Application, context: Context, val 
         val lostData = GoalAndLostData(GoalAndLostDataWidget.Type.LOST, 0f, 3.1f)
         this.submitter.goalData.value = goalData
         this.submitter.lostData.value = lostData
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = model.getBannerData()
+            withContext(Dispatchers.Main) {
+                getSubmitter().bannerData.value = data
+            }
+        }
     }
 
     companion object{

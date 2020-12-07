@@ -2,6 +2,7 @@ package com.example.mvvm_navigation.ui.main.model
 
 import com.example.mvvm_navigation.datacenter.Repository
 import com.example.mvvm_navigation.base.BaseModel
+import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.response.UserData
 import com.example.mvvm_navigation.ui.main.vm.main.MainContract
@@ -18,7 +19,11 @@ class MainModel constructor(val repository: Repository): BaseModel(), MainContra
         }
     }
 
-//    override suspend fun getUser(): HttpResult<List<UserData.User>> {
+    override suspend fun getBannerData(): MutableList<BannerItem> {
+        return this@MainModel.repository.getBannerList()
+    }
+
+    //    override suspend fun getUser(): HttpResult<List<UserData.User>> {
 //        return when(val response = this@MainFragmentModel.repository.getUser()){
 //            is HttpResult.onSuccess -> HttpResult.onSuccess(response.data)
 //            is HttpResult.onError -> HttpResult.onError(response.errorCode, response.errorMsg)

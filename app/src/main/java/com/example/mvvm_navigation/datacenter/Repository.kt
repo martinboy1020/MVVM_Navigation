@@ -1,18 +1,27 @@
 package com.example.mvvm_navigation.datacenter
 
 import android.content.Context
+import com.bumptech.glide.Glide
 import com.example.dexlight.datacenter.network.DataCenter
 import com.example.dexlight.datacenter.network.RetrofitClient
+import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.StatusCode
 import com.example.mvvm_navigation.datacenter.network.response.RoomInfo
 import com.example.mvvm_navigation.datacenter.network.response.UserData
+import com.example.mvvm_navigation.utils.ReflectViewUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
+import java.util.concurrent.ExecutionException
 
-class Repository constructor(val context: Context){
+class Repository constructor(val context: Context) {
 
     private val dateCenter = DataCenter()
 
-    companion object{
+    companion object {
         fun getInstance(context: Context) = Repository(context)
     }
 
@@ -25,11 +34,38 @@ class Repository constructor(val context: Context){
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
-    fun getDeviceList(): MutableList<RoomInfo.Room>{
+   fun getBannerList(): MutableList<BannerItem> {
+       val bannerItemList: MutableList<BannerItem> = ArrayList()
+       val bannerUrlList = ArrayList<String>()
+       bannerUrlList.add("http://banner.lkwlp.cn/uscore/banners/5e588782d948a.mp4")
+       bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c014298134.jpg")
+       bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c00e6a394c.jpg")
+       bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c0122e9665.jpg")
+       bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3a85794147a.jpg")
+       for (i in bannerUrlList.indices) {
+           val bannerItem = BannerItem()
+           bannerItem.imgUrl = bannerUrlList[i]
+           try {
+               if (bannerUrlList[i] != "" && !bannerUrlList[i].contains(".mp4")) {
+                   bannerItem.bitmap = ReflectViewUtils.reflectionBitmap(Glide.with(context).asBitmap().load(bannerUrlList[i]).submit().get())
+               } else {
+                   bannerItem.bitmap = null
+               }
+           } catch (e: ExecutionException) {
+               bannerItem.bitmap = null
+           } catch (e: InterruptedException) {
+               bannerItem.bitmap = null
+           }
+           bannerItemList.add(bannerItem)
+       }
+       return bannerItemList
+    }
+
+    fun getDeviceList(): MutableList<RoomInfo.Room> {
         /**
          * 這邊可以判斷是否需要從資料中心取的 cache 的資料
          */
-        if (this.dateCenter.rooms == null){
+        if (this.dateCenter.rooms == null) {
             /**
              * 可決定是從 api or database 取得資料，並且有需要可在這邊整理資料，將髒亂資料在這邊梳理乾淨後再傳回給正式 app 端
              */
