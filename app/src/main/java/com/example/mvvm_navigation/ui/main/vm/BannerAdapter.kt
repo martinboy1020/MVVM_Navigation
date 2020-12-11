@@ -17,26 +17,35 @@ import com.bumptech.glide.request.target.Target
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.utils.ReflectViewUtils
+import com.example.mvvm_navigation.widget.BannerWidget
 
-class BannerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BannerAdapter(bannerClickListener: BannerWidget.BannerClickListener? = null) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var bannerUrlList: List<BannerItem>? = null
     private var context: Context? = null
     private var isTurning: Boolean = false
+    private var bannerClickListener: BannerWidget.BannerClickListener? = null
+
+    init {
+        this.bannerClickListener = bannerClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = View.inflate(parent.context, R.layout.item_banner, null)
         //一定要設置不然會出現java.lang.IllegalStateException: Pages must fill the whole ViewPager2 (use match_parent)
-        val lp = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val lp = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
         view.layoutParams = lp
         context = parent.context
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Log.d("tag1", "bannerUrlList.get(position).getImgUrl(): " + bannerUrlList!![position].imgUrl)
+        holder as ViewHolder
         if (bannerUrlList!![position].imgUrl?.contains(".mp4")!!) {
-            //            Log.d("tag1", "((ViewHolder) holder).banner_video: " + ((ViewHolder) holder).banner_video);
-            (holder as ViewHolder).banner_image.visibility = View.GONE
+            holder.banner_image.visibility = View.GONE
             holder.banner_video.visibility = View.VISIBLE
             holder.banner_video.tag = "VideoView"
             //            ((ViewHolder) holder).banner_video.stopPlayback();
@@ -45,13 +54,15 @@ class BannerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 mp.start()
             }
             holder.banner_video.setOnErrorListener { mp, what, extra ->
-                Log.d("tag1", "Video Error: $what");
                 true
             }
             holder.banner_video.setOnCompletionListener { mp -> mp.start() }
-            Log.d("tag1", "onBindViewHolder Video Visible1: " + holder.banner_video.visibility)
-        } else { //            Glide.with(context).load(bannerUrlList.get(position)).into(((ViewHolder) holder).banner_image);
-            Glide.with((holder as ViewHolder).banner_image).load(bannerUrlList!![position].bitmap).listener(object :
+        } else {
+//            this.context?.let {
+//                Glide.with(it).load(bannerUrlList!![position].imgUrl)
+//                    .into(holder.banner_image)
+//            }
+            Glide.with(holder.banner_image).load(bannerUrlList!![position].bitmap).listener(object :
                 RequestListener<Drawable?> {
                 override fun onLoadFailed(e: GlideException?, model: Any, target: Target<Drawable?>, isFirstResource: Boolean): Boolean {
                     return false
@@ -71,8 +82,7 @@ class BannerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }).into(holder.banner_image)
             holder.banner_image.visibility = View.VISIBLE
             holder.banner_video.visibility = View.GONE
-            //            ((ViewHolder) holder).banner_image.setTag("ImageView" + position);
-            Log.d("tag1", "onBindViewHolder Video Visible2: " + holder.banner_video.visibility)
+            holder.banner_image.setOnClickListener { bannerClickListener?.click(holder.adapterPosition) }
         }
     }
 
@@ -90,7 +100,8 @@ class BannerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    private class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private class ViewHolder internal constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         var banner_video: VideoView = itemView.findViewById(R.id.banner_video)
         var banner_image: ImageView = itemView.findViewById(R.id.banner_image)
 

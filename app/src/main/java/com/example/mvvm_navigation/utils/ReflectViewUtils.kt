@@ -2,13 +2,43 @@ package com.example.mvvm_navigation.utils
 
 import android.content.Context
 import android.graphics.*
+import android.os.Build
+import android.view.WindowInsets
 import android.view.WindowManager
+import android.view.WindowMetrics
+
+
+
 
 object ReflectViewUtils {
 
     private const val displayBannerHeight = 880 //從banner 圖片得知 Size = 1440x880
     private const val reflectHeight = 440
 
+    /** @param ImgBitmap
+     *  將圖片依照螢幕寬度等比例放大
+     */
+    fun ratioBitmap(ImgBitmap: Bitmap): Bitmap? { //原始圖與倒影間距
+        val mGap = 0
+        val mWidth = ImgBitmap.width
+        val mHeight = ImgBitmap.height
+        var mBitmap: Bitmap? = null
+        try {
+            mBitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888)
+        } catch (e: OutOfMemoryError) {
+            e.printStackTrace()
+        }
+        if (mBitmap != null) {
+            val mCanvas = Canvas(mBitmap)
+            //繪製原始圖
+            mCanvas.drawBitmap(ImgBitmap, 0f, 0f, null)
+        }
+        return mBitmap
+    }
+
+    /** @param ImgBitmap
+     *  將圖片製作倒影並且重新繪製
+     */
     fun reflectionBitmap(ImgBitmap: Bitmap): Bitmap? { //原始圖與倒影間距
         val mGap = 0
         val mWidth = ImgBitmap.width
@@ -51,21 +81,38 @@ object ReflectViewUtils {
         return cutBitmap(mBitmap)
     }
 
+    /** @param context
+     *  獲取螢幕大小
+     */
     fun getDisplayWidth(context: Context?): Int {
         val windowManager = context?.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-        val size = Point()
-        display.getSize(size)
-        return size.x
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowMetrics: WindowMetrics = windowManager.currentWindowMetrics
+            val windowInsets: WindowInsets = windowMetrics.windowInsets
+            val insets = windowInsets.getInsetsIgnoringVisibility(
+                WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout())
+            val insetsWidth = insets.right + insets.left
+            val insetsHeight = insets.top + insets.bottom
+            val b = windowMetrics.bounds
+            b.width() - insetsWidth
+        } else {
+            val display = windowManager.defaultDisplay
+            val size = Point()
+            display.getSize(size)
+            size.x
+        }
     }
 
     private val totalDisplayHeight: Int
         get() = displayBannerHeight + reflectHeight
 
+    /** @param bm 圖片Bitmap
+     *  高度太高的Banner進行裁切高度的動作
+     */
     private fun cutBitmap(bm: Bitmap?): Bitmap? {
         var bitmap: Bitmap? = null
         if (bm != null) {
-            bitmap = Bitmap.createBitmap(bm, 0, 0, bm.width, totalDisplayHeight) //对图片的高度的一半进行裁剪
+            bitmap = Bitmap.createBitmap(bm, 0, 0, bm.width, totalDisplayHeight) //對圖片的高度的一半進行裁切
         }
         return bitmap
     }

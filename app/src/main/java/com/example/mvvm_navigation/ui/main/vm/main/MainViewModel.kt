@@ -4,20 +4,23 @@ import android.app.Application
 import android.content.Context
 import android.os.CountDownTimer
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseViewModel
 import com.example.mvvm_navigation.datacenter.data.GoalAndLostData
 import com.example.mvvm_navigation.ui.main.MainFragmentDirections
+import com.example.mvvm_navigation.widget.BannerWidget
 import com.example.mvvm_navigation.widget.GoalAndLostDataWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel constructor(application: Application, context: Context, val model: MainContract.ModelImpl, navController: NavController) : BaseViewModel(application, context, navController), MainContract.ViewModelImpl, View.OnClickListener {
+class MainViewModel constructor(application: Application, context: Context, val model: MainContract.ModelImpl, navController: NavController) : BaseViewModel(application, context, navController), MainContract.ViewModelImpl, View.OnClickListener, BannerWidget.BannerClickListener {
 
     private lateinit var timer: CountDownTimer
 
@@ -31,6 +34,7 @@ class MainViewModel constructor(application: Application, context: Context, val 
         val lostData = GoalAndLostData(GoalAndLostDataWidget.Type.LOST, 0f, 3.1f)
         this.submitter.goalData.value = goalData
         this.submitter.lostData.value = lostData
+        this.submitter.bannerClickListener.value = this
         CoroutineScope(Dispatchers.IO).launch {
             val data = model.getBannerData()
             withContext(Dispatchers.Main) {
@@ -47,6 +51,14 @@ class MainViewModel constructor(application: Application, context: Context, val 
                 model,
                 navController
             )
+    }
+
+    override fun drawerNavigationClick(itemId: Int) {
+        when (itemId) {
+            R.id.action_match_list -> {
+                this.transFragment(R.id.action_mainFragment_to_thirdFragment)
+            }
+        }
     }
 
     override fun getSubmitter(): MainFragmentSubmitter = this.submitter
@@ -90,5 +102,9 @@ class MainViewModel constructor(application: Application, context: Context, val 
             model,
             navController
         ) as T
+    }
+
+    override fun click(position: Int) {
+        Toast.makeText(this.context, "Banner Position: $position", Toast.LENGTH_SHORT).show()
     }
 }

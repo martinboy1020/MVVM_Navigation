@@ -2,36 +2,21 @@ package com.example.mvvm_navigation.ui.main.model
 
 import com.example.mvvm_navigation.base.BaseModel
 import com.example.mvvm_navigation.datacenter.Repository
+import com.example.mvvm_navigation.datacenter.data.MatchListItem
 import com.example.mvvm_navigation.ui.main.vm.second.SecondContract
 import com.example.mvvm_navigation.ui.main.vm.third.ThirdContract
 
-class ThirdModel constructor(val repository: Repository): BaseModel(), ThirdContract.ModelImpl{
-    companion object{
+class ThirdModel constructor(val repository: Repository) : BaseModel(), ThirdContract.ModelImpl {
+    companion object {
         fun getInstance(repository: Repository) = ThirdModel(repository)
     }
 
-//    override fun getAllDevice(): MutableList<RoomInfo.Room> {
+    override fun getMatchList(): MutableList<MatchListItem> {
+        return this@ThirdModel.repository.getMatchList()
+    }
 
-//        val response = this.repository.getDeviceList()
-//        return DataFilter().filterRooms(response)
+    override fun setMatchItemToTopList(data: MatchListItem): MutableList<MatchListItem> {
+        return this@ThirdModel.repository.refreshTopListMatch(data)
+    }
 
-//        val devices1 = mutableListOf<Device>(
-//            Device("Device1", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("Device2", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("Device3", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("Device4", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("Device5", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("Device6", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false)
-//        )
-//
-//        val devices2 = mutableListOf<Device>(
-//            Device("DeviceA", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("DeviceB", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("DeviceC", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("DeviceD", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("DeviceE", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false),
-//            Device("DeviceF", 1, TypeUtils.DeviceType.DESKLAMP.typeCode, false)
-//        )
-//        return mutableListOf(Room("ALL", devices1), Room("Kitchen", devices2))
-//    }
 }

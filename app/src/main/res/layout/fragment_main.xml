@@ -11,78 +11,133 @@
             type="com.example.mvvm_navigation.ui.main.vm.main.MainFragmentSubmitter" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <com.to.aboomy.pager2banner.Banner
-                android:id="@+id/banner"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:visibility="visible"
-                app:data="@{viewModel.bannerData}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.to.aboomy.pager2banner.IndicatorView
-                android:id="@+id/indicatorView"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@+id/banner"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/banner" />
+                android:background="@color/design_default_color_primary"
+                android:minHeight="?attr/actionBarSize"
+                app:titleTextColor="@color/white">
 
-            <Button
-                android:id="@+id/btn_go_to_second_fragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:onClick="@{viewModel.onClickListener}"
-                android:text="Go To Second Fragment"
-                android:visibility="@{viewModel.buttonVisible}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/banner" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginRight="60dp">
 
-            <Button
-                android:id="@+id/btn_open_bottom_sheet_dialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{viewModel.onClickListener}"
-                android:text="Open BottomSheet Dialog Fragment"
-                android:visibility="@{viewModel.buttonVisible}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.502"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_go_to_second_fragment" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@mipmap/ic_launcher" />
+
+                        <TextView
+                            t="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:text="US即時比分"
+                            android:textSize="16sp"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.example.mvvm_navigation.widget.BannerWidget
+                        android:id="@+id/banner_widget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:bannerData="@{viewModel.bannerData}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:listener="@{viewModel.bannerClickListener}"
+                        app:showDots="@{viewModel.showBannerDots}"></com.example.mvvm_navigation.widget.BannerWidget>
+
+                    <Button
+                        android:id="@+id/btn_go_to_second_fragment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="50dp"
+                        android:onClick="@{viewModel.onClickListener}"
+                        android:text="Go To Second Fragment"
+                        android:visibility="@{viewModel.buttonVisible}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/banner_widget" />
+
+                    <Button
+                        android:id="@+id/btn_open_bottom_sheet_dialog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{viewModel.onClickListener}"
+                        android:text="Open BottomSheet Dialog Fragment"
+                        android:visibility="@{viewModel.buttonVisible}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.502"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_go_to_second_fragment" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/textView"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="30dp"-->
-        <!--            android:text="This is main page, Please wait 5 second and button will show"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
+                <!--        <TextView-->
+                <!--            android:id="@+id/textView"-->
+                <!--            android:layout_width="wrap_content"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:layout_marginTop="30dp"-->
+                <!--            android:text="This is main page, Please wait 5 second and button will show"-->
+                <!--            app:layout_constraintEnd_toEndOf="parent"-->
+                <!--            app:layout_constraintStart_toStartOf="parent"-->
+                <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-        <!--        <TextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="32dp"-->
-        <!--            android:text="@{`Now Number is ` + viewModel.number}"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/textView" />-->
+                <!--        <TextView-->
+                <!--            android:layout_width="wrap_content"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:layout_marginTop="32dp"-->
+                <!--            android:text="@{`Now Number is ` + viewModel.number}"-->
+                <!--            app:layout_constraintEnd_toEndOf="parent"-->
+                <!--            app:layout_constraintStart_toStartOf="parent"-->
+                <!--            app:layout_constraintTop_toBottomOf="@+id/textView" />-->
 
-    </androidx.core.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/menu_main_drawer_item" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </layout>

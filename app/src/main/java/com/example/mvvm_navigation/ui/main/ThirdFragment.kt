@@ -57,7 +57,7 @@ class ThirdFragment : BaseFragment() {
                 }
             }))
         } else {
-            viewModel.getSubmitter().visible.value = View.VISIBLE
+            viewModel.getSubmitter().visible.value = View.GONE
         }
     }
 

@@ -12,6 +12,6 @@ class MainContract {
     }
 
     interface ViewModelImpl : BaseViewModelImpl<MainFragmentSubmitter> {
-
+        fun drawerNavigationClick(itemId: Int)
     }
 }

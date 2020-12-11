@@ -2,18 +2,16 @@
 
 package com.example.mvvm_navigation.utils
 
-import android.graphics.Color
-import android.util.Log
-import androidx.core.view.size
+import android.widget.ImageView
+import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
 import androidx.databinding.BindingAdapter
-import androidx.viewpager2.widget.ViewPager2
-import com.example.mvvm_navigation.datacenter.data.BannerItem
+import com.example.mvvm_navigation.datacenter.data.MatchListItem
 import com.example.mvvm_navigation.datacenter.network.response.UserData
+import com.example.mvvm_navigation.ui.main.MatchListAdapter
 import com.example.mvvm_navigation.ui.main.SecondAdapter
-import com.example.mvvm_navigation.ui.main.vm.BannerAdapter
 import com.example.mvvm_navigation.widget.BuildRecyclerView
-import com.to.aboomy.pager2banner.Banner
-import com.to.aboomy.pager2banner.IndicatorView
+
 
 object AdapterUtils {
 
@@ -35,17 +33,27 @@ object AdapterUtils {
     }
 
     @JvmStatic
-    @BindingAdapter("data", "listener", requireAll = false)
-    fun setBannerData(banner: Banner, data: List<BannerItem>, listener: Any?) {
-        if(!data.isNullOrEmpty()) {
-            banner.isAutoPlay = true
-            banner.setOuterPageChangeListener(object : ViewPager2.OnPageChangeCallback() {})
-            val bannerAdapter = BannerAdapter()
-            bannerAdapter.setData(data)
-            banner.setOffscreenPageLimit(data.size)
-            banner.setAutoTurningTime(3000)
-            banner.adapter = bannerAdapter
-        }
+    @BindingAdapter("matchList", "listener", requireAll = false)
+    fun BuildRecyclerView.Adapters(matchList: Any?, listener: Any?) {
+        this.adapter = MatchListAdapter(
+            this.context,
+            matchList as MutableList<MatchListItem>,
+            listener as MatchListAdapter.MatchListAdapterItemClickListener
+        )
     }
+
+//    @JvmStatic
+//    @BindingAdapter("data", "listener", requireAll = false)
+//    fun setBannerData(banner: Banner, data: List<BannerItem>, listener: Any?) {
+//        if(!data.isNullOrEmpty()) {
+//            banner.isAutoPlay = true
+//            banner.setOuterPageChangeListener(object : ViewPager2.OnPageChangeCallback() {})
+//            val bannerAdapter = BannerAdapter()
+//            bannerAdapter.setData(data)
+//            banner.setOffscreenPageLimit(data.size)
+//            banner.setAutoTurningTime(3000)
+//            banner.adapter = bannerAdapter
+//        }
+//    }
 
 }
