@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.example.mvvm_navigation.datacenter.network.DataCenter
 import com.example.dexlight.datacenter.network.RetrofitClient
 import com.example.mvvm_navigation.datacenter.data.BannerItem
+import com.example.mvvm_navigation.datacenter.data.BetData
 import com.example.mvvm_navigation.datacenter.data.MatchListItem
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.StatusCode
@@ -69,6 +70,20 @@ class Repository constructor(val context: Context) {
         } else {
             return dataCenter.bannerList!!
         }
+    }
+
+    fun getBetList(): MutableList<BetData> {
+        val betList = mutableListOf<BetData>()
+        val betData1 = BetData(0, "1 - 2", true)
+        val betData2 = BetData(1, "0 - 1", true)
+        val betData3 = BetData(2, "1 - 0", true)
+        val betData4 = BetData(3, "1 - 3", false)
+        betList.add(betData1)
+        betList.add(betData2)
+        betList.add(betData3)
+        betList.add(betData4)
+        dataCenter.betList = betList
+        return betList
     }
 
     fun getMatchList(): MutableList<MatchListItem> {

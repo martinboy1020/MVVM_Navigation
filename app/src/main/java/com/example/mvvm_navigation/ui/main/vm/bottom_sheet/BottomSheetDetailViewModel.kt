@@ -3,6 +3,7 @@ package com.example.mvvm_navigation.ui.main.vm.bottom_sheet
 import android.app.Application
 import android.content.Context
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
@@ -22,6 +23,7 @@ class BottomSheetDetailViewModel constructor(application: Application, context: 
 
     init {
         this.submitter.onClickListener.value = this
+        this.submitter.betList.value = model.getBetList()
     }
 
     interface BottomSheetDetailViewModelImpl {

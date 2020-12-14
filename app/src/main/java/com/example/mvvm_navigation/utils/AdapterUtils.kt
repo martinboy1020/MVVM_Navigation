@@ -2,12 +2,11 @@
 
 package com.example.mvvm_navigation.utils
 
-import android.widget.ImageView
-import androidx.annotation.DrawableRes
-import androidx.annotation.IdRes
 import androidx.databinding.BindingAdapter
+import com.example.mvvm_navigation.datacenter.data.BetData
 import com.example.mvvm_navigation.datacenter.data.MatchListItem
 import com.example.mvvm_navigation.datacenter.network.response.UserData
+import com.example.mvvm_navigation.ui.main.BetListAdapter
 import com.example.mvvm_navigation.ui.main.MatchListAdapter
 import com.example.mvvm_navigation.ui.main.SecondAdapter
 import com.example.mvvm_navigation.widget.BuildRecyclerView
@@ -39,6 +38,15 @@ object AdapterUtils {
             this.context,
             matchList as MutableList<MatchListItem>,
             listener as MatchListAdapter.MatchListAdapterItemClickListener
+        )
+    }
+
+    @JvmStatic
+    @BindingAdapter("betList", requireAll = false)
+    fun BuildRecyclerView.Adapters(matchList: Any?) {
+        this.adapter = BetListAdapter(
+            this.context,
+            matchList as MutableList<BetData>
         )
     }
 

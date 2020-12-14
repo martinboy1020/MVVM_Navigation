@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.mvvm_navigation.R
 
 class BuildRecyclerView constructor(context: Context, val attributeSet: AttributeSet? = null) :
@@ -40,6 +41,9 @@ class BuildRecyclerView constructor(context: Context, val attributeSet: Attribut
             }
         if (hasDivider)
             this.addItemDecoration(DividerItemDecoration(this.context, dividerHeight, itemSpaceMarginTop))
+        if(managerType == ManagerType.GRID.code) {
+            this.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
+        }
         typedArray.recycle()
     }
 }
@@ -107,4 +111,39 @@ class DividerItemDecoration(context: Context, dividerHeight: Int, itemSpaceMargi
             c.drawRect(dividerLeft, dividerTop, dividerRight, dividerBottom, mPaint!!)
         }
     }
+}
+
+class GridSpacingItemDecoration(
+    private val spanCount: Int,
+    private val spacing: Int,
+    private val includeEdge: Boolean = false
+) :
+    ItemDecoration() {
+    override fun getItemOffsets(
+        outRect: Rect,
+        view: View,
+        parent: RecyclerView,
+        state: RecyclerView.State
+    ) {
+        val position = parent.getChildAdapterPosition(view) // item position
+        val column = position % spanCount // item column
+        if (includeEdge) {
+            outRect.left =
+                spacing - column * spacing / spanCount // spacing - column * ((1f / spanCount) * spacing)
+            outRect.right =
+                (column + 1) * spacing / spanCount // (column + 1) * ((1f / spanCount) * spacing)
+            if (position < spanCount) { // top edge
+                outRect.top = spacing
+            }
+            outRect.bottom = spacing // item bottom
+        } else {
+            outRect.left = column * spacing / spanCount // column * ((1f / spanCount) * spacing)
+            outRect.right =
+                spacing - (column + 1) * spacing / spanCount // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+            if (position >= spanCount) {
+                outRect.top = spacing // item top
+            }
+        }
+    }
+
 }
