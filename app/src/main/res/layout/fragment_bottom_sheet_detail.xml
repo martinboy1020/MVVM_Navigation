@@ -54,22 +54,90 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout1"
+                <HorizontalScrollView
+                    android:id="@+id/layout_filter_list"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@android:color/holo_red_light"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout0">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </HorizontalScrollView>
+
+                <Spinner
+                    android:id="@+id/spinner_match_filter"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@+id/constraintLayout0"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_filter_list" />
+
+                <LinearLayout
+                    android:id="@+id/home_away_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@+id/spinner_match_filter"
+                    app:layout_constraintStart_toEndOf="@+id/spinner_match_filter"
+                    app:layout_constraintTop_toTopOf="@+id/spinner_match_filter">
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="主場"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="客場"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="不分主客場"
+                            android:textSize="12sp" />
+
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_bet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="反"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/home_away_filter"
+                    app:layout_constraintStart_toEndOf="@+id/home_away_filter"
+                    app:layout_constraintTop_toTopOf="@+id/home_away_filter" />
+
+                <TextView
+                    android:id="@+id/tv_match_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="目前的資料描述:英超 主隊名稱 名稱 進50場 賽事外圍比分"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_match_filter" />
 
                 <HorizontalScrollView
                     android:id="@+id/horizontal_scroll"
@@ -81,7 +149,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
+                    app:layout_constraintTop_toBottomOf="@+id/tv_match_description">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
