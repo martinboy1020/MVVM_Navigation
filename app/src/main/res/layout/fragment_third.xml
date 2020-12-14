@@ -23,10 +23,10 @@
                 android:id="@+id/user_item_widget"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:visibility="@{viewModel.visible}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="@{viewModel.visible}"/>
+                app:layout_constraintTop_toTopOf="parent" />
             <!--        <ImageView-->
             <!--            android:id="@+id/user_item_widget"-->
             <!--            android:layout_width="300dp"-->
@@ -62,10 +62,13 @@
             <com.example.mvvm_navigation.widget.BuildRecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:divider_height="1"
+                app:has_divider="true"
                 app:layout_constraintTop_toBottomOf="@+id/btn_go_to_main_fragment"
                 app:layout_manager_type="vertical"
                 app:listener="@{viewModel.matchListAdapterListener}"
-                app:matchList="@{viewModel.matchList}" />
+                app:matchList="@{viewModel.matchList}"
+                tools:listitem="@layout/layout_rv_match_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

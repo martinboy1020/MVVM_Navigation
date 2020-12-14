@@ -3,8 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <import type="com.example.mvvm_navigation.utils.AdapterUtils.Adapters" />
+
         <variable
             name="viewModel"
             type="com.example.mvvm_navigation.ui.main.vm.second.SecondFragmentSubmitter" />
@@ -14,18 +17,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<!--        <com.example.mvvm_navigation.widget.UserItemWidget-->
-<!--            android:id="@+id/test_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="100dp"-->
-<!--            android:transitionName="test"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:name="@{`Martin`}"-->
-<!--            app:realName="@{`Martin Lin`}"-->
-<!--            app:email="@{`No`}"/>-->
+        <!--        <com.example.mvvm_navigation.widget.UserItemWidget-->
+        <!--            android:id="@+id/test_view"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="100dp"-->
+        <!--            android:transitionName="test"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:name="@{`Martin`}"-->
+        <!--            app:realName="@{`Martin Lin`}"-->
+        <!--            app:email="@{`No`}"/>-->
 
         <TextView
             android:id="@+id/textView2"
@@ -53,6 +56,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:nestedScrollingEnabled="true"
+            app:divider_height="1"
+            app:has_divider="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
