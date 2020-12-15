@@ -80,6 +80,10 @@ class MainViewModel constructor(application: Application, context: Context, val 
                 )
                 this.transFragment(action)
             }
+
+            R.id.btn_go_to_test_dynamic_feature_fragment -> {
+                this.transFragment(R.id.action_mainFragment_to_testDynamicFeatureFragment)
+            }
         }
     }
 

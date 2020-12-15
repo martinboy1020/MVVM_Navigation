@@ -28,6 +28,10 @@
             android:id="@+id/action_mainFragment_open_bottom_sheet_detail"
             app:destination="@+id/bottomSheetDetailFragment" />
 
+        <action
+            android:id="@+id/action_mainFragment_to_testDynamicFeatureFragment"
+            app:destination="@id/testDynamicFeatureFragment"/>
+
         <argument
             android:name="goal_data"
             app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
@@ -79,6 +83,15 @@
             app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
 
     </dialog>
+
+    <fragment
+        android:id="@+id/testDynamicFeatureFragment"
+        android:name="com.martinboy.testdynamic.TestDynamicFeatureFragment"
+        android:label="TestDynamicFeatureFragment"
+        app:moduleName="testdynamic"
+        tools:layout="@layout/layout_test_dynamic_feature">
+
+    </fragment>
 
 
     <!--使用show_hide_fragment頁籤 在Activity XML裡面必須要使用自定義的TabNavHostFragment -->

@@ -11,9 +11,20 @@
 
         <!--android name 設定為官方的NavHostFragment 在navigation裡的要使用fragment頁籤帶入Fragment 轉換Fragment的方式為replace -->
 
+<!--        <fragment-->
+<!--            android:id="@+id/mainActivityNavHostFragment"-->
+<!--            android:name="androidx.navigation.fragment.NavHostFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:defaultNavHost="true"-->
+<!--            app:navGraph="@navigation/main"-->
+<!--            tools:layout="@layout/fragment_main" />-->
+
+        <!--android name 設定為官方的DynamicNavHostFragment 可進行跨模塊轉換 在navigation裡的要使用fragment頁籤帶入Fragment 轉換Fragment的方式為replace -->
+
         <fragment
             android:id="@+id/mainActivityNavHostFragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:name="androidx.navigation.dynamicfeatures.fragment.DynamicNavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="true"

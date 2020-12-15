@@ -66,6 +66,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btn_go_to_second_fragment" />
 
+                    <Button
+                        android:id="@+id/btn_go_to_test_dynamic_feature_fragment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{viewModel.onClickListener}"
+                        android:text="Go To Test Dynamic Feature Fragment"
+                        android:visibility="@{viewModel.buttonVisible}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.502"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/btn_open_bottom_sheet_dialog" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
