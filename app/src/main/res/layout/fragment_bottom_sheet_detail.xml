@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.mvvm_navigation.ui.main.vm.bottom_sheet.BottomSheetDetailFragmentSubmitter" />
+            type="com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailFragmentSubmitter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,54 +67,84 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout0">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
+                            android:id="@+id/cb_match_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:listener="@{viewModel.checkBoxCheckedListener}"
+                            app:text="賽事名稱賽事"
+                            app:type="match" />
+
+                        <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
+                            android:id="@+id/cb_match_home_team"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:listener="@{viewModel.checkBoxCheckedListener}"
+                            app:text="主隊名稱主隊"
+                            app:type="home" />
+
+                        <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
+                            android:id="@+id/cb_match_away_team"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:listener="@{viewModel.checkBoxCheckedListener}"
+                            app:text="客隊名稱客隊"
+                            app:type="away" />
+
+                    </LinearLayout>
 
                 </HorizontalScrollView>
 
                 <Spinner
                     android:id="@+id/spinner_match_filter"
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="0dp"
+                    android:spinnerMode="dropdown"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout0"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_filter_list" />
+                    app:layout_constraintTop_toBottomOf="@+id/layout_filter_list"
+                    app:recentMatchConditionList="@{viewModel.recentMatchConditionList}" />
 
-                <LinearLayout
+                <RadioGroup
                     android:id="@+id/home_away_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:onCheckedChanged="@{viewModel.homeAwayFilterListener}"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="@+id/spinner_match_filter"
                     app:layout_constraintStart_toEndOf="@+id/spinner_match_filter"
                     app:layout_constraintTop_toTopOf="@+id/spinner_match_filter">
 
-                    <RadioGroup
-                        android:layout_width="match_parent"
+                    <RadioButton
+                        android:id="@+id/rtb_home"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:checked="true"
+                        android:text="主場"
+                        android:textSize="12sp" />
 
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="主場"
-                            android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/rtb_away"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="客場"
+                        android:textSize="12sp" />
 
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="客場"
-                            android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/rtb_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="不分主客場"
+                        android:textSize="12sp" />
 
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="不分主客場"
-                            android:textSize="12sp" />
-
-                    </RadioGroup>
-
-                </LinearLayout>
+                </RadioGroup>
 
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switch_bet"

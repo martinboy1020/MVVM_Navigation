@@ -9,7 +9,7 @@ import androidx.databinding.BindingAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BannerItem
-import com.example.mvvm_navigation.ui.main.vm.BannerAdapter
+import com.example.mvvm_navigation.ui.main.home.BannerAdapter
 import com.to.aboomy.pager2banner.Banner
 import com.to.aboomy.pager2banner.IndicatorView
 
@@ -49,7 +49,8 @@ class BannerWidget @JvmOverloads constructor(
             banner.isAutoPlay = true
             banner.setOuterPageChangeListener(object : ViewPager2.OnPageChangeCallback() {})
            setDots(banner, showDots)
-            val bannerAdapter = BannerAdapter(listener)
+            val bannerAdapter =
+                BannerAdapter(listener)
             bannerAdapter.setData(data)
             banner.setOffscreenPageLimit(data.size)
             banner.setAutoTurningTime(3000)

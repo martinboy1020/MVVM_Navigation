@@ -3,33 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/homeFragment">
 
     <!-- app:popUpTo 指定某個頁面放到在上層,其他Fragment會被移除掉
-    app:popUpToInclusive="true" 被放入在上層的Fragment也會將之前已存在的Fragment一起移除避免重複 -->
+    app:popUpToInclusive="true" 被放入在上層的Fragment也會將之前已存在的Fragment一起移除避免重複
+    如要回到首頁時想要將之前的Fragment清掉可使用-->
 
     <!--使用fragment頁籤 在Activity XML裡面必須要使用官方的NavHostFragment -->
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.example.mvvm_navigation.ui.main.MainFragment"
-        android:label="MainFragment"
-        tools:layout="@layout/fragment_main">
+        android:id="@+id/homeFragment"
+        android:name="com.example.mvvm_navigation.ui.main.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_mainFragment_to_secondFragment"
-            app:destination="@+id/secondFragment" />
+            android:id="@+id/action_homeFragment_to_matchListFragment"
+            app:destination="@+id/matchListFragment" />
 
         <action
-            android:id="@+id/action_mainFragment_to_thirdFragment"
-            app:destination="@+id/thirdFragment" />
-
-        <action
-            android:id="@+id/action_mainFragment_open_bottom_sheet_detail"
+            android:id="@+id/action_homeFragment_open_bottom_sheet_detail"
             app:destination="@+id/bottomSheetDetailFragment" />
 
         <action
-            android:id="@+id/action_mainFragment_to_testDynamicFeatureFragment"
+            android:id="@+id/action_homeFragment_to_testDynamicFeatureFragment"
             app:destination="@id/testDynamicFeatureFragment"/>
 
         <argument
@@ -43,34 +40,22 @@
     </fragment>
 
     <fragment
-        android:id="@+id/secondFragment"
-        android:name="com.example.mvvm_navigation.ui.main.SecondFragment"
-        android:label="SecondFragment"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/matchListFragment"
+        android:name="com.example.mvvm_navigation.ui.main.matchlist.MatchListFragment"
+        android:label="MatchListFragment"
+        tools:layout="@layout/fragment_matchlist">
 
-        <action
-            android:id="@+id/action_secondFragment_to_thirdFragment"
-            app:destination="@+id/thirdFragment" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/thirdFragment"
-        android:name="com.example.mvvm_navigation.ui.main.ThirdFragment"
-        android:label="ThirdFragment"
-        tools:layout="@layout/fragment_third">
-
-        <action
-            android:id="@+id/action_thirdFragment_to_mainFragment"
-            app:destination="@+id/mainFragment"
-            app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true"/>
+<!--        <action-->
+<!--            android:id="@+id/action_thirdFragment_to_mainFragment"-->
+<!--            app:destination="@+id/mainFragment"-->
+<!--            app:popUpTo="@id/mainFragment"-->
+<!--            app:popUpToInclusive="true"/>-->
 
     </fragment>
 
     <dialog
         android:id="@+id/bottomSheetDetailFragment"
-        android:name="com.example.mvvm_navigation.ui.main.BottomSheetDetailFragment"
+        android:name="com.example.mvvm_navigation.ui.main.home.BottomSheetDetailFragment"
         android:label="BottomSheetDetailFragment"
         tools:layout="@layout/fragment_bottom_sheet_detail">
 
@@ -98,7 +83,7 @@
 
     <!--    <show_hide_fragment-->
     <!--        android:id="@+id/mainFragment"-->
-    <!--        android:name="com.example.mvvm_navigation.ui.main.MainFragment"-->
+    <!--        android:name="com.example.mvvm_navigation.ui.main.home.MainFragment"-->
     <!--        android:label="MainFragment"-->
     <!--        tools:layout="@layout/fragment_main">-->
 
@@ -122,7 +107,7 @@
 
     <!--    <show_hide_fragment-->
     <!--        android:id="@+id/thirdFragment"-->
-    <!--        android:name="com.example.mvvm_navigation.ui.main.ThirdFragment"-->
+    <!--        android:name="com.example.mvvm_navigation.ui.main.matchlist.ThirdFragment"-->
     <!--        android:label="ThirdFragment"-->
     <!--        tools:layout="@layout/fragment_third">-->
 

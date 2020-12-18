@@ -2,13 +2,15 @@
 
 package com.example.mvvm_navigation.utils
 
+import android.R
+import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.datacenter.data.BetData
 import com.example.mvvm_navigation.datacenter.data.MatchListItem
-import com.example.mvvm_navigation.datacenter.network.response.UserData
-import com.example.mvvm_navigation.ui.main.BetListAdapter
-import com.example.mvvm_navigation.ui.main.MatchListAdapter
-import com.example.mvvm_navigation.ui.main.SecondAdapter
+import com.example.mvvm_navigation.datacenter.data.RecentMatchCondition
+import com.example.mvvm_navigation.ui.main.home.BetListAdapter
+import com.example.mvvm_navigation.ui.main.home.viewmodel.RecentConditionAdapter
+import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
 import com.example.mvvm_navigation.widget.BuildRecyclerView
 
 
@@ -18,27 +20,32 @@ object AdapterUtils {
         const val SECOND = "second"
     }
 
-    @JvmStatic
-    @BindingAdapter("adapter", "data", "listener", requireAll = false)
-    fun BuildRecyclerView.Adapters(adapter: String, data: Any?, listener: Any?) {
-        this.adapter = when (adapter) {
-            Adapters.SECOND -> SecondAdapter(
-                this.context,
-                data as MutableList<UserData.User>,
-                listener as SecondAdapter.SecondAdapterItemClickListener
-            )
-            else -> null
-        }
-    }
+//    @JvmStatic
+//    @BindingAdapter("homeMatchList", "listener", requireAll = false)
+//    fun BuildRecyclerView.Adapters(homeMatchList: Any?, listener: Any?) {
+//        this.adapter =
+//            HomeMatchListAdapter(
+//                this.context,
+//                homeMatchList as MutableList<MatchListItem>,
+//                listener as HomeMatchListAdapter.MatchListAdapterItemClickListener
+//            )
+//    }
 
     @JvmStatic
     @BindingAdapter("matchList", "listener", requireAll = false)
     fun BuildRecyclerView.Adapters(matchList: Any?, listener: Any?) {
-        this.adapter = MatchListAdapter(
-            this.context,
-            matchList as MutableList<MatchListItem>,
-            listener as MatchListAdapter.MatchListAdapterItemClickListener
-        )
+        this.adapter =
+            MatchListAdapter(
+                this.context,
+                matchList as MutableList<MatchListItem>,
+                if(listener != null) listener as MatchListAdapter.MatchListAdapterItemClickListener else null
+            )
+    }
+
+    @JvmStatic
+    @BindingAdapter("recentMatchConditionList")
+    fun Spinner.setEntries(entries: List<RecentMatchCondition>) {
+        this.adapter = RecentConditionAdapter(this.context, R.layout.simple_dropdown_item_1line, entries)
     }
 
     @JvmStatic

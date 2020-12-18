@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             app:defaultNavHost="true"
             app:navGraph="@navigation/main"
-            tools:layout="@layout/fragment_main" />
+            tools:layout="@layout/fragment_home" />
 
         <!--android name 設定為自定義的TabNavHostFragment 在navigation裡的要使用show_hide_fragment頁籤帶入Fragment 轉換Fragment的方式為Show&Hide -->
 

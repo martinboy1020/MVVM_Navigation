@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeFragmentSubmitter" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.example.mvvm_navigation.widget.LogoToolBarWidget
+                android:id="@+id/main_logo_tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.example.mvvm_navigation.widget.BannerWidget
+                        android:id="@+id/banner_widget"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:bannerData="@{viewModel.bannerData}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:listener="@{viewModel.bannerClickListener}"
+                        app:showDots="@{viewModel.showBannerDots}" />
+
+                    <TextView
+                        android:id="@+id/tv_start_match"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="即將開賽"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/banner_widget" />
+
+                    <TextView
+                        android:id="@+id/tv_now_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="現在時間 2020-11-29 00:30:27 UTM+8"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_start_match"
+                        app:layout_constraintStart_toEndOf="@+id/tv_start_match"
+                        app:layout_constraintTop_toTopOf="@+id/tv_start_match" />
+
+                    <TextView
+                        android:id="@+id/tv_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@android:color/holo_blue_dark"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="3dp"
+                        android:text="置頂"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_start_match"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_start_match" />
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_top"
+                        app:layout_constraintStart_toEndOf="@+id/tv_top"
+                        app:layout_constraintTop_toTopOf="@+id/tv_top"
+                        android:onCheckedChanged="@{viewModel.matchFilterClickListener}">
+
+                        <RadioButton
+                            android:id="@+id/btn_4hr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_bg_home_match_list_filter"
+                            android:button="@null"
+                            android:checked="true"
+                            android:gravity="center"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="3dp"
+                            android:paddingTop="3dp"
+                            android:paddingRight="3dp"
+                            android:paddingBottom="3dp"
+                            android:text="4hr"
+                            android:textColor="@drawable/selector_text_color_home_match_list_filter"
+                            android:textSize="14dp"/>
+
+                        <RadioButton
+                            android:id="@+id/btn_8hr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/selector_bg_home_match_list_filter"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="3dp"
+                            android:paddingTop="3dp"
+                            android:paddingRight="3dp"
+                            android:paddingBottom="3dp"
+                            android:text="8hr"
+                            android:textColor="@drawable/selector_text_color_home_match_list_filter"
+                            android:textSize="14dp"/>
+
+                        <RadioButton
+                            android:id="@+id/btn_12hr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/selector_bg_home_match_list_filter"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="3dp"
+                            android:paddingTop="3dp"
+                            android:paddingRight="3dp"
+                            android:paddingBottom="3dp"
+                            android:text="12hr"
+                            android:textColor="@drawable/selector_text_color_home_match_list_filter"
+                            android:textSize="14dp"/>
+
+                        <RadioButton
+                            android:id="@+id/btn_24hr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/selector_bg_home_match_list_filter"
+                            android:button="@null"
+                            android:gravity="center"
+                            android:minWidth="0dp"
+                            android:minHeight="0dp"
+                            android:paddingLeft="3dp"
+                            android:paddingTop="3dp"
+                            android:paddingRight="3dp"
+                            android:paddingBottom="3dp"
+                            android:text="24hr"
+                            android:textColor="@drawable/selector_text_color_home_match_list_filter"
+                            android:textSize="14dp"/>
+
+                    </RadioGroup>
+
+                    <TextView
+                        android:id="@+id/tv_match_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="出現率"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_top"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_top" />
+
+                    <TextView
+                        android:id="@+id/tv_show_ratio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="比賽時間"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_match_time"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_match_time"
+                        app:layout_constraintTop_toTopOf="@+id/tv_match_time" />
+
+                    <com.example.mvvm_navigation.widget.BuildRecyclerView
+                        android:id="@+id/rv_match_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="1dp"
+                        android:nestedScrollingEnabled="false"
+                        app:divider_height="1"
+                        app:has_divider="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_top"
+                        app:layout_constraintVertical_bias="0.0"
+                        app:layout_manager_type="vertical"
+                        app:listener="@{viewModel.matchListClickListener}"
+                        app:matchList="@{viewModel.matchList}"
+                        tools:listitem="@layout/layout_rv_match_item" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/menu_main_drawer_item" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>

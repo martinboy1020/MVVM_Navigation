@@ -4,80 +4,57 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import com.example.dexlight.di.Contract
 import com.example.mvvm_navigation.datacenter.Repository
-import com.example.mvvm_navigation.ui.main.MainFragment
-import com.example.mvvm_navigation.ui.main.SecondFragment
-import com.example.mvvm_navigation.ui.main.ThirdFragment
-import com.example.mvvm_navigation.ui.main.model.BottomSheetDetailModel
-import com.example.mvvm_navigation.ui.main.model.MainModel
-import com.example.mvvm_navigation.ui.main.model.SecondModel
-import com.example.mvvm_navigation.ui.main.model.ThirdModel
-import com.example.mvvm_navigation.ui.main.BottomSheetDetailFragment
-import com.example.mvvm_navigation.ui.main.vm.bottom_sheet.BottomSheetDetailViewModel
-import com.example.mvvm_navigation.ui.main.vm.main.MainViewModel
-import com.example.mvvm_navigation.ui.main.vm.second.SecondViewModel
-import com.example.mvvm_navigation.ui.main.vm.third.ThirdViewModel
+import com.example.mvvm_navigation.ui.main.home.BottomSheetDetailFragment
+import com.example.mvvm_navigation.ui.main.home.HomeFragment
+import com.example.mvvm_navigation.ui.main.home.model.BottomSheetDetailModel
+import com.example.mvvm_navigation.ui.main.home.model.HomeModel
+import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailViewModel
+import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeViewModel
+import com.example.mvvm_navigation.ui.main.matchlist.MatchListFragment
+import com.example.mvvm_navigation.ui.main.matchlist.model.MatchListModel
+import com.example.mvvm_navigation.ui.main.matchlist.viewmodel.MatchListViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
-import com.example.mvvm_navigation.ui.main.vm.main.MainContract.ViewModelImpl as MainViewModelImpl
-import com.example.mvvm_navigation.ui.main.vm.second.SecondContract.ViewModelImpl as SecondViewModelImpl
-import com.example.mvvm_navigation.ui.main.vm.third.ThirdContract.ViewModelImpl as ThirdViewModelImpl
-import com.example.mvvm_navigation.ui.main.vm.bottom_sheet.BottomSheetDetailContract.ViewModelImpl as BottomSheetDetailViewModelImpl
+import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailContract.ViewModelImpl as BottomSheetDetailViewModelImpl
+import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeContract.ViewModelImpl as HomeViewModelImpl
+import com.example.mvvm_navigation.ui.main.matchlist.viewmodel.MatchListContract.ViewModelImpl as MatchListViewModelImpl
 
 val mainModule = Kodein.Module(Contract.ModuleName.MAIN) {
-    bind<MainViewModelImpl>() with singleton {
-        getMainViewModel(instance(MainFragment().TAG))
+    bind<HomeViewModelImpl>() with singleton {
+        getMainViewModel(instance(HomeFragment().TAG))
     }
 }
 
-private fun getMainViewModel(fragment: MainFragment): MainViewModelImpl {
+private fun getMainViewModel(fragment: HomeFragment): HomeViewModelImpl {
     val repository = Repository.getInstance(fragment.requireContext())
-    val model = MainModel.getInstance(repository)
-    val factory = MainViewModel.Factory(
+    val model = HomeModel.getInstance(repository)
+    val factory = HomeViewModel.Factory(
         fragment.requireActivity().application,
         fragment.requireContext(),
         model,
         findNavController(fragment)
     )
-    return ViewModelProvider(fragment, factory).get(MainViewModel::class.java)
-}
-
-val secondModule = Kodein.Module(Contract.ModuleName.SECOND) {
-    bind<SecondViewModelImpl>() with singleton {
-        getSecondViewModel(instance(SecondFragment().TAG))
-    }
-}
-
-private fun getSecondViewModel(fragment: SecondFragment): SecondViewModelImpl {
-    val repository = Repository.getInstance(fragment.requireContext())
-    val model = SecondModel.getInstance(repository)
-    val factory = SecondViewModel.Factory(
-        fragment.requireActivity().application,
-        fragment.requireContext(),
-        fragment,
-        model,
-        findNavController(fragment)
-    )
-    return ViewModelProvider(fragment, factory).get(SecondViewModel::class.java)
+    return ViewModelProvider(fragment, factory).get(HomeViewModel::class.java)
 }
 
 val thirdModule = Kodein.Module(Contract.ModuleName.THIRD) {
-    bind<ThirdViewModelImpl>() with singleton {
-        getThirdViewModel(instance(ThirdFragment().TAG))
+    bind<MatchListViewModelImpl>() with singleton {
+        getThirdViewModel(instance(MatchListFragment().TAG))
     }
 }
 
-private fun getThirdViewModel(fragment: ThirdFragment): ThirdViewModelImpl {
+private fun getThirdViewModel(fragment: MatchListFragment): MatchListViewModelImpl {
     val repository = Repository.getInstance(fragment.requireContext())
-    val model = ThirdModel.getInstance(repository)
-    val factory = ThirdViewModel.Factory(
+    val model = MatchListModel.getInstance(repository)
+    val factory = MatchListViewModel.Factory(
         fragment.requireActivity().application,
         fragment.requireContext(),
         model,
         findNavController(fragment)
     )
-    return ViewModelProvider(fragment, factory).get(ThirdViewModel::class.java)
+    return ViewModelProvider(fragment, factory).get(MatchListViewModel::class.java)
 }
 
 val bottomSheetDialogModule = Kodein.Module(Contract.ModuleName.BOTTOM_SHEET) {

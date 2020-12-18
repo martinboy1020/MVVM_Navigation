@@ -3,14 +3,15 @@ package com.example.mvvm_navigation.datacenter
 import android.content.Context
 import android.util.Log
 import com.bumptech.glide.Glide
-import com.example.mvvm_navigation.datacenter.network.DataCenter
-import com.example.dexlight.datacenter.network.RetrofitClient
 import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.data.BetData
 import com.example.mvvm_navigation.datacenter.data.MatchListItem
+import com.example.mvvm_navigation.datacenter.data.RecentMatchCondition
+import com.example.mvvm_navigation.datacenter.network.DataCenter
 import com.example.mvvm_navigation.datacenter.network.HttpResult
+import com.example.mvvm_navigation.datacenter.network.RetrofitClient
 import com.example.mvvm_navigation.datacenter.network.StatusCode
-import com.example.mvvm_navigation.datacenter.network.response.RoomInfo
+import com.example.mvvm_navigation.datacenter.network.response.Login
 import com.example.mvvm_navigation.datacenter.network.response.UserData
 import com.example.mvvm_navigation.utils.ReflectViewUtils
 import java.util.*
@@ -30,6 +31,18 @@ class Repository constructor(val context: Context) {
             if (!response.isNullOrEmpty()) HttpResult.onSuccess(response)
             else HttpResult.onError((-1000).toString(), "List is Empty")
         } catch (e: Throwable) {
+            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
+        }
+
+    suspend fun userLogin(username: String, password: String, type: Int): HttpResult<Login.UserLogin> =
+        try {
+            val uuid = UUID.randomUUID().toString()
+            Log.d("tag12345", "userLogin value, username: $username, password: $password, type: $type, uuid: $uuid")
+            val response = RetrofitClient.getInstance(context).getApiMethod().userLogin(username, password, type, uuid).await()
+            Log.d("tag12345", "userLogin response: $response")
+            HttpResult.onSuccess(response)
+        } catch (e: Throwable) {
+            Log.d("tag12345", "userLogin fail e: $e")
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
@@ -84,6 +97,21 @@ class Repository constructor(val context: Context) {
         betList.add(betData4)
         dataCenter.betList = betList
         return betList
+    }
+
+    fun getRecentMatchCondition(): MutableList<RecentMatchCondition> {
+        val recentMatchConditionList = mutableListOf<RecentMatchCondition>()
+        val recentMatchCondition1 = RecentMatchCondition("近50場", "")
+        val recentMatchCondition2 = RecentMatchCondition("近30場", "")
+        val recentMatchCondition3 = RecentMatchCondition("近10場", "")
+        val recentMatchCondition4 = RecentMatchCondition("近5場", "")
+        val recentMatchCondition5 = RecentMatchCondition("2020-2019", "")
+        recentMatchConditionList.add(recentMatchCondition1)
+        recentMatchConditionList.add(recentMatchCondition2)
+        recentMatchConditionList.add(recentMatchCondition3)
+        recentMatchConditionList.add(recentMatchCondition4)
+        recentMatchConditionList.add(recentMatchCondition5)
+        return recentMatchConditionList
     }
 
     fun getMatchList(): MutableList<MatchListItem> {
