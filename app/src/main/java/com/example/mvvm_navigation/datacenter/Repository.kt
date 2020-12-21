@@ -11,8 +11,10 @@ import com.example.mvvm_navigation.datacenter.network.DataCenter
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.RetrofitClient
 import com.example.mvvm_navigation.datacenter.network.StatusCode
+import com.example.mvvm_navigation.datacenter.network.response.HttpStatus
 import com.example.mvvm_navigation.datacenter.network.response.Login
 import com.example.mvvm_navigation.datacenter.network.response.UserData
+import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.utils.ReflectViewUtils
 import java.util.*
 import java.util.concurrent.ExecutionException
@@ -25,6 +27,10 @@ class Repository constructor(val context: Context) {
         fun getInstance(context: Context) = Repository(context)
     }
 
+    fun getUserSharaPreference(): UserSharePreferences {
+        return UserSharePreferences(context)
+    }
+
     suspend fun getUser(): HttpResult<List<UserData.User>> =
         try {
             val response = RetrofitClient.getInstance(context).getApiMethod().getUsers().await()
@@ -34,17 +40,40 @@ class Repository constructor(val context: Context) {
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
-    suspend fun userLogin(username: String, password: String, type: Int): HttpResult<Login.UserLogin> =
+    suspend fun userLogin(
+        username: String,
+        password: String,
+        type: Int
+    ): HttpResult<HttpStatus<Login.UserLogin>> =
         try {
             val uuid = UUID.randomUUID().toString()
-            Log.d("tag12345", "userLogin value, username: $username, password: $password, type: $type, uuid: $uuid")
-            val response = RetrofitClient.getInstance(context).getApiMethod().userLogin(username, password, type, uuid).await()
-            Log.d("tag12345", "userLogin response: $response")
-            HttpResult.onSuccess(response)
+            val response = RetrofitClient.getInstance(context).getApiMethod()
+                .userLogin(username, password, type, uuid).await()
+            if (response.statusCode == "0") {
+                UserSharePreferences(context).userToken = response.payload.token
+                HttpResult.onSuccess(response)
+            } else {
+                HttpResult.onError(
+                    response.statusCode,
+                    response.message
+                )
+            }
         } catch (e: Throwable) {
-            Log.d("tag12345", "userLogin fail e: $e")
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
+
+    suspend fun refreshUserToken(token: String): HttpResult<HttpStatus<Login.TokenRefresh>> =
+        try {
+            val response =
+                RetrofitClient.getInstance(context).getApiMethod().tokenRefresh(token).await()
+            if (response.statusCode == "0") HttpResult.onSuccess(response) else HttpResult.onError(
+                response.statusCode,
+                response.message
+            )
+        } catch (e: Throwable) {
+            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
+        }
+
 
     fun getBannerList(): MutableList<BannerItem> {
         if (dataCenter.bannerList.isNullOrEmpty()) {

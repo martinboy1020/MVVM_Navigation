@@ -42,7 +42,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:listener="@{viewModel.bannerClickListener}"
-                        app:showDots="@{viewModel.showBannerDots}" />
+                        app:showDots="@{viewModel.showBannerDots}"/>
 
                     <TextView
                         android:id="@+id/tv_start_match"

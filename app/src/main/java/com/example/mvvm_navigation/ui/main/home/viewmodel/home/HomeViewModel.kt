@@ -3,6 +3,7 @@ package com.example.mvvm_navigation.ui.main.home.viewmodel.home
 import android.app.Application
 import android.content.Context
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.RadioButton
@@ -16,6 +17,7 @@ import com.example.mvvm_navigation.base.BaseViewModel
 import com.example.mvvm_navigation.datacenter.data.GoalAndLostData
 import com.example.mvvm_navigation.datacenter.data.MatchListItem
 import com.example.mvvm_navigation.datacenter.network.HttpResult
+import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.ui.main.home.HomeFragmentDirections
 import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
 import com.example.mvvm_navigation.widget.BannerWidget
@@ -41,20 +43,7 @@ class HomeViewModel constructor(
         HomeFragmentSubmitter()
 
     init {
-//        startCountDown()
-        CoroutineScope(Dispatchers.IO).launch {
-           val login = model.userLogin("PMQ102", "a111111", 1)
-            withContext(Dispatchers.Main) {
-                when (login) {
-                    is HttpResult.onSuccess -> {
-                        Toast.makeText(this@HomeViewModel.context , "登入成功", Toast.LENGTH_SHORT).show()
-                    }
-                    is HttpResult.onError -> {
-                        Toast.makeText(this@HomeViewModel.context , "登入失敗 ${login.errorCode}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
+        if (UserSharePreferences(context).userToken.isEmpty()) userLogin() else tokenRefresh()
         this.submitter.onClickListener.value = this
         val goalData = GoalAndLostData(GoalAndLostDataWidget.Type.GOAL, 2.5f, 0f)
         val lostData = GoalAndLostData(GoalAndLostDataWidget.Type.LOST, 0f, 3.1f)
@@ -110,6 +99,51 @@ class HomeViewModel constructor(
 //            R.id.btn_go_to_test_dynamic_feature_fragment -> {
 //                this.transFragment(R.id.action_homeFragment_to_testDynamicFeatureFragment)
 //            }
+        }
+    }
+
+    private fun userLogin() {
+        Toast.makeText(this@HomeViewModel.context, "帳號登入", Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            val login = model.userLogin("PMQ102", "a111111", 1)
+            withContext(Dispatchers.Main) {
+                when (login) {
+                    is HttpResult.onSuccess -> {
+                        Toast.makeText(this@HomeViewModel.context, "登入成功", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    is HttpResult.onError -> {
+                        Toast.makeText(
+                            this@HomeViewModel.context,
+                            "登入失敗 ${login.errorCode}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun tokenRefresh() {
+        Toast.makeText(this@HomeViewModel.context, "刷新憑證", Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            val refresh = model.userTokenRefresh(UserSharePreferences(context).userToken)
+            withContext(Dispatchers.Main) {
+                when (refresh) {
+                    is HttpResult.onSuccess -> {
+                        Toast.makeText(this@HomeViewModel.context, "刷新成功", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    is HttpResult.onError -> {
+                        Toast.makeText(
+                            this@HomeViewModel.context,
+                            "刷新失敗 ${refresh.errorCode}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        userLogin()
+                    }
+                }
+            }
         }
     }
 

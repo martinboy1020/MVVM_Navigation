@@ -43,12 +43,16 @@ class BannerWidget @JvmOverloads constructor(
         view = View.inflate(context, R.layout.layout_banner, this)
     }
 
-    fun setBannerData(data: MutableList<BannerItem>, showDots: Boolean? = true, listener: BannerClickListener? = null) {
+    fun setBannerData(
+        data: MutableList<BannerItem>,
+        showDots: Boolean? = true,
+        listener: BannerClickListener? = null
+    ) {
         val banner = findViewById<Banner>(R.id.banner)
-        if (!data.isNullOrEmpty()) {
+        if (!data.isNullOrEmpty() && banner.adapter == null) {
             banner.isAutoPlay = true
             banner.setOuterPageChangeListener(object : ViewPager2.OnPageChangeCallback() {})
-           setDots(banner, showDots)
+            setDots(banner, showDots)
             val bannerAdapter =
                 BannerAdapter(listener)
             bannerAdapter.setData(data)
@@ -58,13 +62,21 @@ class BannerWidget @JvmOverloads constructor(
         }
     }
 
+    fun setBannerTurning(isTurning: Boolean) {
+        val banner = findViewById<Banner>(R.id.banner)
+        if (isTurning) banner.startTurning() else banner.stopTurning()
+    }
+
+
     private fun setDots(banner: Banner, showDots: Boolean? = true) {
         val indicatorView = findViewById<IndicatorView>(R.id.indicatorView)
-        banner.setIndicator(indicatorView.setIndicatorColor(Color.WHITE)
-            .setIndicatorRadius(8f)
-            .setIndicatorStyle(IndicatorView.IndicatorStyle.INDICATOR_CIRCLE)
-            .setIndicatorSelectorColor(Color.RED), false)
-        if(showDots == true) {
+        banner.setIndicator(
+            indicatorView.setIndicatorColor(Color.WHITE)
+                .setIndicatorRadius(8f)
+                .setIndicatorStyle(IndicatorView.IndicatorStyle.INDICATOR_CIRCLE)
+                .setIndicatorSelectorColor(Color.RED), false
+        )
+        if (showDots == true) {
             indicatorView.visibility = View.VISIBLE
         } else {
             indicatorView.visibility = View.GONE

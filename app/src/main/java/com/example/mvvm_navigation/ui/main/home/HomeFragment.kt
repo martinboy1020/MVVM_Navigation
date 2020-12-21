@@ -10,6 +10,7 @@ import com.example.base.components.LayoutId
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseFragment
+import com.example.mvvm_navigation.databinding.FragmentHomeBinding
 import com.example.mvvm_navigation.di.mainModule
 import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeContract
 import com.example.mvvm_navigation.widget.LogoToolBarWidget
@@ -43,6 +44,16 @@ class HomeFragment : BaseFragment() {
         this.binding.setVariable(BR.viewModel, this.viewModel.getSubmitter())
         viewModel.getSubmitter().navHostFragment.value =
             this.activity?.supportFragmentManager?.findFragmentById(R.id.mainActivityNavHostFragment)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (this.binding as FragmentHomeBinding).bannerWidget.setBannerTurning(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (this.binding as FragmentHomeBinding).bannerWidget.setBannerTurning(false)
     }
 
     private fun setToolBarAndDrawLayout() {

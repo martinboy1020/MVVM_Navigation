@@ -21,6 +21,9 @@ class RetrofitClient constructor(private val context: Context) {
     //    private val BASE_URL = "https://jsonplaceholder.typicode.com/"
     private val BASE_URL_DEV = "https://usdev.k33uc.com/api/"
     private val BASE_URL_PROD = "https://us.k33uc.com/api/"
+    private val isShowLog = true
+
+    // 攔截器 用於查看API回傳的Log時使用 Log關鍵字: OkHttp
     private val httpLoggingInterceptor = HttpLoggingInterceptor()
 
     init {
@@ -32,16 +35,17 @@ class RetrofitClient constructor(private val context: Context) {
             .baseUrl(this.BASE_URL_DEV)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .client(getOkHttpClient(true))
+            .client(getOkHttpClient(isShowLog))
             .build()
             .create(ApiMethod::class.java)
 
-    private fun getOkHttpClient(NoSystemException: Boolean): OkHttpClient =
-        OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .addInterceptor(httpLoggingInterceptor)
-            .build()
+    private fun getOkHttpClient(isShowLog: Boolean): OkHttpClient {
+        val okHttpClient = OkHttpClient.Builder()
+        okHttpClient.connectTimeout(10, TimeUnit.SECONDS)
+        okHttpClient.writeTimeout(10, TimeUnit.SECONDS)
+        okHttpClient.readTimeout(10, TimeUnit.SECONDS)
+        if(isShowLog) okHttpClient.addInterceptor(httpLoggingInterceptor)
+        return okHttpClient.build()
+    }
 
 }

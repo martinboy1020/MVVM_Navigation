@@ -1,5 +1,6 @@
 package com.example.mvvm_navigation.datacenter.network
 
+import com.example.mvvm_navigation.datacenter.network.response.HttpStatus
 import com.example.mvvm_navigation.datacenter.network.response.Login
 import com.example.mvvm_navigation.datacenter.network.response.UserData
 import kotlinx.coroutines.Deferred
@@ -23,5 +24,12 @@ interface ApiMethod {
         @Field(ApiConstants.LoginApiHeader.IDENTITY) identity: String,
         @Field(ApiConstants.LoginApiHeader.TOKEN) token: String = "",
         @Field(ApiConstants.LoginApiHeader.CAPTCHA) captcha: String = ""
-    ): Deferred<Login.UserLogin>
+    ): Deferred<HttpStatus<Login.UserLogin>>
+
+    @POST(ApiConstants.HttpPath.AUTH_REFRESH)
+    @FormUrlEncoded
+    fun tokenRefresh(
+        @Field(ApiConstants.LoginApiHeader.TOKEN) token: String = ""
+    ): Deferred<HttpStatus<Login.TokenRefresh>>
+
 }
