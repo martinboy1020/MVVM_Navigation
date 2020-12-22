@@ -8,7 +8,9 @@ import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.datacenter.data.BetData
 import com.example.mvvm_navigation.datacenter.data.MatchListItem
 import com.example.mvvm_navigation.datacenter.data.RecentMatchCondition
+import com.example.mvvm_navigation.datacenter.network.response.TgMatchRecent
 import com.example.mvvm_navigation.ui.main.home.BetListAdapter
+import com.example.mvvm_navigation.ui.main.home.MatchesRecentAdapter
 import com.example.mvvm_navigation.ui.main.home.viewmodel.RecentConditionAdapter
 import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
 import com.example.mvvm_navigation.widget.BuildRecyclerView
@@ -20,20 +22,20 @@ object AdapterUtils {
         const val SECOND = "second"
     }
 
-//    @JvmStatic
-//    @BindingAdapter("homeMatchList", "listener", requireAll = false)
-//    fun BuildRecyclerView.Adapters(homeMatchList: Any?, listener: Any?) {
-//        this.adapter =
-//            HomeMatchListAdapter(
-//                this.context,
-//                homeMatchList as MutableList<MatchListItem>,
-//                listener as HomeMatchListAdapter.MatchListAdapterItemClickListener
-//            )
-//    }
+    @JvmStatic
+    @BindingAdapter("matchesRecentList", "listener", requireAll = false)
+    fun BuildRecyclerView.MatchesRecentListAdapter(matchesRecentList: Any?, listener: Any?) {
+        this.adapter =
+            MatchesRecentAdapter(
+                this.context,
+                matchesRecentList as MutableList<TgMatchRecent.Recent>,
+                listener as MatchesRecentAdapter.MatchListAdapterItemClickListener
+            )
+    }
 
     @JvmStatic
     @BindingAdapter("matchList", "listener", requireAll = false)
-    fun BuildRecyclerView.Adapters(matchList: Any?, listener: Any?) {
+    fun BuildRecyclerView.MatchListAdapter(matchList: Any?, listener: Any?) {
         this.adapter =
             MatchListAdapter(
                 this.context,
@@ -50,7 +52,7 @@ object AdapterUtils {
 
     @JvmStatic
     @BindingAdapter("betList", requireAll = false)
-    fun BuildRecyclerView.Adapters(matchList: Any?) {
+    fun BuildRecyclerView.BetInfoListAdapter(matchList: Any?) {
         this.adapter = BetListAdapter(
             this.context,
             matchList as MutableList<BetData>

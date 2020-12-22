@@ -22,28 +22,6 @@ class Home {
         @SerializedName(ApiDataKey.TIME) val time: String = ""
     )
 
-    data class WebHomeMatchesRecent(@SerializedName(ApiDataKey.PAYLOAD) val payload: MutableList<Payload> = mutableListOf())
-    data class Payload(
-        @SerializedName(ApiDataKey.MATCH_ID) val matchId: Int = 0,
-        @SerializedName(ApiDataKey.TG_STATUS) val tgStatus: Int = 0,
-        @SerializedName(ApiDataKey.HOME_ID) val homeId: Int = 0,
-        @SerializedName(ApiDataKey.AWAY_ID) val awayId: Int = 0,
-        @SerializedName(ApiDataKey.HOME) val home: String = "",
-        @SerializedName(ApiDataKey.AWAY) val away: String = "",
-        @SerializedName(ApiDataKey.HOME_LOGO) val homeLogo: String = "",
-        @SerializedName(ApiDataKey.AWAY_LOGO) val awayLogo: String = "",
-        @SerializedName(ApiDataKey.LEAGUE_ID) val leagueId: String = "",
-        @SerializedName(ApiDataKey.LEAGUE) val league: String = "",
-        @SerializedName(ApiDataKey.LEAGUE_SHORT_NAME_EN) val leagueShortNameEn: String = "",
-        @SerializedName(ApiDataKey.LEAGUE_LOGO) val leagueLogo: String = "",
-        @SerializedName(ApiDataKey.OPEN_DATE) val openDate: Long = 0,
-        @SerializedName(ApiDataKey.BETS_COUNT) val betsCount: Int = 0,
-        @SerializedName(ApiDataKey.MAX_SCORE) val maxScore: String = "",
-        @SerializedName(ApiDataKey.MIN_SCORE) val minScore: String = "",
-        @SerializedName(ApiDataKey.MAX_VALUE) val maxValue: String = "",
-        @SerializedName(ApiDataKey.MIN_VALUE) val minValue: String = ""
-    )
-
     data class WebHomeMatchesStatistics(@SerializedName(ApiDataKey.STATISTIC_DATA) val statisticsData: StatisticsData)
     data class StatisticsData(
         @SerializedName("0-0") val score00: StaticDetailData,
@@ -113,48 +91,5 @@ class Home {
         @SerializedName(ApiDataKey.BET_MONEY) val betMoney: String = "",
         @SerializedName(ApiDataKey.IS_POPULAR) val isPopular: Int = 0,
         @SerializedName(ApiDataKey.IS_SOLD_OUT) val isSoldOut: Int = 0
-    )
-
-    data class WebLiveMatchesList(
-        @SerializedName(ApiDataKey.AREAS) val areas: MutableList<Areas> = mutableListOf(),
-        @SerializedName(ApiDataKey.MATCHES) val matches: MutableList<Matches> = mutableListOf()
-    )
-
-    data class Areas(
-        @SerializedName(ApiDataKey.ID) val id: Int = 0,
-        @SerializedName(ApiDataKey.NAME) val name: String = "",
-        @SerializedName(ApiDataKey.COUNTRIES) val countries: MutableList<Countries> = mutableListOf()
-    )
-
-    data class Countries(
-        @SerializedName(ApiDataKey.ID) val id: Int = 0,
-        @SerializedName(ApiDataKey.NAME) val name: String = "",
-        @SerializedName(ApiDataKey.LEAGUES) val leagues: MutableList<Leagues> = mutableListOf()
-    )
-
-    data class Leagues(
-        @SerializedName(ApiDataKey.ID) val id: Int = 0,
-        @SerializedName(ApiDataKey.NAME) val name: String = ""
-    )
-
-    data class Matches(
-        @SerializedName(ApiDataKey.MATCH_ID) val matchId: Int = 0,
-        @SerializedName(ApiDataKey.STATUS) val status: Int = 0,
-        @SerializedName(ApiDataKey.OPEN_DATE) val openDate: Long = 0,
-        @SerializedName(ApiDataKey.START_TIME) val startTime: Long = 0,
-        @SerializedName(ApiDataKey.AREA_ID) val areaId: Int = 0,
-        @SerializedName(ApiDataKey.COUNTRY_ID) val country: Int = 0,
-        @SerializedName(ApiDataKey.LEAGUE_ID) val leagueId: Int = 0,
-        @SerializedName(ApiDataKey.LEAGUE_NAME) val leagueName: String = "",
-        @SerializedName(ApiDataKey.LEAGUE_LOGO) val leagueLogo: String = "",
-        @SerializedName(ApiDataKey.HOME_ID) val homeId: Int = 0,
-        @SerializedName(ApiDataKey.AWAY_ID) val awayId: Int = 0,
-        @SerializedName(ApiDataKey.HOME_NAME) val homeName: String = "",
-        @SerializedName(ApiDataKey.AWAY_NAME) val awayName: String = "",
-        @SerializedName(ApiDataKey.HOME_LOGO) val homeLogo: String = "",
-        @SerializedName(ApiDataKey.AWAY_LOGO) val awayLogo: String = "",
-        @SerializedName(ApiDataKey.HOME_SCORE) val homeScore: Int = 0,
-        @SerializedName(ApiDataKey.AWAY_SCORE) val awayScore: Int = 0
-
     )
 }

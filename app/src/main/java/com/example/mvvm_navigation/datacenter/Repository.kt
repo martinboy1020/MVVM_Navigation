@@ -11,9 +11,7 @@ import com.example.mvvm_navigation.datacenter.network.DataCenter
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.RetrofitClient
 import com.example.mvvm_navigation.datacenter.network.StatusCode
-import com.example.mvvm_navigation.datacenter.network.response.HttpStatus
-import com.example.mvvm_navigation.datacenter.network.response.Login
-import com.example.mvvm_navigation.datacenter.network.response.UserData
+import com.example.mvvm_navigation.datacenter.network.response.*
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.utils.ReflectViewUtils
 import java.util.*
@@ -33,7 +31,8 @@ class Repository constructor(val context: Context) {
 
     suspend fun getUser(): HttpResult<List<UserData.User>> =
         try {
-            val response = RetrofitClient.getInstance(context).getApiMethod().getUsers().await()
+            val response =
+                RetrofitClient.getInstance(context).getApiMethod().getUsersAsync().await()
             if (!response.isNullOrEmpty()) HttpResult.onSuccess(response)
             else HttpResult.onError((-1000).toString(), "List is Empty")
         } catch (e: Throwable) {
@@ -48,7 +47,7 @@ class Repository constructor(val context: Context) {
         try {
             val uuid = UUID.randomUUID().toString()
             val response = RetrofitClient.getInstance(context).getApiMethod()
-                .userLogin(username, password, type, uuid).await()
+                .userLoginAsync(username, password, type, uuid).await()
             if (response.statusCode == "0") {
                 UserSharePreferences(context).userToken = response.payload.token
                 HttpResult.onSuccess(response)
@@ -65,7 +64,23 @@ class Repository constructor(val context: Context) {
     suspend fun refreshUserToken(token: String): HttpResult<HttpStatus<Login.TokenRefresh>> =
         try {
             val response =
-                RetrofitClient.getInstance(context).getApiMethod().tokenRefresh(token).await()
+                RetrofitClient.getInstance(context).getApiMethod().tokenRefreshAsync(token).await()
+            if (response.statusCode == "0") {
+                UserSharePreferences(context).userToken = response.payload.token
+                HttpResult.onSuccess(response)
+            } else HttpResult.onError(
+                response.statusCode,
+                response.message
+            )
+        } catch (e: Throwable) {
+            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
+        }
+
+    suspend fun getHomeInfo(): HttpResult<HttpStatus<Home.WebHomeInfo>> =
+        try {
+            val response =
+                RetrofitClient.getInstance(context).getApiMethod()
+                    .getHomeInfoAsync("Bearer " + UserSharePreferences(context).userToken).await()
             if (response.statusCode == "0") HttpResult.onSuccess(response) else HttpResult.onError(
                 response.statusCode,
                 response.message
@@ -74,26 +89,44 @@ class Repository constructor(val context: Context) {
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
+    suspend fun getTgMatchesRecent(timeKey: String): HttpResult<HttpStatus<MutableList<TgMatchRecent.Recent>>> =
+        try {
+            val response =
+                RetrofitClient.getInstance(context).getApiMethod().getTgMatchesRecentAsync(
+                    "Bearer " + UserSharePreferences(context).userToken,
+                    timeKey
+                ).await()
+            if (response.statusCode == "0") HttpResult.onSuccess(response) else HttpResult.onError(
+                response.statusCode,
+                response.message
+            )
+        } catch (e: Throwable) {
+            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
+        }
 
-    fun getBannerList(): MutableList<BannerItem> {
-        if (dataCenter.bannerList.isNullOrEmpty()) {
+    fun getBannerList(homeInfo: Home.WebHomeInfo): MutableList<BannerItem> {
+        if (!homeInfo.banners.isNullOrEmpty()) {
             val bannerItemList: MutableList<BannerItem> = ArrayList()
-            val bannerUrlList = ArrayList<String>()
-            bannerUrlList.add("http://banner.lkwlp.cn/uscore/banners/5e588782d948a.mp4")
-            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c014298134.jpg")
-            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c00e6a394c.jpg")
-            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c0122e9665.jpg")
-            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3a85794147a.jpg")
-            for (i in bannerUrlList.indices) {
+//            val bannerUrlList = ArrayList<String>()
+//            bannerUrlList.add("http://banner.lkwlp.cn/uscore/banners/5e588782d948a.mp4")
+//            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c014298134.jpg")
+//            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c00e6a394c.jpg")
+//            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c0122e9665.jpg")
+//            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3a85794147a.jpg")
+            for (i in homeInfo.banners.indices) {
                 val bannerItem = BannerItem()
-                bannerItem.imgUrl = bannerUrlList[i]
+                bannerItem.title = homeInfo.banners[i].titles
+                bannerItem.linkUrl = homeInfo.banners[i].linkUrl
+                bannerItem.imgUrl = homeInfo.banners[i].imgUrl
+                bannerItem.type = homeInfo.banners[i].type
                 try {
-                    if (bannerUrlList[i] != "" && !bannerUrlList[i].contains(".mp4")) {
+                    if (homeInfo.banners[i].imgUrl != "" && !homeInfo.banners[i].imgUrl.contains(".mp4")) {
 //                        bannerItem.bitmap = ReflectViewUtils.reflectionBitmap(
 //                            Glide.with(context).asBitmap().load(bannerUrlList[i]).submit().get()
 //                        )
                         bannerItem.bitmap = ReflectViewUtils.ratioBitmap(
-                            Glide.with(context).asBitmap().load(bannerUrlList[i]).submit().get()
+                            Glide.with(context).asBitmap().load(homeInfo.banners[i].imgUrl).submit()
+                                .get()
                         )
                     } else {
                         bannerItem.bitmap = null
@@ -105,12 +138,10 @@ class Repository constructor(val context: Context) {
                 }
                 bannerItemList.add(bannerItem)
             }
-
             dataCenter.bannerList = bannerItemList
-
             return bannerItemList
         } else {
-            return dataCenter.bannerList!!
+            return dataCenter.bannerList
         }
     }
 

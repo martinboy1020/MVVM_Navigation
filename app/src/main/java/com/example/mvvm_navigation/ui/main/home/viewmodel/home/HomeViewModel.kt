@@ -17,8 +17,11 @@ import com.example.mvvm_navigation.base.BaseViewModel
 import com.example.mvvm_navigation.datacenter.data.GoalAndLostData
 import com.example.mvvm_navigation.datacenter.data.MatchListItem
 import com.example.mvvm_navigation.datacenter.network.HttpResult
+import com.example.mvvm_navigation.datacenter.network.response.Home
+import com.example.mvvm_navigation.datacenter.network.response.TgMatchRecent
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.ui.main.home.HomeFragmentDirections
+import com.example.mvvm_navigation.ui.main.home.MatchesRecentAdapter
 import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
 import com.example.mvvm_navigation.widget.BannerWidget
 import com.example.mvvm_navigation.widget.GoalAndLostDataWidget
@@ -34,7 +37,7 @@ class HomeViewModel constructor(
     navController: NavController
 ) : BaseViewModel(application, context, navController), HomeContract.ViewModelImpl,
     View.OnClickListener, BannerWidget.BannerClickListener,
-    MatchListAdapter.MatchListAdapterItemClickListener,
+    MatchesRecentAdapter.MatchListAdapterItemClickListener,
     RadioGroup.OnCheckedChangeListener {
 
     private lateinit var timer: CountDownTimer
@@ -50,15 +53,8 @@ class HomeViewModel constructor(
         this.submitter.goalData.value = goalData
         this.submitter.lostData.value = lostData
         this.submitter.bannerClickListener.value = this
-        this.submitter.matchList.value = model.getMatchList()
-        this.submitter.matchListClickListener.value = this
+        this.submitter.matchesRecentClickListener.value = this
         this.submitter.matchFilterClickListener.value = this
-        CoroutineScope(Dispatchers.IO).launch {
-            val data = model.getBannerData()
-            withContext(Dispatchers.Main) {
-                getSubmitter().bannerData.value = data
-            }
-        }
     }
 
     companion object {
@@ -74,6 +70,10 @@ class HomeViewModel constructor(
                 model,
                 navController
             )
+        const val timeKey4HR = "fourHours"
+        const val timeKey8HR = "eightHours"
+        const val timeKey12HR = "twelveHours"
+        const val timeKey24HR = "twentyFourHours"
     }
 
     override fun drawerNavigationClick(itemId: Int) {
@@ -111,6 +111,8 @@ class HomeViewModel constructor(
                     is HttpResult.onSuccess -> {
                         Toast.makeText(this@HomeViewModel.context, "登入成功", Toast.LENGTH_SHORT)
                             .show()
+                        getHomeInfo()
+                        getTgMatchRecent()
                     }
                     is HttpResult.onError -> {
                         Toast.makeText(
@@ -133,6 +135,8 @@ class HomeViewModel constructor(
                     is HttpResult.onSuccess -> {
                         Toast.makeText(this@HomeViewModel.context, "刷新成功", Toast.LENGTH_SHORT)
                             .show()
+                        getHomeInfo()
+                        getTgMatchRecent()
                     }
                     is HttpResult.onError -> {
                         Toast.makeText(
@@ -141,6 +145,60 @@ class HomeViewModel constructor(
                             Toast.LENGTH_SHORT
                         ).show()
                         userLogin()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getHomeInfo() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val homeInfo = model.getHomeInfo()
+            withContext(Dispatchers.Main) {
+                when (homeInfo) {
+                    is HttpResult.onSuccess -> {
+                        Toast.makeText(this@HomeViewModel.context, "獲取首頁資訊成功", Toast.LENGTH_SHORT)
+                            .show()
+                        showBanner(homeInfo.data.payload)
+                    }
+                    is HttpResult.onError -> {
+                        Toast.makeText(
+                            this@HomeViewModel.context,
+                            "獲取首頁資訊失敗 ${homeInfo.errorCode}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun showBanner(homeInfo: Home.WebHomeInfo) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = model.getBannerData(homeInfo)
+            withContext(Dispatchers.Main) {
+                getSubmitter().bannerData.value = data
+            }
+        }
+    }
+
+    private fun getTgMatchRecent(timeKey: String = timeKey12HR) {
+        this@HomeViewModel.submitter.recentMatchTimeKeyBtnClickable.value = false
+        CoroutineScope(Dispatchers.IO).launch {
+            val tgMatchesRecent = model.getTgMatchesRecent(timeKey)
+            withContext(Dispatchers.Main) {
+                this@HomeViewModel.submitter.recentMatchTimeKeyBtnClickable.value = true
+                when (tgMatchesRecent) {
+                    is HttpResult.onSuccess -> {
+                        this@HomeViewModel.submitter.matchesRecentList.value = tgMatchesRecent.data.payload
+                    }
+                    is HttpResult.onError -> {
+                        Toast.makeText(
+                            this@HomeViewModel.context,
+                            "獲取即將開賽列表失敗 ${tgMatchesRecent.errorCode}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -178,11 +236,11 @@ class HomeViewModel constructor(
         Toast.makeText(this.context, "Banner Position: $position", Toast.LENGTH_SHORT).show()
     }
 
-    override fun onSetTopClick(data: MatchListItem) {
+    override fun onSetTopClick(data: TgMatchRecent.Recent) {
 
     }
 
-    override fun onClickItem(data: MatchListItem) {
+    override fun onClickItem(data: TgMatchRecent.Recent) {
         val action = HomeFragmentDirections.actionHomeFragmentOpenBottomSheetDetail(
             this.submitter.goalData.value!!,
             this.submitter.lostData.value!!
@@ -192,6 +250,20 @@ class HomeViewModel constructor(
 
     override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
         val radBtn = p0?.findViewById<RadioButton>(p1)
+        when(radBtn?.id) {
+            R.id.btn_4hr -> {
+                getTgMatchRecent(timeKey4HR)
+            }
+            R.id.btn_8hr -> {
+                getTgMatchRecent(timeKey8HR)
+            }
+            R.id.btn_12hr -> {
+                getTgMatchRecent(timeKey12HR)
+            }
+            R.id.btn_24hr -> {
+                getTgMatchRecent(timeKey24HR)
+            }
+        }
         Toast.makeText(this.context, "Filter is ${radBtn?.text}", Toast.LENGTH_SHORT).show()
     }
 }

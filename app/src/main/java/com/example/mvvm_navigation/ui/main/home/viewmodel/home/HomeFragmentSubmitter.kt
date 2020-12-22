@@ -10,6 +10,8 @@ import com.example.base.extension.default
 import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.data.GoalAndLostData
 import com.example.mvvm_navigation.datacenter.data.MatchListItem
+import com.example.mvvm_navigation.datacenter.network.response.TgMatchRecent
+import com.example.mvvm_navigation.ui.main.home.MatchesRecentAdapter
 import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
 import com.example.mvvm_navigation.widget.BannerWidget
 import com.example.mvvm_navigation.widget.GoalAndLostDataWidget
@@ -23,11 +25,12 @@ class HomeFragmentSubmitter {
     val lostData = MutableLiveData<GoalAndLostData>().default(GoalAndLostData(GoalAndLostDataWidget.Type.LOST, 0f, 0f))
     val bannerData = MutableLiveData<MutableList<BannerItem>>().default(mutableListOf())
     val showBannerDots = MutableLiveData<Boolean>().default(true)
-    val matchList = MutableLiveData<List<MatchListItem>>().default(mutableListOf())
+    val matchesRecentList = MutableLiveData<List<TgMatchRecent.Recent>>().default(mutableListOf())
 
     // UI Listener
+    val recentMatchTimeKeyBtnClickable = MutableLiveData<Boolean>().default(false)
     val onClickListener = MutableLiveData<View.OnClickListener>()
     val bannerClickListener = MutableLiveData<BannerWidget.BannerClickListener>()
-    val matchListClickListener = MutableLiveData<MatchListAdapter.MatchListAdapterItemClickListener>()
+    val matchesRecentClickListener = MutableLiveData<MatchesRecentAdapter.MatchListAdapterItemClickListener>()
     val matchFilterClickListener = MutableLiveData<RadioGroup.OnCheckedChangeListener>()
 }

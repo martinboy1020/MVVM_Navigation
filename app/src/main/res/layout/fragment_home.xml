@@ -42,7 +42,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:listener="@{viewModel.bannerClickListener}"
-                        app:showDots="@{viewModel.showBannerDots}"/>
+                        app:showDots="@{viewModel.showBannerDots}" />
 
                     <TextView
                         android:id="@+id/tv_start_match"
@@ -93,11 +93,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
+                        android:onCheckedChanged="@{viewModel.matchFilterClickListener}"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_top"
                         app:layout_constraintStart_toEndOf="@+id/tv_top"
-                        app:layout_constraintTop_toTopOf="@+id/tv_top"
-                        android:onCheckedChanged="@{viewModel.matchFilterClickListener}">
+                        app:layout_constraintTop_toTopOf="@+id/tv_top">
 
                         <RadioButton
                             android:id="@+id/btn_4hr"
@@ -105,7 +105,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/selector_bg_home_match_list_filter"
                             android:button="@null"
-                            android:checked="true"
+                            android:clickable="@{viewModel.recentMatchTimeKeyBtnClickable}"
                             android:gravity="center"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
@@ -115,7 +115,7 @@
                             android:paddingBottom="3dp"
                             android:text="4hr"
                             android:textColor="@drawable/selector_text_color_home_match_list_filter"
-                            android:textSize="14dp"/>
+                            android:textSize="14dp" />
 
                         <RadioButton
                             android:id="@+id/btn_8hr"
@@ -125,6 +125,7 @@
                             android:layout_marginLeft="5dp"
                             android:background="@drawable/selector_bg_home_match_list_filter"
                             android:button="@null"
+                            android:clickable="@{viewModel.recentMatchTimeKeyBtnClickable}"
                             android:gravity="center"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
@@ -134,7 +135,7 @@
                             android:paddingBottom="3dp"
                             android:text="8hr"
                             android:textColor="@drawable/selector_text_color_home_match_list_filter"
-                            android:textSize="14dp"/>
+                            android:textSize="14dp" />
 
                         <RadioButton
                             android:id="@+id/btn_12hr"
@@ -144,6 +145,8 @@
                             android:layout_marginLeft="5dp"
                             android:background="@drawable/selector_bg_home_match_list_filter"
                             android:button="@null"
+                            android:checked="true"
+                            android:clickable="@{viewModel.recentMatchTimeKeyBtnClickable}"
                             android:gravity="center"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
@@ -153,7 +156,7 @@
                             android:paddingBottom="3dp"
                             android:text="12hr"
                             android:textColor="@drawable/selector_text_color_home_match_list_filter"
-                            android:textSize="14dp"/>
+                            android:textSize="14dp" />
 
                         <RadioButton
                             android:id="@+id/btn_24hr"
@@ -163,6 +166,7 @@
                             android:layout_marginLeft="5dp"
                             android:background="@drawable/selector_bg_home_match_list_filter"
                             android:button="@null"
+                            android:clickable="@{viewModel.recentMatchTimeKeyBtnClickable}"
                             android:gravity="center"
                             android:minWidth="0dp"
                             android:minHeight="0dp"
@@ -172,7 +176,7 @@
                             android:paddingBottom="3dp"
                             android:text="24hr"
                             android:textColor="@drawable/selector_text_color_home_match_list_filter"
-                            android:textSize="14dp"/>
+                            android:textSize="14dp" />
 
                     </RadioGroup>
 
@@ -220,8 +224,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_top"
                         app:layout_constraintVertical_bias="0.0"
                         app:layout_manager_type="vertical"
-                        app:listener="@{viewModel.matchListClickListener}"
-                        app:matchList="@{viewModel.matchList}"
+                        app:listener="@{viewModel.matchesRecentClickListener}"
+                        app:matchesRecentList="@{viewModel.matchesRecentList}"
                         tools:listitem="@layout/layout_rv_match_item" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
