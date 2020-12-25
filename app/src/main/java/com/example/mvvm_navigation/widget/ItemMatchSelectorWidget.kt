@@ -12,9 +12,13 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 
-@BindingAdapter("listener")
-fun setListener(view: ItemMatchSelectorWidget, listener: ItemMatchSelectorWidget.CheckBoxListener) {
-    view.setListener(listener)
+@BindingAdapter("itemTitle", "listener")
+fun setListener(
+    view: ItemMatchSelectorWidget,
+    itemTitle: String,
+    listener: ItemMatchSelectorWidget.CheckBoxListener
+) {
+    view.setListener(itemTitle, listener)
 }
 
 class ItemMatchSelectorWidget @JvmOverloads constructor(
@@ -26,7 +30,7 @@ class ItemMatchSelectorWidget @JvmOverloads constructor(
     private var type: Int? = -1
 
     enum class FilterType(val type: Int) {
-        MATCH(0), HOME(1), AWAY(2)
+        LEAGUE(0), HOME(1), AWAY(2)
     }
 
     interface CheckBoxListener {
@@ -42,16 +46,16 @@ class ItemMatchSelectorWidget @JvmOverloads constructor(
         view = View.inflate(context, R.layout.layout_item_cb_match_selector, this)
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ItemMatchSelectorWidget)
         type = typedArray.getInt(R.styleable.ItemMatchSelectorWidget_type, -1)
-        val title = typedArray.getString(R.styleable.ItemMatchSelectorWidget_text)
-        val tvTitle = view?.findViewById<TextView>(R.id.tv_item_match_selector)
-        tvTitle?.text = title
+        val checkBox = view?.findViewById<CheckBox>(R.id.cb_item_match_selector)
+        if(type == FilterType.LEAGUE.type) checkBox?.isChecked = true
         typedArray.recycle()
     }
 
-    fun setListener(listener: CheckBoxListener) {
+    fun setListener(itemTitle: String, listener: CheckBoxListener) {
+        val tvTitle = view?.findViewById<TextView>(R.id.tv_item_match_selector)
+        tvTitle?.text = itemTitle
         val checkBox = view?.findViewById<CheckBox>(R.id.cb_item_match_selector)
         checkBox?.setOnCheckedChangeListener { _, b ->
-            Log.d("tag12345", "setListener checkBox: $checkBox, type: $type")
             type?.let { listener.getFilterType(it, b) }
         }
     }

@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +40,8 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
 
     val TAG = "BottomSheetDetailFragment"
     private var taskHandler = Handler(Looper.getMainLooper())
-    private var runnable = Runnable { dialog?.window?.setWindowAnimations(R.style.Animation_Design_BottomSheetDialog) }
+    private var runnable =
+        Runnable { dialog?.window?.setWindowAnimations(R.style.Animation_Design_BottomSheetDialog) }
 
     /** Dependency Injection **/
     override val kodeinContext: KodeinContext<*> get() = kcontext(activity)
@@ -54,14 +56,16 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogRoundCorner)
-        val goalData = arguments?.let { BottomSheetDetailFragmentArgs.fromBundle(
-            it
-        ).goalData }
-        val lostData = arguments?.let { BottomSheetDetailFragmentArgs.fromBundle(
-            it
-        ).lostData }
-        this.viewModel.getSubmitter().goalData.value = goalData
-        this.viewModel.getSubmitter().lostData.value = lostData
+        val leagueTeamData = arguments?.let {
+            BottomSheetDetailFragmentArgs.fromBundle(
+                it
+            ).leagueTeamData
+        }
+        this.viewModel.getSubmitter().leagueTeamData.value = leagueTeamData
+        val matchStatisticsValue = BottomSheetDetailViewModel.MatchStatisticsValue()
+        matchStatisticsValue.leagueId = leagueTeamData?.leagueId
+        this.viewModel.getSubmitter().matchStatisticsValue.value = matchStatisticsValue
+        this.viewModel.getMatchStatistics(matchStatisticsValue)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -88,7 +92,13 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(inflater, R.layout.fragment_bottom_sheet_detail, container, false)
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(
+            inflater,
+            R.layout.fragment_bottom_sheet_detail,
+            container,
+            false
+        )
+        binding.lifecycleOwner = this
         binding.setVariable(BR.viewModel, this.viewModel.getSubmitter())
         dialog?.window?.setBackgroundDrawable(ColorDrawable(TRANSPARENT))
         dialog?.setCancelable(false)
@@ -98,7 +108,8 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
         spinner.viewTreeObserver
             .addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    spinner.dropDownVerticalOffset = spinner.dropDownVerticalOffset + spinner.height
+                    spinner.dropDownVerticalOffset =
+                        spinner.dropDownVerticalOffset + spinner.height
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         spinner.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     } else {
@@ -145,7 +156,8 @@ class FixedHeightBottomSheetDialog(
     }
 
     private fun getBottomSheetBehavior(): BottomSheetBehavior<View>? {
-        val view: View? = window?.findViewById(com.google.android.material.R.id.design_bottom_sheet)
+        val view: View? =
+            window?.findViewById(com.google.android.material.R.id.design_bottom_sheet)
         return view?.let { BottomSheetBehavior.from(view) }
     }
 }

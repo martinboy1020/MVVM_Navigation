@@ -29,14 +29,6 @@
             android:id="@+id/action_homeFragment_to_testDynamicFeatureFragment"
             app:destination="@id/testDynamicFeatureFragment"/>
 
-        <argument
-            android:name="goal_data"
-            app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
-
-        <argument
-            android:name="lost_data"
-            app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
-
     </fragment>
 
     <fragment
@@ -60,12 +52,8 @@
         tools:layout="@layout/fragment_bottom_sheet_detail">
 
         <argument
-            android:name="goal_data"
-            app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
-
-        <argument
-            android:name="lost_data"
-            app:argType="com.example.mvvm_navigation.datacenter.data.GoalAndLostData"/>
+            android:name="leagueTeamData"
+            app:argType="com.example.mvvm_navigation.datacenter.data.LeagueTeamData"/>
 
     </dialog>
 

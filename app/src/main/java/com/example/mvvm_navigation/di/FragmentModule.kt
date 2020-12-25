@@ -41,11 +41,11 @@ private fun getMainViewModel(fragment: HomeFragment): HomeViewModelImpl {
 
 val thirdModule = Kodein.Module(Contract.ModuleName.THIRD) {
     bind<MatchListViewModelImpl>() with singleton {
-        getThirdViewModel(instance(MatchListFragment().TAG))
+        getMatchListViewModel(instance(MatchListFragment().TAG))
     }
 }
 
-private fun getThirdViewModel(fragment: MatchListFragment): MatchListViewModelImpl {
+private fun getMatchListViewModel(fragment: MatchListFragment): MatchListViewModelImpl {
     val repository = Repository.getInstance(fragment.requireContext())
     val model = MatchListModel.getInstance(repository)
     val factory = MatchListViewModel.Factory(

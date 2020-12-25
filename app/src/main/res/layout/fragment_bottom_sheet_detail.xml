@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -76,15 +75,15 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:listener="@{viewModel.checkBoxCheckedListener}"
-                            app:text="賽事名稱賽事"
-                            app:type="match" />
+                            app:itemTitle="@{viewModel.leagueTeamData.leagueName}"
+                            app:type="league" />
 
                         <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
                             android:id="@+id/cb_match_home_team"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:listener="@{viewModel.checkBoxCheckedListener}"
-                            app:text="主隊名稱主隊"
+                            app:itemTitle="@{viewModel.leagueTeamData.homeName}"
                             app:type="home" />
 
                         <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
@@ -92,7 +91,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:listener="@{viewModel.checkBoxCheckedListener}"
-                            app:text="客隊名稱客隊"
+                            app:itemTitle="@{viewModel.leagueTeamData.awayName}"
                             app:type="away" />
 
                     </LinearLayout>

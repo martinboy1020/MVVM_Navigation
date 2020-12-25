@@ -4,10 +4,14 @@ import com.google.gson.annotations.SerializedName
 
 class MatchList {
 
-    data class Data(
-        @SerializedName(ApiDataKey.AREAS) val areas: MutableList<Area> = mutableListOf(),
-        @SerializedName(ApiDataKey.MATCHES) val matches: MutableList<Match> = mutableListOf()
+    data class MatchListData(
+        @SerializedName(ApiDataKey.RESULT) val result: Boolean,
+        @SerializedName(ApiDataKey.TYPE) val type: String,
+        @SerializedName(ApiDataKey.DATA) val data: Data
     )
+
+    data class Data(@SerializedName(ApiDataKey.AREAS) val areas: MutableList<Area> = mutableListOf(),
+                    @SerializedName(ApiDataKey.MATCHES) val matches: MutableList<Match> = mutableListOf())
 
     data class Area(
         @SerializedName(ApiDataKey.ID) val id: Int = 0,
@@ -43,8 +47,8 @@ class MatchList {
         @SerializedName(ApiDataKey.HOME_LOGO) val homeLogo: String = "",
         @SerializedName(ApiDataKey.AWAY_LOGO) val awayLogo: String = "",
         @SerializedName(ApiDataKey.HOME_SCORE) val homeScore: Int = 0,
-        @SerializedName(ApiDataKey.AWAY_SCORE) val awayScore: Int = 0
-
+        @SerializedName(ApiDataKey.AWAY_SCORE) val awayScore: Int = 0,
+        var isTopOfList: Boolean = false
     )
 
 }

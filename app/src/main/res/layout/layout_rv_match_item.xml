@@ -16,6 +16,10 @@
             name="isTopListImg"
             type="Integer" />
 
+        <variable
+            name="leagueName"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +34,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="5dp"
-            android:text="聯盟簡稱六個字"
+            android:text="@{leagueName}"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

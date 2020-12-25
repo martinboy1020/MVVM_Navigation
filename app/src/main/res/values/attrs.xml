@@ -14,13 +14,11 @@
     </declare-styleable>
 
     <declare-styleable name="ItemMatchSelectorWidget">
-        <attr name="text" format="string"/>
         <attr name="type" format="enum">
-            <enum name="match" value="0"/>
+            <enum name="league" value="0"/>
             <enum name="home" value="1"/>
             <enum name="away" value="2"/>
         </attr>
-        <attr name="imgSrc" format="string"/>
     </declare-styleable>
 
 </resources>

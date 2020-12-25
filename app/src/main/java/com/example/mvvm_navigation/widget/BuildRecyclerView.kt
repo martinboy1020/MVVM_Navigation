@@ -85,7 +85,7 @@ class DividerItemDecoration(context: Context, dividerHeight: Int, itemSpaceMargi
         val position = parent.getChildAdapterPosition(view)
 
         // 更換背景顏色
-        view.setBackgroundColor(if (position % 2 == 0) ContextCompat.getColor(mContext, R.color.green) else ContextCompat.getColor(mContext, R.color.yellow))
+//        view.setBackgroundColor(if (position % 2 == 0) ContextCompat.getColor(mContext, R.color.green) else ContextCompat.getColor(mContext, R.color.yellow))
     }
 
     // 繪製於背景之下 內容會在上方

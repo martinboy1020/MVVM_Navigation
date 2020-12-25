@@ -5,7 +5,6 @@ import android.util.Log
 import com.bumptech.glide.Glide
 import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.data.BetData
-import com.example.mvvm_navigation.datacenter.data.MatchListItem
 import com.example.mvvm_navigation.datacenter.data.RecentMatchCondition
 import com.example.mvvm_navigation.datacenter.network.DataCenter
 import com.example.mvvm_navigation.datacenter.network.HttpResult
@@ -29,15 +28,15 @@ class Repository constructor(val context: Context) {
         return UserSharePreferences(context)
     }
 
-    suspend fun getUser(): HttpResult<List<UserData.User>> =
-        try {
-            val response =
-                RetrofitClient.getInstance(context).getApiMethod().getUsersAsync().await()
-            if (!response.isNullOrEmpty()) HttpResult.onSuccess(response)
-            else HttpResult.onError((-1000).toString(), "List is Empty")
-        } catch (e: Throwable) {
-            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
-        }
+//    suspend fun getUser(): HttpResult<List<UserData.User>> =
+//        try {
+//            val response =
+//                RetrofitClient.getInstance(context).getApiMethod().getUsersAsync().await()
+//            if (!response.isNullOrEmpty()) HttpResult.onSuccess(response)
+//            else HttpResult.onError((-1000).toString(), "List is Empty")
+//        } catch (e: Throwable) {
+//            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
+//        }
 
     suspend fun userLogin(
         username: String,
@@ -107,12 +106,6 @@ class Repository constructor(val context: Context) {
     fun getBannerList(homeInfo: Home.WebHomeInfo): MutableList<BannerItem> {
         if (!homeInfo.banners.isNullOrEmpty()) {
             val bannerItemList: MutableList<BannerItem> = ArrayList()
-//            val bannerUrlList = ArrayList<String>()
-//            bannerUrlList.add("http://banner.lkwlp.cn/uscore/banners/5e588782d948a.mp4")
-//            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c014298134.jpg")
-//            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c00e6a394c.jpg")
-//            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3c0122e9665.jpg")
-//            bannerUrlList.add("https://banner.lkwlp.cn/uscore/banners/5e3a85794147a.jpg")
             for (i in homeInfo.banners.indices) {
                 val bannerItem = BannerItem()
                 bannerItem.title = homeInfo.banners[i].titles
@@ -145,6 +138,31 @@ class Repository constructor(val context: Context) {
         }
     }
 
+    suspend fun getMatchStatistics(
+        leagueId: Int?,
+        homeId: Int?,
+        awayId: Int?,
+        position: Int = 0,
+        condition: String = ""
+    ): HttpResult<HttpStatus<MatchesStatistics.Data>> =
+        try {
+            val strLeagueId = leagueId?.toString() ?: ""
+            val strHomeId = homeId?.toString() ?: ""
+            val strAwayId = awayId?.toString() ?: ""
+            val response =
+                RetrofitClient.getInstance(context).getApiMethod().getStatisticsOccurrenceRateAsync(
+                    "Bearer " + UserSharePreferences(context).userToken,
+                    strLeagueId, strHomeId, strAwayId, position, condition
+                ).await()
+            if (response.statusCode == "0") HttpResult.onSuccess(response) else HttpResult.onError(
+                response.statusCode,
+                response.message
+            )
+        } catch (e: Throwable) {
+            Log.d("tag12345", "getMatchStatistics e.message: ${e.message}")
+            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
+        }
+
     fun getBetList(): MutableList<BetData> {
         val betList = mutableListOf<BetData>()
         val betData1 = BetData(0, "1 - 2", true)
@@ -174,24 +192,26 @@ class Repository constructor(val context: Context) {
         return recentMatchConditionList
     }
 
-    fun getMatchList(): MutableList<MatchListItem> {
-
-        val matchList = mutableListOf<MatchListItem>()
-
-        for (i in 0..10) {
-            val matchListItem = MatchListItem()
-            matchListItem.matchId = i
-            matchListItem.homeName = "Home $i"
-            matchListItem.awayName = "Away $i"
-            matchList.add(matchListItem)
+    suspend fun getWebMatchList(date: Long): HttpResult<HttpStatus<MatchList.Data>> =
+        try {
+            val response =
+                RetrofitClient.getInstance(context).getApiMethod().getWebMatchesListAsync(
+                    "Bearer " + UserSharePreferences(context).userToken,
+                    date
+                ).await()
+            if (response.statusCode == "0") {
+                dataCenter.matchList = response.payload.matches
+                HttpResult.onSuccess(response)
+            } else HttpResult.onError(
+                response.statusCode,
+                response.message
+            )
+        } catch (e: Throwable) {
+            Log.d("tag12345", "getWebMatchList e.message: ${e.message}")
+            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
-        dataCenter.matchList = matchList
-
-        return matchList
-    }
-
-    fun refreshTopListMatch(data: MatchListItem): MutableList<MatchListItem> {
+    fun refreshTopListMatch(data: MatchList.Match): MutableList<MatchList.Match> {
 
         var isExitsInTop = false
         var isExitsInTopPosition = -1
@@ -210,11 +230,12 @@ class Repository constructor(val context: Context) {
         } else {
             data.isTopOfList = true
             dataCenter.matchTopList.add(0, data)
-            dataCenter.matchTopList.sortWith(compareBy { it.matchId })
+            dataCenter.matchTopList.sortWith(compareBy({ it.openDate }, { it.matchId }))
             dataCenter.matchList.remove(data)
         }
-        dataCenter.matchList.sortWith(compareBy { it.matchId })
+        dataCenter.matchList.sortWith(compareBy({ it.openDate }, { it.matchId }))
         dataCenter.matchAllList.clear()
+        dataCenter.matchAllList = mutableListOf()
         dataCenter.matchAllList.addAll(dataCenter.matchTopList)
         dataCenter.matchAllList.addAll(dataCenter.matchList)
 

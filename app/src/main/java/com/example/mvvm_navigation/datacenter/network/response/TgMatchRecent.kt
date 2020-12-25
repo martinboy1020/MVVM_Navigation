@@ -13,7 +13,7 @@ class TgMatchRecent {
         @SerializedName(ApiDataKey.AWAY) val away: String = "",
         @SerializedName(ApiDataKey.HOME_LOGO) val homeLogo: String = "",
         @SerializedName(ApiDataKey.AWAY_LOGO) val awayLogo: String = "",
-        @SerializedName(ApiDataKey.LEAGUE_ID) val leagueId: String = "",
+        @SerializedName(ApiDataKey.LEAGUE_ID) val leagueId: Int = 0,
         @SerializedName(ApiDataKey.LEAGUE) val league: String = "",
         @SerializedName(ApiDataKey.LEAGUE_SHORT_NAME_EN) val leagueShortNameEn: String = "",
         @SerializedName(ApiDataKey.LEAGUE_LOGO) val leagueLogo: String = "",

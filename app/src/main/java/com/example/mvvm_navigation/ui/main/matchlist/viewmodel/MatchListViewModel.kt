@@ -2,16 +2,28 @@ package com.example.mvvm_navigation.ui.main.matchlist.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import com.example.mvvm_navigation.R
+import com.example.base.utils.DateUtils
 import com.example.mvvm_navigation.base.BaseViewModel
-import com.example.mvvm_navigation.datacenter.data.MatchListItem
+import com.example.mvvm_navigation.datacenter.network.HttpResult
+import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class MatchListViewModel constructor(application: Application, context: Context, val model: MatchListContract.ModelImpl, navController: NavController) : BaseViewModel(application, context, navController), MatchListContract.ViewModelImpl, View.OnClickListener, MatchListAdapter.MatchListAdapterItemClickListener {
+class MatchListViewModel constructor(
+    application: Application,
+    context: Context,
+    val model: MatchListContract.ModelImpl,
+    navController: NavController
+) : BaseViewModel(application, context, navController), MatchListContract.ViewModelImpl,
+    View.OnClickListener, MatchListAdapter.MatchListAdapterItemClickListener {
 
     private val submitter =
         MatchListFragmentSubmitter()
@@ -19,11 +31,16 @@ class MatchListViewModel constructor(application: Application, context: Context,
     init {
         this.submitter.onClickListener.value = this
         this.submitter.matchListAdapterListener.value = this
-        this.submitter.matchList.value = this.model.getMatchList()
+        getMatchList()
     }
 
-    companion object{
-        fun getInstance(application: Application, context: Context, model: MatchListContract.ModelImpl, navController: NavController) =
+    companion object {
+        fun getInstance(
+            application: Application,
+            context: Context,
+            model: MatchListContract.ModelImpl,
+            navController: NavController
+        ) =
             MatchListViewModel(
                 application,
                 context,
@@ -32,15 +49,12 @@ class MatchListViewModel constructor(application: Application, context: Context,
             )
     }
 
-    override fun getSubmitter(): MatchListFragmentSubmitter = this.submitter
-
-    override fun onClick(view: View?) {
-        when(view!!.id){
-
-        }
-    }
-
-    class Factory(val application: Application, val context: Context, val model: MatchListContract.ModelImpl, val navController: NavController): ViewModelProvider.NewInstanceFactory() {
+    class Factory(
+        val application: Application,
+        val context: Context,
+        val model: MatchListContract.ModelImpl,
+        val navController: NavController
+    ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T = getInstance(
             application,
             context,
@@ -49,12 +63,40 @@ class MatchListViewModel constructor(application: Application, context: Context,
         ) as T
     }
 
-    override fun onSetTopClick(data: MatchListItem) {
-        this.submitter.matchList.value = this.model.setMatchItemToTopList(data)
+    override fun getSubmitter(): MatchListFragmentSubmitter = this.submitter
+
+    override fun onClick(view: View?) {
+        when (view!!.id) {
+
+        }
     }
 
-    override fun onClickItem(data: MatchListItem) {
+    override fun onSetTopClick(data: MatchList.Match) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val matchList = this@MatchListViewModel.model.setMatchItemToTopList(data)
+            withContext(Dispatchers.Main) {
+                this@MatchListViewModel.submitter.matchList.value = matchList
+            }
+        }
+    }
 
+    override fun onClickItem(data: MatchList.Match) {}
+
+    private fun getMatchList(date: Long = DateUtils.getTodayDateSeconds()) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = model.getMatchesList(date)
+            withContext(Dispatchers.Main) {
+                when (result) {
+                    is HttpResult.onSuccess -> {
+                        this@MatchListViewModel.submitter.matchList.value =
+                            result.data.payload.matches
+                    }
+                    is HttpResult.onError -> {
+
+                    }
+                }
+            }
+        }
     }
 
 
