@@ -1,6 +1,7 @@
 package com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet
 
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -12,11 +13,7 @@ import com.example.mvvm_navigation.datacenter.network.response.MatchesStatistics
 import com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
 
 class BottomSheetDetailFragmentSubmitter {
-    //    val tutorialList = MutableLiveData<MutableList<Int>>().default(Config.tutorials)
-//    val tutorialTitleList = MutableLiveData<MutableList<Int>>().default(Config.tutorialTitles)
-    val number = MutableLiveData<Int>().default(1)
-    val buttonVisible = MutableLiveData<Int>().default(View.GONE)
-    val navHostFragment = MutableLiveData<Fragment>()
+    // Data
     val leagueTeamData = MutableLiveData<LeagueTeamData>()
     val matchStatisticsValue = MutableLiveData<BottomSheetDetailViewModel.MatchStatisticsValue>()
     val goalData = MutableLiveData<MatchesStatistics.GoalAndLostData>()
@@ -25,7 +22,12 @@ class BottomSheetDetailFragmentSubmitter {
     val recentMatchConditionList =
         MutableLiveData<List<RecentMatchCondition>>().default(mutableListOf())
 
+    // UI Listener
     val onClickListener = MutableLiveData<View.OnClickListener>()
     val checkBoxCheckedListener = MutableLiveData<ItemMatchSelectorWidget.CheckBoxListener>()
     val homeAwayFilterListener = MutableLiveData<RadioGroup.OnCheckedChangeListener>()
+    val switchListener = MutableLiveData<CompoundButton.OnCheckedChangeListener>()
+
+    // UI Status
+    val radioBtnEnable = MutableLiveData<Boolean>().default(true)
 }

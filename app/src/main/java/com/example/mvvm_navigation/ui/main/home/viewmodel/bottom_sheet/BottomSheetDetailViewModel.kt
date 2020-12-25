@@ -2,17 +2,15 @@ package com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseViewModel
-import com.example.mvvm_navigation.datacenter.data.LeagueTeamData
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.response.GoalOrLostType
 import com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
@@ -20,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.FieldPosition
 
 class BottomSheetDetailViewModel constructor(
     application: Application,
@@ -30,7 +27,7 @@ class BottomSheetDetailViewModel constructor(
     navController: NavController
 ) : BaseViewModel(application, context, navController), BottomSheetDetailContract.ViewModelImpl,
     View.OnClickListener, ItemMatchSelectorWidget.CheckBoxListener,
-    RadioGroup.OnCheckedChangeListener {
+    RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
 
     private val submitter =
         BottomSheetDetailFragmentSubmitter()
@@ -41,6 +38,7 @@ class BottomSheetDetailViewModel constructor(
         this.submitter.recentMatchConditionList.value = model.getRecentMatchCondition()
         this.submitter.homeAwayFilterListener.value = this
         this.submitter.checkBoxCheckedListener.value = this
+        this.submitter.switchListener.value = this
     }
 
     data class MatchStatisticsValue(
@@ -97,7 +95,10 @@ class BottomSheetDetailViewModel constructor(
                     matchStatisticsValue.leagueId,
                     matchStatisticsValue.homeId,
                     matchStatisticsValue.awayId,
-                    matchStatisticsValue.position,
+                    if ((matchStatisticsValue.homeId != null
+                                && matchStatisticsValue.awayId != null) || matchStatisticsValue.homeId == null
+                        && matchStatisticsValue.awayId == null
+                    ) 0 else matchStatisticsValue.position,
                     matchStatisticsValue.condition
                 )
             withContext(Dispatchers.Main) {
@@ -106,8 +107,10 @@ class BottomSheetDetailViewModel constructor(
                         val data = matchStatistics.data.payload
                         val goalData = data.goalData
                         goalData.type = GoalOrLostType.GOAL
+                        goalData.totalCount = data.totalCount
                         val lostData = data.lostData
                         lostData.type = GoalOrLostType.LOST
+                        lostData.totalCount = data.totalCount
                         this@BottomSheetDetailViewModel.submitter.goalData.value = data.goalData
                         this@BottomSheetDetailViewModel.submitter.lostData.value = data.lostData
                     }
@@ -145,12 +148,49 @@ class BottomSheetDetailViewModel constructor(
                     if (isChecked) this.getSubmitter().leagueTeamData.value?.awayId else null
             }
         }
+
+        if (matchStatisticsValue != null) {
+            this.getSubmitter().radioBtnEnable.value =
+                !((matchStatisticsValue.homeId != null && matchStatisticsValue.awayId != null) ||
+                        (matchStatisticsValue.homeId == null && matchStatisticsValue.awayId == null))
+        }
+
         this.getSubmitter().matchStatisticsValue.value = matchStatisticsValue
         if (matchStatisticsValue != null) getMatchStatistics(matchStatisticsValue)
     }
 
     override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
-        val radBtn = p0?.findViewById<RadioButton>(p1)
-        Toast.makeText(this.context, "Filter is ${radBtn?.text}", Toast.LENGTH_SHORT).show()
+        val rtb = p0?.findViewById<RadioButton>(p1)
+        val matchStatisticsValue = this.getSubmitter().matchStatisticsValue.value
+        when (p1) {
+            R.id.rtb_home -> {
+                matchStatisticsValue?.position = 1
+            }
+            R.id.rtb_away -> {
+                matchStatisticsValue?.position = 2
+            }
+            R.id.rtb_all -> {
+                matchStatisticsValue?.position = 0
+            }
+        }
+        this.getSubmitter().matchStatisticsValue.value = matchStatisticsValue
+        if (matchStatisticsValue != null) getMatchStatistics(matchStatisticsValue)
+    }
+
+    override fun onCheckedChanged(p0: CompoundButton?, isChecked: Boolean) {
+        val goalData = this.submitter.goalData.value
+        val lostData = this.submitter.lostData.value
+        when (isChecked) {
+            true -> {
+                goalData?.isDisappearStatus = true
+                lostData?.isDisappearStatus = true
+            }
+            false -> {
+                goalData?.isDisappearStatus = false
+                lostData?.isDisappearStatus = false
+            }
+        }
+        this.submitter.goalData.value = goalData
+        this.submitter.lostData.value = lostData
     }
 }

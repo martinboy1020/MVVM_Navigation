@@ -116,8 +116,8 @@ class HomeViewModel constructor(
                     is HttpResult.onSuccess -> {
                         Toast.makeText(this@HomeViewModel.context, "登入成功", Toast.LENGTH_SHORT)
                             .show()
-//                        getHomeInfo()
-//                        getTgMatchRecent()
+                        getHomeInfo()
+                        getTgMatchRecent()
                     }
                     is HttpResult.onError -> {
                         Toast.makeText(
@@ -140,8 +140,8 @@ class HomeViewModel constructor(
                     is HttpResult.onSuccess -> {
                         Toast.makeText(this@HomeViewModel.context, "刷新成功", Toast.LENGTH_SHORT)
                             .show()
-//                        getHomeInfo()
-//                        getTgMatchRecent()
+                        getHomeInfo()
+                        getTgMatchRecent()
                     }
                     is HttpResult.onError -> {
                         Toast.makeText(

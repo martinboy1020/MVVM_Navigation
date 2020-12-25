@@ -57,7 +57,9 @@ class MatchesStatistics {
         @SerializedName(ApiDataKey.FOUR_OR_MORE) val fourOrMore: StaticDetailData,
         @SerializedName(ApiDataKey.AVERAGE_GOAL) val avgGoal: String = "0",
         @SerializedName(ApiDataKey.AVERAGE_LOST) val avgLost: String = "0",
-        var type: GoalOrLostType = GoalOrLostType.GOAL
+        var type: GoalOrLostType = GoalOrLostType.GOAL,
+        var isDisappearStatus: Boolean = false,
+        var totalCount: Int = 0
     )
 
 }

@@ -4,7 +4,18 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="oneBall"
+            type="com.example.mvvm_navigation.widget.GoalAndLostDataWidget.GoalAndLostWidgetData" />
+        <variable
+            name="twoBall"
+            type="com.example.mvvm_navigation.widget.GoalAndLostDataWidget.GoalAndLostWidgetData" />
+        <variable
+            name="threeBall"
+            type="com.example.mvvm_navigation.widget.GoalAndLostDataWidget.GoalAndLostWidgetData" />
+        <variable
+            name="overFourBall"
+            type="com.example.mvvm_navigation.widget.GoalAndLostDataWidget.GoalAndLostWidgetData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,13 +59,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title">
-
-            <include layout="@layout/item_goal_lost_ball_data" bind:ballNumber="@{`1球`}"/>
-            <include layout="@layout/item_goal_lost_ball_data" bind:ballNumber="@{`2球`}" />
-            <include layout="@layout/item_goal_lost_ball_data" bind:ballNumber="@{`3球`}" />
-            <include layout="@layout/item_goal_lost_ball_data" bind:ballNumber="@{`4球`}" />
-
-
+            <include layout="@layout/item_goal_lost_ball_data" bind:ballNumber="@{`1球`}" bind:data="@{oneBall}"/>
+            <include layout="@layout/item_goal_lost_ball_data" bind:ballNumber="@{`2球`}" bind:data="@{twoBall}" />
+            <include layout="@layout/item_goal_lost_ball_data" bind:ballNumber="@{`3球`}" bind:data="@{threeBall}" />
+            <include layout="@layout/item_goal_lost_ball_data" bind:ballNumber="@{`4球`}" bind:data="@{overFourBall}" />
         </LinearLayout>
 
 

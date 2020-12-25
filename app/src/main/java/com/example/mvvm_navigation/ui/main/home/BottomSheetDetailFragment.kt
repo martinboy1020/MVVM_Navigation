@@ -65,6 +65,9 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
         val matchStatisticsValue = BottomSheetDetailViewModel.MatchStatisticsValue()
         matchStatisticsValue.leagueId = leagueTeamData?.leagueId
         this.viewModel.getSubmitter().matchStatisticsValue.value = matchStatisticsValue
+        this.viewModel.getSubmitter().radioBtnEnable.value =
+            !((matchStatisticsValue.homeId != null && matchStatisticsValue.awayId != null) ||
+                    (matchStatisticsValue.homeId == null && matchStatisticsValue.awayId == null))
         this.viewModel.getMatchStatistics(matchStatisticsValue)
     }
 

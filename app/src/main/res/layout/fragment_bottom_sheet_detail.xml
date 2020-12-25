@@ -74,24 +74,24 @@
                             android:id="@+id/cb_match_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:listener="@{viewModel.checkBoxCheckedListener}"
                             app:itemTitle="@{viewModel.leagueTeamData.leagueName}"
+                            app:listener="@{viewModel.checkBoxCheckedListener}"
                             app:type="league" />
 
                         <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
                             android:id="@+id/cb_match_home_team"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:listener="@{viewModel.checkBoxCheckedListener}"
                             app:itemTitle="@{viewModel.leagueTeamData.homeName}"
+                            app:listener="@{viewModel.checkBoxCheckedListener}"
                             app:type="home" />
 
                         <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
                             android:id="@+id/cb_match_away_team"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:listener="@{viewModel.checkBoxCheckedListener}"
                             app:itemTitle="@{viewModel.leagueTeamData.awayName}"
+                            app:listener="@{viewModel.checkBoxCheckedListener}"
                             app:type="away" />
 
                     </LinearLayout>
@@ -121,38 +121,42 @@
                     app:layout_constraintStart_toEndOf="@+id/spinner_match_filter"
                     app:layout_constraintTop_toTopOf="@+id/spinner_match_filter">
 
-                    <RadioButton
+                    <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/rtb_home"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
+                        android:enabled="@{viewModel.radioBtnEnable}"
                         android:text="主場"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
 
-                    <RadioButton
+                    <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/rtb_away"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:enabled="@{viewModel.radioBtnEnable}"
                         android:text="客場"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
 
-                    <RadioButton
+                    <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/rtb_all"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:enabled="@{viewModel.radioBtnEnable}"
                         android:text="不分主客場"
-                        android:textSize="12sp" />
+                        android:textSize="10sp" />
 
                 </RadioGroup>
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_bet"
+                    android:id="@+id/switch_appear_disappear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:text="反"
                     android:textSize="12sp"
+                    android:onCheckedChanged="@{viewModel.switchListener}"
                     app:layout_constraintBottom_toBottomOf="@+id/home_away_filter"
                     app:layout_constraintStart_toEndOf="@+id/home_away_filter"
                     app:layout_constraintTop_toTopOf="@+id/home_away_filter" />
