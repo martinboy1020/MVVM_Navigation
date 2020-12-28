@@ -19,6 +19,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
+import com.example.mvvm_navigation.datacenter.data.LeagueTeamData
 import com.example.mvvm_navigation.di.bottomSheetDialogModule
 import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailContract
 import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailViewModel
@@ -61,14 +62,7 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
                 it
             ).leagueTeamData
         }
-        this.viewModel.getSubmitter().leagueTeamData.value = leagueTeamData
-        val matchStatisticsValue = BottomSheetDetailViewModel.MatchStatisticsValue()
-        matchStatisticsValue.leagueId = leagueTeamData?.leagueId
-        this.viewModel.getSubmitter().matchStatisticsValue.value = matchStatisticsValue
-        this.viewModel.getSubmitter().radioBtnEnable.value =
-            !((matchStatisticsValue.homeId != null && matchStatisticsValue.awayId != null) ||
-                    (matchStatisticsValue.homeId == null && matchStatisticsValue.awayId == null))
-        this.viewModel.getMatchStatistics(matchStatisticsValue)
+        initDataAndButton(leagueTeamData)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -108,20 +102,19 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
         dialog?.setCanceledOnTouchOutside(false)
 
         val spinner = binding.root.spinner_match_filter
-        spinner.viewTreeObserver
-            .addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    spinner.dropDownVerticalOffset =
-                        spinner.dropDownVerticalOffset + spinner.height
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        spinner.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    } else {
-                        spinner.viewTreeObserver.removeGlobalOnLayoutListener(this)
-                    }
-                }
-            })
-
+        spinner.setSelection(1)
         return binding.root
+    }
+
+    private fun initDataAndButton(leagueTeamData: LeagueTeamData?) {
+        this.viewModel.getSubmitter().leagueTeamData.value = leagueTeamData
+        val matchStatisticsValue = BottomSheetDetailViewModel.MatchStatisticsValue()
+        matchStatisticsValue.leagueId = leagueTeamData?.leagueId
+        this.viewModel.getSubmitter().matchStatisticsValue.value = matchStatisticsValue
+        this.viewModel.getSubmitter().radioBtnEnable.value =
+            !((matchStatisticsValue.homeId != null && matchStatisticsValue.awayId != null) ||
+                    (matchStatisticsValue.homeId == null && matchStatisticsValue.awayId == null))
+        this.viewModel.getMatchStatistics(matchStatisticsValue)
     }
 
     override fun closeDialog() {

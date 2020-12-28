@@ -1,15 +1,17 @@
 package com.example.mvvm_navigation.utils
 
+import android.widget.AdapterView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BetData
 import com.example.mvvm_navigation.datacenter.data.RecentMatchCondition
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
+import com.example.mvvm_navigation.datacenter.network.response.MatchesStatistics
 import com.example.mvvm_navigation.datacenter.network.response.TgMatchRecent
 import com.example.mvvm_navigation.ui.main.home.BetListAdapter
 import com.example.mvvm_navigation.ui.main.home.MatchesRecentAdapter
-import com.example.mvvm_navigation.ui.main.home.viewmodel.RecentConditionAdapter
+import com.example.mvvm_navigation.ui.main.home.RecentConditionAdapter
 import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
 import com.example.mvvm_navigation.widget.BuildRecyclerView
 
@@ -49,10 +51,18 @@ object AdapterUtils {
     }
 
     @JvmStatic
-    @BindingAdapter("recentMatchConditionList")
-    fun Spinner.setEntries(entries: List<RecentMatchCondition>) {
+    @BindingAdapter("recentMatchConditionList", "listener", requireAll = false)
+    fun Spinner.setEntries(
+        entries: MutableList<MatchesStatistics.Season>,
+        listener: AdapterView.OnItemSelectedListener
+    ) {
         this.adapter =
-            RecentConditionAdapter(this.context, R.layout.support_simple_spinner_dropdown_item, entries)
+            RecentConditionAdapter(
+                this.context,
+                R.layout.support_simple_spinner_dropdown_item,
+                entries
+            )
+        this.onItemSelectedListener = listener
     }
 
     @JvmStatic

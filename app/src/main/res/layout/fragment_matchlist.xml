@@ -11,30 +11,44 @@
             type="com.example.mvvm_navigation.ui.main.matchlist.viewmodel.MatchListFragmentSubmitter" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <com.example.mvvm_navigation.widget.BuildRecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:divider_height="1"
+        app:has_divider="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_manager_type="vertical"
+        app:listener="@{viewModel.matchListAdapterListener}"
+        app:matchList="@{viewModel.matchList}"
+        tools:listitem="@layout/layout_rv_match_item" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
 
-            <com.example.mvvm_navigation.widget.BuildRecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:divider_height="1"
-                app:has_divider="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_manager_type="vertical"
-                app:listener="@{viewModel.matchListAdapterListener}"
-                app:matchList="@{viewModel.matchList}"
-                tools:listitem="@layout/layout_rv_match_item" />
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <com.example.mvvm_navigation.widget.BuildRecyclerView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                app:divider_height="1"-->
+<!--                app:has_divider="true"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_manager_type="vertical"-->
+<!--                app:listener="@{viewModel.matchListAdapterListener}"-->
+<!--                app:matchList="@{viewModel.matchList}"-->
+<!--                tools:listitem="@layout/layout_rv_match_item" />-->
 
-    </androidx.core.widget.NestedScrollView>
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<!--    </androidx.core.widget.NestedScrollView>-->
 
 </layout>

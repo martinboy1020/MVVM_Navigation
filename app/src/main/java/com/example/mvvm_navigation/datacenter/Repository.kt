@@ -3,6 +3,8 @@ package com.example.mvvm_navigation.datacenter
 import android.content.Context
 import android.util.Log
 import com.bumptech.glide.Glide
+import com.example.base.extension.fromJson
+import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.data.BetData
 import com.example.mvvm_navigation.datacenter.data.RecentMatchCondition
@@ -12,7 +14,10 @@ import com.example.mvvm_navigation.datacenter.network.RetrofitClient
 import com.example.mvvm_navigation.datacenter.network.StatusCode
 import com.example.mvvm_navigation.datacenter.network.response.*
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
+import com.example.mvvm_navigation.utils.GetAssetsUtils
 import com.example.mvvm_navigation.utils.ReflectViewUtils
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.util.*
 import java.util.concurrent.ExecutionException
 
@@ -154,10 +159,29 @@ class Repository constructor(val context: Context) {
                     "Bearer " + UserSharePreferences(context).userToken,
                     strLeagueId, strHomeId, strAwayId, position, condition
                 ).await()
-            if (response.statusCode == "0") HttpResult.onSuccess(response) else HttpResult.onError(
-                response.statusCode,
-                response.message
-            )
+            if (response.statusCode == "0") {
+                val seasons = response.payload.seasons
+                val conditionValueList =
+                    context.resources.getStringArray(R.array.recentConditionValue)
+                val conditionStringList =
+                    context.resources.getStringArray(R.array.recentConditionString)
+                val newSeasonList = mutableListOf<MatchesStatistics.Season>()
+                for (i in conditionValueList.indices) {
+                    val season =
+                        MatchesStatistics.Season(conditionValueList[i], conditionStringList[i])
+                    newSeasonList.add(season)
+                }
+                newSeasonList.addAll(seasons)
+                val all = MatchesStatistics.Season("all", "歷史總計")
+                newSeasonList.add(all)
+                response.payload.seasons = newSeasonList
+                HttpResult.onSuccess(response)
+            } else {
+                HttpResult.onError(
+                    response.statusCode,
+                    response.message
+                )
+            }
         } catch (e: Throwable) {
             Log.d("tag12345", "getMatchStatistics e.message: ${e.message}")
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
@@ -211,6 +235,17 @@ class Repository constructor(val context: Context) {
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
+    fun getTestMatchListData(): HttpStatus<MatchList.Data>? {
+        val responseString = GetAssetsUtils.getJsonDataFromAsset(context, "matchlist.json")
+        if (responseString != null) {
+            val matchListType = object : TypeToken<HttpStatus<MatchList.Data>>() {}.type
+            val data: HttpStatus<MatchList.Data> = Gson().fromJson(responseString, matchListType)
+            dataCenter.matchList = data.payload.matches
+            return Gson().fromJson(responseString, matchListType)
+        }
+        return null
+    }
+
     fun refreshTopListMatch(data: MatchList.Match): MutableList<MatchList.Match> {
 
         var isExitsInTop = false
@@ -238,6 +273,16 @@ class Repository constructor(val context: Context) {
         dataCenter.matchAllList = mutableListOf()
         dataCenter.matchAllList.addAll(dataCenter.matchTopList)
         dataCenter.matchAllList.addAll(dataCenter.matchList)
+
+
+//        for (i in dataCenter.matchList.indices) {
+//            if (data.matchId == dataCenter.matchList[i].matchId) {
+//                dataCenter.matchList.removeAt(i)
+//                break
+//            }
+//        }
+//        dataCenter.matchAllList.clear()
+//        dataCenter.matchAllList = dataCenter.matchList
 
         return dataCenter.matchAllList
 

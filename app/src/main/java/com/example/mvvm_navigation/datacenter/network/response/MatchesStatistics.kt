@@ -9,7 +9,8 @@ class MatchesStatistics {
         @SerializedName(ApiDataKey.STATISTIC_DATA) val statisticsData: StatisticsData,
         @SerializedName(ApiDataKey.GOAL_DATA) val goalData: GoalAndLostData,
         @SerializedName(ApiDataKey.LOST_DATA) val lostData: GoalAndLostData,
-        @SerializedName(ApiDataKey.TOTAL_COUNT) val totalCount: Int = 0
+        @SerializedName(ApiDataKey.TOTAL_COUNT) val totalCount: Int = 0,
+        @SerializedName(ApiDataKey.SEASONS) var seasons: MutableList<Season>
     )
 
     data class StatisticsData(
@@ -60,6 +61,11 @@ class MatchesStatistics {
         var type: GoalOrLostType = GoalOrLostType.GOAL,
         var isDisappearStatus: Boolean = false,
         var totalCount: Int = 0
+    )
+
+    data class Season(
+        @SerializedName(ApiDataKey.ID) val id: String = "",
+        @SerializedName(ApiDataKey.NAME) val name: String = ""
     )
 
 }

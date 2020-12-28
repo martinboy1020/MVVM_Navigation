@@ -10,6 +10,7 @@ class MatchListContract {
         //        suspend fun getUser(): HttpResult<List<UserData.User>>
         fun setMatchItemToTopList(data: MatchList.Match): MutableList<MatchList.Match>
         suspend fun getMatchesList(date: Long): HttpResult<HttpStatus<MatchList.Data>>
+        fun getTestMatchesList(): HttpStatus<MatchList.Data>?
     }
 
     interface ViewModelImpl : BaseViewModelImpl<MatchListFragmentSubmitter> {

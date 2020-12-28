@@ -10,6 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.base.utils.DateUtils
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.network.response.TgMatchRecent
@@ -53,12 +54,13 @@ class MatchesRecentAdapter(
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewDataBinding = (holder as ViewHolderUserItem).binding
-        viewDataBinding.setVariable(BR.homeTeamName, data[position].home)
-        viewDataBinding.setVariable(BR.awayTeamName, data[position].away)
+//        viewDataBinding.setVariable(BR.homeTeamName, data[position].home)
+//        viewDataBinding.setVariable(BR.awayTeamName, data[position].away)
         viewDataBinding.setVariable(
             BR.isTopListImg,
             if (data[position].isTopOfList) R.drawable.ic_baseline_keyboard_arrow_up else R.drawable.ic_baseline_keyboard_arrow_down
         )
+        viewDataBinding.setVariable(BR.openDate, DateUtils.convertTimestampToStringDate(data[position].openDate.toInt(), DateUtils.HHMM))
         viewDataBinding.root.img_top.setOnClickListener {
             listener?.onSetTopClick(data[position])
         }

@@ -107,7 +107,8 @@
                     android:spinnerMode="dropdown"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout0"
                     app:layout_constraintTop_toBottomOf="@+id/layout_filter_list"
-                    app:recentMatchConditionList="@{viewModel.recentMatchConditionList}" />
+                    app:recentMatchConditionList="@{viewModel.recentMatchConditionList}"
+                    app:listener="@{viewModel.spinnerSelectedListener}"/>
 
                 <RadioGroup
                     android:id="@+id/home_away_filter"
@@ -168,7 +169,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="目前的資料描述:英超 主隊名稱 名稱 進50場 賽事外圍比分"
+                    android:text="@{viewModel.dataDescription}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/spinner_match_filter" />
 

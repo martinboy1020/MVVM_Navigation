@@ -30,4 +30,8 @@ class MatchListModel constructor(val repository: Repository) : BaseModel(), Matc
         return this@MatchListModel.repository.getWebMatchList(date)
     }
 
+    override fun getTestMatchesList(): HttpStatus<MatchList.Data>? {
+        return this@MatchListModel.repository.getTestMatchListData()
+    }
+
 }

@@ -97,6 +97,12 @@ class MatchListViewModel constructor(
                 }
             }
         }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val result = model.getTestMatchesList()
+//            withContext(Dispatchers.Main) {
+//               if(result != null) this@MatchListViewModel.submitter.matchList.value = result.payload.matches
+//            }
+//        }
     }
 
 

@@ -2,7 +2,9 @@ package com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -13,11 +15,13 @@ import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseViewModel
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.response.GoalOrLostType
+import com.example.mvvm_navigation.datacenter.network.response.MatchesStatistics
 import com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.StringBuilder
 
 class BottomSheetDetailViewModel constructor(
     application: Application,
@@ -27,7 +31,8 @@ class BottomSheetDetailViewModel constructor(
     navController: NavController
 ) : BaseViewModel(application, context, navController), BottomSheetDetailContract.ViewModelImpl,
     View.OnClickListener, ItemMatchSelectorWidget.CheckBoxListener,
-    RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
+    RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,
+    AdapterView.OnItemSelectedListener {
 
     private val submitter =
         BottomSheetDetailFragmentSubmitter()
@@ -35,18 +40,18 @@ class BottomSheetDetailViewModel constructor(
     init {
         this.submitter.onClickListener.value = this
         this.submitter.betList.value = model.getBetList()
-        this.submitter.recentMatchConditionList.value = model.getRecentMatchCondition()
         this.submitter.homeAwayFilterListener.value = this
         this.submitter.checkBoxCheckedListener.value = this
         this.submitter.switchListener.value = this
+        this.submitter.spinnerSelectedListener.value = this
     }
 
     data class MatchStatisticsValue(
         var leagueId: Int? = null,
         var homeId: Int? = null,
         var awayId: Int? = null,
-        var position: Int = 0,
-        var condition: String = "hundredMatches"
+        var position: Int = 1,
+        var condition: String = "thirtyMatches"
     )
 
     interface BottomSheetDetailViewModelImpl {
@@ -89,6 +94,7 @@ class BottomSheetDetailViewModel constructor(
     override fun getMatchStatistics(
         matchStatisticsValue: MatchStatisticsValue
     ) {
+        changeDataDescription(matchStatisticsValue)
         CoroutineScope(Dispatchers.IO).launch {
             val matchStatistics =
                 model.getMatchStatistics(
@@ -113,6 +119,12 @@ class BottomSheetDetailViewModel constructor(
                         lostData.totalCount = data.totalCount
                         this@BottomSheetDetailViewModel.submitter.goalData.value = data.goalData
                         this@BottomSheetDetailViewModel.submitter.lostData.value = data.lostData
+
+                        if (getSubmitter().recentMatchConditionList.value.isNullOrEmpty()) {
+                            val seasons = data.seasons
+                            getSubmitter().recentMatchConditionList.value = seasons
+                        }
+
                     }
                     is HttpResult.onError -> {
 
@@ -120,6 +132,53 @@ class BottomSheetDetailViewModel constructor(
                 }
             }
         }
+    }
+
+    // 目前所選擇的資料描述文字
+    private fun changeDataDescription(matchStatisticsValue: MatchStatisticsValue) {
+        val leagueTeamData = getSubmitter().leagueTeamData.value
+        val recentMatchConditionList = getSubmitter().recentMatchConditionList.value
+        val stringBuilder = StringBuilder().append("目前的資料描述: ")
+        if (matchStatisticsValue.homeId != null && matchStatisticsValue.awayId != null) {
+            stringBuilder.append(
+                String.format(
+                    ("%s vs %s"),
+                    leagueTeamData?.homeName,
+                    leagueTeamData?.awayName
+                )
+            )
+            if (matchStatisticsValue.leagueId != null) stringBuilder.append(" 在 ")
+                .append(leagueTeamData?.leagueName)
+        } else if (matchStatisticsValue.homeId != null || matchStatisticsValue.awayId != null) {
+            if (matchStatisticsValue.homeId != null) stringBuilder.append(leagueTeamData?.homeName)
+            if (matchStatisticsValue.awayId != null) stringBuilder.append(leagueTeamData?.awayName)
+            if (matchStatisticsValue.leagueId != null) stringBuilder.append(" 在 ")
+                .append(leagueTeamData?.leagueName)
+            when (matchStatisticsValue.position) {
+                0 -> {
+                    stringBuilder.append(" 不分主客場 ")
+                }
+                1 -> {
+                    stringBuilder.append(" 主場 ")
+                }
+                2 -> {
+                    stringBuilder.append(" 客場 ")
+                }
+            }
+        } else {
+            if (matchStatisticsValue.leagueId != null) stringBuilder.append(leagueTeamData?.leagueName)
+        }
+        if (recentMatchConditionList != null) {
+            for (i in recentMatchConditionList.indices) {
+                if (matchStatisticsValue.condition == recentMatchConditionList[i].id) {
+                    stringBuilder.append(" " + recentMatchConditionList[i].name)
+                    break
+                }
+            }
+        } else {
+            stringBuilder.append(" 近30場")
+        }
+        getSubmitter().dataDescription.value = stringBuilder.toString()
     }
 
     override fun getSubmitter(): BottomSheetDetailFragmentSubmitter = this.submitter
@@ -192,5 +251,21 @@ class BottomSheetDetailViewModel constructor(
         }
         this.submitter.goalData.value = goalData
         this.submitter.lostData.value = lostData
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val item: Any? = p0?.getItemAtPosition(p2)
+        if (item is MatchesStatistics.Season) {
+            val matchStatisticsValue = getSubmitter().matchStatisticsValue.value
+            if (matchStatisticsValue?.condition != item.id) {
+                matchStatisticsValue?.condition = item.id
+                this.getSubmitter().matchStatisticsValue.value = matchStatisticsValue
+                if (matchStatisticsValue != null) getMatchStatistics(matchStatisticsValue)
+            }
+        }
     }
 }
