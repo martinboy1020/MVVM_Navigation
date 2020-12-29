@@ -74,25 +74,32 @@
                             android:id="@+id/cb_match_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:imageUrl="@{viewModel.leagueTeamData.leagueLogo}"
                             app:itemTitle="@{viewModel.leagueTeamData.leagueName}"
-                            app:listener="@{viewModel.checkBoxCheckedListener}"
-                            app:type="league" />
+                            app:itemType="league"
+                            app:listener="@{viewModel.checkBoxCheckedListener}" />
 
                         <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
                             android:id="@+id/cb_match_home_team"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            app:imageUrl="@{viewModel.leagueTeamData.homeLogo}"
                             app:itemTitle="@{viewModel.leagueTeamData.homeName}"
-                            app:listener="@{viewModel.checkBoxCheckedListener}"
-                            app:type="home" />
+                            app:itemType="home"
+                            app:listener="@{viewModel.checkBoxCheckedListener}" />
 
                         <com.example.mvvm_navigation.widget.ItemMatchSelectorWidget
                             android:id="@+id/cb_match_away_team"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            app:imageUrl="@{viewModel.leagueTeamData.awayLogo}"
                             app:itemTitle="@{viewModel.leagueTeamData.awayName}"
-                            app:listener="@{viewModel.checkBoxCheckedListener}"
-                            app:type="away" />
+                            app:itemType="away"
+                            app:listener="@{viewModel.checkBoxCheckedListener}" />
 
                     </LinearLayout>
 
@@ -107,8 +114,8 @@
                     android:spinnerMode="dropdown"
                     app:layout_constraintStart_toStartOf="@+id/constraintLayout0"
                     app:layout_constraintTop_toBottomOf="@+id/layout_filter_list"
-                    app:recentMatchConditionList="@{viewModel.recentMatchConditionList}"
-                    app:listener="@{viewModel.spinnerSelectedListener}"/>
+                    app:listener="@{viewModel.spinnerSelectedListener}"
+                    app:recentMatchConditionList="@{viewModel.recentMatchConditionList}" />
 
                 <RadioGroup
                     android:id="@+id/home_away_filter"
@@ -155,9 +162,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
+                    android:onCheckedChanged="@{viewModel.switchListener}"
                     android:text="反"
                     android:textSize="12sp"
-                    android:onCheckedChanged="@{viewModel.switchListener}"
                     app:layout_constraintBottom_toBottomOf="@+id/home_away_filter"
                     app:layout_constraintStart_toEndOf="@+id/home_away_filter"
                     app:layout_constraintTop_toTopOf="@+id/home_away_filter" />

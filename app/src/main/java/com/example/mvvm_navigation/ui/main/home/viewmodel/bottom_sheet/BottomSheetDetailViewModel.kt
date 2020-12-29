@@ -139,46 +139,51 @@ class BottomSheetDetailViewModel constructor(
         val leagueTeamData = getSubmitter().leagueTeamData.value
         val recentMatchConditionList = getSubmitter().recentMatchConditionList.value
         val stringBuilder = StringBuilder().append("目前的資料描述: ")
-        if (matchStatisticsValue.homeId != null && matchStatisticsValue.awayId != null) {
-            stringBuilder.append(
-                String.format(
-                    ("%s vs %s"),
-                    leagueTeamData?.homeName,
-                    leagueTeamData?.awayName
+
+        if(matchStatisticsValue.leagueId == null && matchStatisticsValue.homeId == null && matchStatisticsValue.awayId == null) {
+            getSubmitter().dataDescription.value = stringBuilder.toString()
+        } else {
+            if (matchStatisticsValue.homeId != null && matchStatisticsValue.awayId != null) {
+                stringBuilder.append(
+                    String.format(
+                        ("%s vs %s"),
+                        leagueTeamData?.homeName,
+                        leagueTeamData?.awayName
+                    )
                 )
-            )
-            if (matchStatisticsValue.leagueId != null) stringBuilder.append(" 在 ")
-                .append(leagueTeamData?.leagueName)
-        } else if (matchStatisticsValue.homeId != null || matchStatisticsValue.awayId != null) {
-            if (matchStatisticsValue.homeId != null) stringBuilder.append(leagueTeamData?.homeName)
-            if (matchStatisticsValue.awayId != null) stringBuilder.append(leagueTeamData?.awayName)
-            if (matchStatisticsValue.leagueId != null) stringBuilder.append(" 在 ")
-                .append(leagueTeamData?.leagueName)
-            when (matchStatisticsValue.position) {
-                0 -> {
-                    stringBuilder.append(" 不分主客場 ")
+                if (matchStatisticsValue.leagueId != null) stringBuilder.append(" 在 ")
+                    .append(leagueTeamData?.leagueName)
+            } else if (matchStatisticsValue.homeId != null || matchStatisticsValue.awayId != null) {
+                if (matchStatisticsValue.homeId != null) stringBuilder.append(leagueTeamData?.homeName)
+                if (matchStatisticsValue.awayId != null) stringBuilder.append(leagueTeamData?.awayName)
+                if (matchStatisticsValue.leagueId != null) stringBuilder.append(" 在 ")
+                    .append(leagueTeamData?.leagueName)
+                when (matchStatisticsValue.position) {
+                    0 -> {
+                        stringBuilder.append(" 不分主客場 ")
+                    }
+                    1 -> {
+                        stringBuilder.append(" 主場 ")
+                    }
+                    2 -> {
+                        stringBuilder.append(" 客場 ")
+                    }
                 }
-                1 -> {
-                    stringBuilder.append(" 主場 ")
-                }
-                2 -> {
-                    stringBuilder.append(" 客場 ")
-                }
+            } else {
+                if (matchStatisticsValue.leagueId != null) stringBuilder.append(leagueTeamData?.leagueName)
             }
-        } else {
-            if (matchStatisticsValue.leagueId != null) stringBuilder.append(leagueTeamData?.leagueName)
-        }
-        if (recentMatchConditionList != null) {
-            for (i in recentMatchConditionList.indices) {
-                if (matchStatisticsValue.condition == recentMatchConditionList[i].id) {
-                    stringBuilder.append(" " + recentMatchConditionList[i].name)
-                    break
+            if (recentMatchConditionList != null) {
+                for (i in recentMatchConditionList.indices) {
+                    if (matchStatisticsValue.condition == recentMatchConditionList[i].id) {
+                        stringBuilder.append(" " + recentMatchConditionList[i].name)
+                        break
+                    }
                 }
+            } else {
+                stringBuilder.append(" 近30場")
             }
-        } else {
-            stringBuilder.append(" 近30場")
+            getSubmitter().dataDescription.value = stringBuilder.toString()
         }
-        getSubmitter().dataDescription.value = stringBuilder.toString()
     }
 
     override fun getSubmitter(): BottomSheetDetailFragmentSubmitter = this.submitter

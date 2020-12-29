@@ -223,10 +223,13 @@ class HomeViewModel constructor(
         val leagueTeamData = LeagueTeamData(
             data.leagueId,
             data.league,
+            data.leagueLogo,
             data.homeId,
             data.home,
+            data.homeLogo,
             data.awayId,
-            data.away
+            data.away,
+            data.awayLogo
         )
         val action = HomeFragmentDirections.actionHomeFragmentOpenBottomSheetDetail(
             leagueTeamData

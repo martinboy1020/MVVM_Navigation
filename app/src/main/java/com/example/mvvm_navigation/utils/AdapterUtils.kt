@@ -20,7 +20,7 @@ object AdapterUtils {
 
     @JvmStatic
     @BindingAdapter("matchesRecentList", "listener", requireAll = false)
-    fun BuildRecyclerView.matchesRecentListAdapter(matchesRecentList: Any?, listener: Any?) {
+    fun BuildRecyclerView.matchesRecentListAdapter(matchesRecentList: MutableList<TgMatchRecent.Recent>?, listener: Any?) {
         this.adapter =
             MatchesRecentAdapter(
                 this.context,

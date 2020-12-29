@@ -12,13 +12,14 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 
-@BindingAdapter("itemTitle", "listener")
+@BindingAdapter("imageUrl", "itemTitle", "listener", requireAll = false)
 fun setListener(
     view: ItemMatchSelectorWidget,
+    imageUrl: String,
     itemTitle: String,
     listener: ItemMatchSelectorWidget.CheckBoxListener
 ) {
-    view.setListener(itemTitle, listener)
+    view.setListener(imageUrl, itemTitle, listener)
 }
 
 class ItemMatchSelectorWidget @JvmOverloads constructor(
@@ -33,6 +34,7 @@ class ItemMatchSelectorWidget @JvmOverloads constructor(
         LEAGUE(0), HOME(1), AWAY(2)
     }
 
+
     interface CheckBoxListener {
         fun getFilterType(type: Int, isChecked: Boolean)
     }
@@ -45,13 +47,15 @@ class ItemMatchSelectorWidget @JvmOverloads constructor(
     private fun initView() {
         view = View.inflate(context, R.layout.layout_item_cb_match_selector, this)
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ItemMatchSelectorWidget)
-        type = typedArray.getInt(R.styleable.ItemMatchSelectorWidget_type, -1)
+        type = typedArray.getInt(R.styleable.ItemMatchSelectorWidget_itemType, -1)
         val checkBox = view?.findViewById<CheckBox>(R.id.cb_item_match_selector)
-        if(type == FilterType.LEAGUE.type) checkBox?.isChecked = true
+        if (type == FilterType.LEAGUE.type) checkBox?.isChecked = true
         typedArray.recycle()
     }
 
-    fun setListener(itemTitle: String, listener: CheckBoxListener) {
+    fun setListener(imgUrl: String, itemTitle: String, listener: CheckBoxListener) {
+        val imageShapeWidget = view?.findViewById<ImageShapeWidget>(R.id.img_item_match_selector)
+        imageShapeWidget?.setImage(imgUrl)
         val tvTitle = view?.findViewById<TextView>(R.id.tv_item_match_selector)
         tvTitle?.text = itemTitle
         val checkBox = view?.findViewById<CheckBox>(R.id.cb_item_match_selector)

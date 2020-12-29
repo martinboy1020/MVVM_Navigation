@@ -56,6 +56,7 @@ class MatchesRecentAdapter(
         val viewDataBinding = (holder as ViewHolderUserItem).binding
 //        viewDataBinding.setVariable(BR.homeTeamName, data[position].home)
 //        viewDataBinding.setVariable(BR.awayTeamName, data[position].away)
+        viewDataBinding.setVariable(BR.recentMatch, data[position])
         viewDataBinding.setVariable(
             BR.isTopListImg,
             if (data[position].isTopOfList) R.drawable.ic_baseline_keyboard_arrow_up else R.drawable.ic_baseline_keyboard_arrow_down
