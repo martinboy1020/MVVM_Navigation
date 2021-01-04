@@ -2,6 +2,7 @@ package com.example.mvvm_navigation.ui.main.home
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -51,6 +52,8 @@ class BannerAdapter(bannerClickListener: BannerWidget.BannerClickListener? = nul
             //            ((ViewHolder) holder).banner_video.stopPlayback();
             holder.banner_video.setVideoPath(bannerUrlList!![position].imgUrl)
             holder.banner_video.setOnPreparedListener { mp ->
+                mp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING)
+                mp.setScreenOnWhilePlaying(false)
                 mp.start()
             }
             holder.banner_video.setOnErrorListener { mp, what, extra ->

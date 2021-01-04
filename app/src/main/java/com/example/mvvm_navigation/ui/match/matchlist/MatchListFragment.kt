@@ -8,6 +8,7 @@ import com.example.base.components.LayoutId
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseFragment
+import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.di.matchListModule
 import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListContract
 import org.kodein.di.Kodein
@@ -20,13 +21,11 @@ import org.kodein.di.generic.singleton
 @LayoutId(R.layout.fragment_matchlist)
 class MatchListFragment : BaseFragment() {
 
-    val TAG = "MatchListFragment"
-
     /** Dependency Injection **/
     override val kodeinContext: KodeinContext<*> get() = kcontext(activity)
 
     override val kodein = Kodein.lazy {
-        bind<MatchListFragment>(TAG) with singleton { this@MatchListFragment }
+        bind<MatchListFragment>(MatchListFragment::class.java.simpleName) with singleton { this@MatchListFragment }
         import(matchListModule)
     }
 

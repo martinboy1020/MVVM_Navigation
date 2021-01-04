@@ -39,7 +39,6 @@ import org.kodein.di.generic.singleton
 class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
     BottomSheetDetailViewModel.BottomSheetDetailViewModelImpl {
 
-    val TAG = "BottomSheetDetailFragment"
     private var taskHandler = Handler(Looper.getMainLooper())
     private var runnable =
         Runnable { dialog?.window?.setWindowAnimations(R.style.Animation_Design_BottomSheetDialog) }
@@ -48,7 +47,7 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
     override val kodeinContext: KodeinContext<*> get() = kcontext(activity)
 
     override val kodein = Kodein.lazy {
-        bind<BottomSheetDetailFragment>(TAG) with singleton { this@BottomSheetDetailFragment }
+        bind<BottomSheetDetailFragment>(BottomSheetDetailFragment::class.java.simpleName) with singleton { this@BottomSheetDetailFragment }
         import(bottomSheetDialogModule)
     }
 
