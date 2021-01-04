@@ -31,7 +31,9 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.ChangeDateListe
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-
+                val matchListFragment = supportFragmentManager.findFragmentByTag("f" + vp_match_list_fragment.currentItem)
+                Log.d("tag12345", "matchListFragment $position: $matchListFragment")
+                if(matchListFragment is MatchListFragment) matchListFragment.changeDate(UserSharePreferences(this@MatchListActivity).matchListDate)
             }
         })
         val tabLayout: TabLayout = binding.root.tabLayout

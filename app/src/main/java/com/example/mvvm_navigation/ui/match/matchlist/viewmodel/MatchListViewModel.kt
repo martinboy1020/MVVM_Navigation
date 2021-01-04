@@ -2,6 +2,7 @@ package com.example.mvvm_navigation.ui.match.matchlist.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -31,8 +32,8 @@ class MatchListViewModel constructor(
     init {
         this.submitter.onClickListener.value = this
         this.submitter.matchListAdapterListener.value = this
-        val initTimeStamp = UserSharePreferences(this@MatchListViewModel.context).matchListDate
-        getMatchList(if(initTimeStamp > 0) initTimeStamp else DateUtils.getTodayDatMillis())
+//        val initTimeStamp = UserSharePreferences(this@MatchListViewModel.context).matchListDate
+//        getMatchList(if(initTimeStamp > 0) initTimeStamp else DateUtils.getTodayDatMillis())
     }
 
     companion object {
@@ -82,7 +83,7 @@ class MatchListViewModel constructor(
     }
 
     override fun changeDate(timestamp: Long) {
-        getMatchList(timestamp)
+        getMatchList(if(timestamp > 0) timestamp else DateUtils.getTodayDatMillis())
     }
 
     override fun onClickItem(data: MatchList.Match) {}
