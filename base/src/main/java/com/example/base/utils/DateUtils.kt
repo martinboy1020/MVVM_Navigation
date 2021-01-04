@@ -14,8 +14,8 @@ object DateUtils {
     const val HHMM = "HH:mm"
     const val EEEE = "EEEE"
 
-    fun getTodayDateSeconds(): Long {
-        return System.currentTimeMillis() / 1000
+    fun getTodayDatMillis(): Long {
+        return System.currentTimeMillis()
     }
 
     fun convertTimestampToStringDate(timestamp: Int, format: String): String {
@@ -27,6 +27,71 @@ object DateUtils {
             var date = formatDate(cal.time, format)
             date
         }
+    }
+
+    fun getCalendarFromTimeStamp(timestamp: Long): DateObject {
+        val cal = Calendar.getInstance(Locale.ENGLISH)
+        cal.timeInMillis = timestamp
+        return DateObject(
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH) + 1,
+            cal.get(Calendar.DAY_OF_MONTH),
+            getDayOfWeekString(cal.get(Calendar.DAY_OF_WEEK))
+        )
+    }
+
+    fun getDayOfWeekString(dayOfWeek: Int): String {
+
+        var dayOfWeekString = ""
+
+        when (dayOfWeek) {
+
+            1 -> {
+                dayOfWeekString = "SUN"
+            }
+
+            2 -> {
+                dayOfWeekString = "MON"
+            }
+
+            3 -> {
+                dayOfWeekString = "TUE"
+            }
+
+            4 -> {
+                dayOfWeekString = "WED"
+            }
+
+            5 -> {
+                dayOfWeekString = "THU"
+            }
+
+            6 -> {
+                dayOfWeekString = "FRI"
+            }
+
+            7 -> {
+                dayOfWeekString = "SAT"
+            }
+
+        }
+
+        return dayOfWeekString
+
+    }
+
+    fun getLastDayTimeStamp(timestamp: Long): Long {
+        val cal = Calendar.getInstance(Locale.ENGLISH)
+        cal.timeInMillis = timestamp
+        cal.add(Calendar.DATE, -1)
+        return cal.timeInMillis
+    }
+
+    fun getNextDayTimeStamp(timestamp: Long): Long {
+        val cal = Calendar.getInstance(Locale.ENGLISH)
+        cal.timeInMillis = timestamp
+        cal.add(Calendar.DATE, 1)
+        return cal.timeInMillis
     }
 
     fun convertDateHasDash(date: String): String {
@@ -81,5 +146,11 @@ object DateUtils {
         return date
     }
 
+    data class DateObject(
+        val year: Int = 0,
+        val month: Int = 0,
+        val day: Int = 0,
+        val week: String = ""
+    )
 
 }

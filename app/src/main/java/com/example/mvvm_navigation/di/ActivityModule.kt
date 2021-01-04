@@ -1,2 +1,2 @@
-package com.example.dexlight.di
+package com.example.mvvm_navigation.di
 

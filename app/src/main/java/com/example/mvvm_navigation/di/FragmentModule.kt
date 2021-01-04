@@ -1,8 +1,8 @@
 package com.example.mvvm_navigation.di
 
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import com.example.dexlight.di.Contract
 import com.example.mvvm_navigation.datacenter.Repository
 import com.example.mvvm_navigation.ui.main.home.BottomSheetDetailFragment
 import com.example.mvvm_navigation.ui.main.home.HomeFragment
@@ -10,16 +10,17 @@ import com.example.mvvm_navigation.ui.main.home.model.BottomSheetDetailModel
 import com.example.mvvm_navigation.ui.main.home.model.HomeModel
 import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailViewModel
 import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeViewModel
-import com.example.mvvm_navigation.ui.main.matchlist.MatchListFragment
-import com.example.mvvm_navigation.ui.main.matchlist.model.MatchListModel
-import com.example.mvvm_navigation.ui.main.matchlist.viewmodel.MatchListViewModel
+import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
+import com.example.mvvm_navigation.ui.match.matchlist.model.MatchListModel
+import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import java.lang.Exception
 import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailContract.ViewModelImpl as BottomSheetDetailViewModelImpl
 import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeContract.ViewModelImpl as HomeViewModelImpl
-import com.example.mvvm_navigation.ui.main.matchlist.viewmodel.MatchListContract.ViewModelImpl as MatchListViewModelImpl
+import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListContract.ViewModelImpl as MatchListViewModelImpl
 
 val mainModule = Kodein.Module(Contract.ModuleName.MAIN) {
     bind<HomeViewModelImpl>() with singleton {
@@ -39,7 +40,7 @@ private fun getMainViewModel(fragment: HomeFragment): HomeViewModelImpl {
     return ViewModelProvider(fragment, factory).get(HomeViewModel::class.java)
 }
 
-val thirdModule = Kodein.Module(Contract.ModuleName.THIRD) {
+val matchListModule = Kodein.Module(Contract.ModuleName.MATCH_LIST) {
     bind<MatchListViewModelImpl>() with singleton {
         getMatchListViewModel(instance(MatchListFragment().TAG))
     }
@@ -48,11 +49,17 @@ val thirdModule = Kodein.Module(Contract.ModuleName.THIRD) {
 private fun getMatchListViewModel(fragment: MatchListFragment): MatchListViewModelImpl {
     val repository = Repository.getInstance(fragment.requireContext())
     val model = MatchListModel.getInstance(repository)
+    var findNavController: NavController? = null
+    try {
+        findNavController = findNavController(fragment)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
     val factory = MatchListViewModel.Factory(
         fragment.requireActivity().application,
         fragment.requireContext(),
         model,
-        findNavController(fragment)
+        findNavController
     )
     return ViewModelProvider(fragment, factory).get(MatchListViewModel::class.java)
 }

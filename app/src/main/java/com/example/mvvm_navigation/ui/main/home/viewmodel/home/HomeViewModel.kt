@@ -84,7 +84,8 @@ class HomeViewModel constructor(
     override fun drawerNavigationClick(itemId: Int) {
         when (itemId) {
             R.id.action_match_list -> {
-                this.transFragment(R.id.action_homeFragment_to_matchListFragment)
+//                this.transFragment(R.id.action_homeFragment_to_matchListFragment)
+                this.transFragment(R.id.action_homeFragment_to_matchListActivity)
             }
         }
     }

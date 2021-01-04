@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.mvvm_navigation.ui.main.matchlist.viewmodel.MatchListFragmentSubmitter" />
+            type="com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListFragmentSubmitter" />
     </data>
 
     <com.example.mvvm_navigation.widget.BuildRecyclerView

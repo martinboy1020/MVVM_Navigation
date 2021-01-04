@@ -5,14 +5,13 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BetData
-import com.example.mvvm_navigation.datacenter.data.RecentMatchCondition
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.datacenter.network.response.MatchesStatistics
 import com.example.mvvm_navigation.datacenter.network.response.TgMatchRecent
 import com.example.mvvm_navigation.ui.main.home.BetListAdapter
 import com.example.mvvm_navigation.ui.main.home.MatchesRecentAdapter
 import com.example.mvvm_navigation.ui.main.home.RecentConditionAdapter
-import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
+import com.example.mvvm_navigation.ui.match.matchlist.MatchListAdapter
 import com.example.mvvm_navigation.widget.BuildRecyclerView
 
 

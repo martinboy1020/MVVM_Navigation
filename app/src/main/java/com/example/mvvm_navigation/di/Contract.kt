@@ -1,14 +1,11 @@
-package com.example.dexlight.di
+package com.example.mvvm_navigation.di
 
 class Contract {
     class ModuleName{
         companion object{
             const val MAIN = "MainModule"
-            const val SECOND = "SecondModule"
-            const val THIRD = "ThirdModule"
+            const val MATCH_LIST = "MatchListModule"
             const val BOTTOM_SHEET = "BottomSheetDetailModule"
         }
     }
-
-
 }

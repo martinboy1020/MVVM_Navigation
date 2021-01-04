@@ -1,8 +1,7 @@
-package com.example.mvvm_navigation.ui.main.matchlist.viewmodel
+package com.example.mvvm_navigation.ui.match.matchlist.viewmodel
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,7 +10,8 @@ import com.example.base.utils.DateUtils
 import com.example.mvvm_navigation.base.BaseViewModel
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
-import com.example.mvvm_navigation.ui.main.matchlist.MatchListAdapter
+import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
+import com.example.mvvm_navigation.ui.match.matchlist.MatchListAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class MatchListViewModel constructor(
     application: Application,
     context: Context,
     val model: MatchListContract.ModelImpl,
-    navController: NavController
+    navController: NavController?
 ) : BaseViewModel(application, context, navController), MatchListContract.ViewModelImpl,
     View.OnClickListener, MatchListAdapter.MatchListAdapterItemClickListener {
 
@@ -31,7 +31,8 @@ class MatchListViewModel constructor(
     init {
         this.submitter.onClickListener.value = this
         this.submitter.matchListAdapterListener.value = this
-        getMatchList()
+        val initTimeStamp = UserSharePreferences(this@MatchListViewModel.context).matchListDate
+        getMatchList(if(initTimeStamp > 0) initTimeStamp else DateUtils.getTodayDatMillis())
     }
 
     companion object {
@@ -39,7 +40,7 @@ class MatchListViewModel constructor(
             application: Application,
             context: Context,
             model: MatchListContract.ModelImpl,
-            navController: NavController
+            navController: NavController?
         ) =
             MatchListViewModel(
                 application,
@@ -53,7 +54,7 @@ class MatchListViewModel constructor(
         val application: Application,
         val context: Context,
         val model: MatchListContract.ModelImpl,
-        val navController: NavController
+        val navController: NavController?
     ) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T = getInstance(
             application,
@@ -80,9 +81,13 @@ class MatchListViewModel constructor(
         }
     }
 
+    override fun changeDate(timestamp: Long) {
+        getMatchList(timestamp)
+    }
+
     override fun onClickItem(data: MatchList.Match) {}
 
-    private fun getMatchList(date: Long = DateUtils.getTodayDateSeconds()) {
+    private fun getMatchList(date: Long = DateUtils.getTodayDatMillis()) {
         CoroutineScope(Dispatchers.IO).launch {
             val result = model.getMatchesList(date)
             withContext(Dispatchers.Main) {

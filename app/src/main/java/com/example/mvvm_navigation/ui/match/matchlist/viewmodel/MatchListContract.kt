@@ -1,9 +1,10 @@
-package com.example.mvvm_navigation.ui.main.matchlist.viewmodel
+package com.example.mvvm_navigation.ui.match.matchlist.viewmodel
 
 import com.example.mvvm_navigation.base.BaseViewModelImpl
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.response.HttpStatus
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
+import java.sql.Timestamp
 
 class MatchListContract {
     interface ModelImpl {
@@ -14,6 +15,6 @@ class MatchListContract {
     }
 
     interface ViewModelImpl : BaseViewModelImpl<MatchListFragmentSubmitter> {
-
+        fun changeDate(timestamp: Long)
     }
 }

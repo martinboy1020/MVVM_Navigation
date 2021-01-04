@@ -1,11 +1,11 @@
-package com.example.mvvm_navigation.ui.main.matchlist.model
+package com.example.mvvm_navigation.ui.match.matchlist.model
 
 import com.example.mvvm_navigation.base.BaseModel
 import com.example.mvvm_navigation.datacenter.Repository
 import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.response.HttpStatus
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
-import com.example.mvvm_navigation.ui.main.matchlist.viewmodel.MatchListContract
+import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListContract
 
 class MatchListModel constructor(val repository: Repository) : BaseModel(), MatchListContract.ModelImpl {
     companion object {
@@ -27,7 +27,7 @@ class MatchListModel constructor(val repository: Repository) : BaseModel(), Matc
     }
 
     override suspend fun getMatchesList(date: Long): HttpResult<HttpStatus<MatchList.Data>> {
-        return this@MatchListModel.repository.getWebMatchList(date)
+        return this@MatchListModel.repository.getWebMatchList(date / 1000)
     }
 
     override fun getTestMatchesList(): HttpStatus<MatchList.Data>? {
