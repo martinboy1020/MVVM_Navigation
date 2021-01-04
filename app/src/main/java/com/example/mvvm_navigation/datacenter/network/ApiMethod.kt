@@ -46,9 +46,9 @@ interface ApiMethod {
     @GET(ApiConstants.HttpPath.STATISTICS_OCCURRENCE_RATE)
     fun getStatisticsOccurrenceRateAsync(
         @Header("Authorization") token: String = "",
-        @Query("leagueId") leagueId: String?= "",
-        @Query("teamId1") teamId1: String?= "",
-        @Query("teamId2") teamId2: String?= "",
+        @Query("leagueId") leagueId: String? = "",
+        @Query("teamId1") teamId1: String? = "",
+        @Query("teamId2") teamId2: String? = "",
         @Query("position") position: Int = 0,
         @Query("condition") condition: String = "",
         @Query("lang") language: String? = "zh"
@@ -60,5 +60,26 @@ interface ApiMethod {
         @Query("date") date: Long,
         @Query("lang") language: String? = "zh"
     ): Deferred<HttpStatus<MatchList.Data>>
+
+    @GET(ApiConstants.HttpPath.TG_MATCHES_BET_INFO)
+    fun getMatchesBetInfo(
+        @Header("Authorization") token: String = "",
+        @Path("matchId") matchId: Int
+    ): Deferred<HttpStatus<Home.BetInfo>>
+
+    @GET(ApiConstants.HttpPath.MATCH_STATS)
+    fun getMatchStats(
+        @Header("Authorization") token: String = "",
+        @Path("matchId") matchId: Int
+    ): Deferred<HttpStatus<MatchStats.Data>>
+
+    @GET(ApiConstants.HttpPath.SEARCH)
+    fun getSearch(
+        @Header("Authorization") token: String = "",
+        @Query("q") keyword: String = "",
+        @Query("lang") language: String = "zh",
+        @Query("short") short: Int = 0,
+        @Query("content") content: String = ""
+    ): Deferred<HttpStatus<Search>>
 
 }

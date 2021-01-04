@@ -13,6 +13,7 @@ class ApiConstants {
             const val TG_MATCHES_BET_INFO = "v2/tg/matches/{matchId}/bet_info"
             const val STATISTICS_OCCURRENCE_RATE = "v2/statistics/occurrence_rate"
             const val SEARCH = "v2/search"
+            const val MATCH_STATS = "/v2/matches/{matchId}/stats"
         }
     }
 

@@ -72,6 +72,9 @@ object ApiDataKey {
     const val AVERAGE_LOST = "averageLost"
     const val TOTAL_COUNT = "totalCount"
     const val SEASONS = "seasons"
+    const val STATS = "stats"
+    const val ANIMATION = "animation"
+    const val LIVE_STREAMING = "liveStreaming"
 
     const val US_ID = "usId"
     const val NICK_NAME = "nickname"
