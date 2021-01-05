@@ -17,5 +17,7 @@ class HomeContract {
 
     interface ViewModelImpl : BaseViewModelImpl<HomeFragmentSubmitter> {
         fun drawerNavigationClick(itemId: Int)
+        fun userLogin()
+        fun tokenRefresh()
     }
 }

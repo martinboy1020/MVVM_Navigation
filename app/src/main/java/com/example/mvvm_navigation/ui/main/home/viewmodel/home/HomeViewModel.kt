@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
@@ -34,7 +35,8 @@ class HomeViewModel constructor(
 ) : BaseViewModel(application, context, navController), HomeContract.ViewModelImpl,
     View.OnClickListener, BannerWidget.BannerClickListener,
     MatchesRecentAdapter.MatchListAdapterItemClickListener,
-    RadioGroup.OnCheckedChangeListener {
+    RadioGroup.OnCheckedChangeListener,
+    CompoundButton.OnCheckedChangeListener {
 
     private val submitter =
         HomeFragmentSubmitter()
@@ -45,6 +47,7 @@ class HomeViewModel constructor(
         this.submitter.bannerClickListener.value = this
         this.submitter.matchesRecentClickListener.value = this
         this.submitter.matchFilterClickListener.value = this
+        this.submitter.topListBtnClickListener.value = this
     }
 
     companion object {
@@ -108,7 +111,7 @@ class HomeViewModel constructor(
         }
     }
 
-    private fun userLogin() {
+    override fun userLogin() {
         Toast.makeText(this@HomeViewModel.context, "帳號登入", Toast.LENGTH_SHORT).show()
         CoroutineScope(Dispatchers.IO).launch {
             val login = model.userLogin("PMQ102", "a111111", 1)
@@ -132,7 +135,7 @@ class HomeViewModel constructor(
         }
     }
 
-    private fun tokenRefresh() {
+    override fun tokenRefresh() {
         Toast.makeText(this@HomeViewModel.context, "刷新憑證", Toast.LENGTH_SHORT).show()
         CoroutineScope(Dispatchers.IO).launch {
             val refresh = model.userTokenRefresh(UserSharePreferences(context).userToken)
@@ -255,5 +258,19 @@ class HomeViewModel constructor(
             }
         }
         Toast.makeText(this.context, "Filter is ${radBtn?.text}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+        if(p0?.id == R.id.tv_top) {
+            when(p1) {
+                true -> {
+
+                }
+                false -> {
+
+                }
+            }
+
+        }
     }
 }

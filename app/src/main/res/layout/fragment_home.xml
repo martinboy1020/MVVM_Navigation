@@ -58,32 +58,39 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/banner_widget" />
 
-                    <TextView
+                    <TextClock
                         android:id="@+id/tv_now_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
-                        android:text="現在時間 2020-11-29 00:30:27 UTM+8"
+                        android:format12Hour="現在時間: yyyy-MM-dd hh:mm:ss zzz"
+                        android:format24Hour="現在時間: yyyy-MM-dd HH:mm:ss zzz"
                         android:textColor="@color/black"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_start_match"
                         app:layout_constraintStart_toEndOf="@+id/tv_start_match"
-                        app:layout_constraintTop_toTopOf="@+id/tv_start_match" />
+                        app:layout_constraintTop_toTopOf="@+id/tv_start_match"
+                        tools:targetApi="jelly_bean_mr1" />
 
-                    <TextView
+                    <ToggleButton
                         android:id="@+id/tv_top"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:background="@android:color/holo_blue_dark"
+                        android:background="@drawable/toggle_button_selector"
+                        android:checked="false"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
                         android:paddingLeft="10dp"
                         android:paddingTop="3dp"
                         android:paddingRight="10dp"
                         android:paddingBottom="3dp"
-                        android:text="置頂"
-                        android:textColor="@color/white"
+                        android:stateListAnimator="@null"
+                        android:textOff="置頂"
+                        android:textOn="置頂"
                         android:textSize="14dp"
+                        android:onCheckedChanged="@{viewModel.topListBtnClickListener}"
                         app:layout_constraintStart_toStartOf="@+id/tv_start_match"
                         app:layout_constraintTop_toBottomOf="@+id/tv_start_match" />
 

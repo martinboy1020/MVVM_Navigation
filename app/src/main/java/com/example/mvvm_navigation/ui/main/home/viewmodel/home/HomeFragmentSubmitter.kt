@@ -1,6 +1,7 @@
 package com.example.mvvm_navigation.ui.main.home.viewmodel.home
 
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -21,6 +22,7 @@ class HomeFragmentSubmitter {
     val recentMatchTimeKeyBtnClickable = MutableLiveData<Boolean>().default(false)
     val onClickListener = MutableLiveData<View.OnClickListener>()
     val bannerClickListener = MutableLiveData<BannerWidget.BannerClickListener>()
+    val topListBtnClickListener = MutableLiveData<CompoundButton.OnCheckedChangeListener>()
     val matchesRecentClickListener = MutableLiveData<MatchesRecentAdapter.MatchListAdapterItemClickListener>()
     val matchFilterClickListener = MutableLiveData<RadioGroup.OnCheckedChangeListener>()
 }
