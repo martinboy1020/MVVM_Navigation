@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailFragmentSubmitter" />
@@ -37,21 +36,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout0"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                <include
+                    android:id="@+id/recent_match"
+                    layout="@layout/layout_rv_recent_match_item"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@android:color/holo_red_light"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <HorizontalScrollView
                     android:id="@+id/layout_filter_list"
@@ -64,7 +60,7 @@
                     android:layout_marginRight="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout0">
+                    app:layout_constraintTop_toBottomOf="@+id/recent_match">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -112,7 +108,7 @@
                     android:layout_marginTop="10dp"
                     android:padding="0dp"
                     android:spinnerMode="dropdown"
-                    app:layout_constraintStart_toStartOf="@+id/constraintLayout0"
+                    app:layout_constraintStart_toStartOf="@+id/recent_match"
                     app:layout_constraintTop_toBottomOf="@+id/layout_filter_list"
                     app:listener="@{viewModel.spinnerSelectedListener}"
                     app:recentMatchConditionList="@{viewModel.recentMatchConditionList}" />

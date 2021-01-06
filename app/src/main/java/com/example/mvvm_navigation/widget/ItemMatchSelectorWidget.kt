@@ -9,6 +9,8 @@ import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 
@@ -50,6 +52,7 @@ class ItemMatchSelectorWidget @JvmOverloads constructor(
         type = typedArray.getInt(R.styleable.ItemMatchSelectorWidget_itemType, -1)
         val checkBox = view?.findViewById<CheckBox>(R.id.cb_item_match_selector)
         if (type == FilterType.LEAGUE.type) checkBox?.isChecked = true
+        if (checkBox != null) changeItemStyle(checkBox.isChecked)
         typedArray.recycle()
     }
 
@@ -59,8 +62,29 @@ class ItemMatchSelectorWidget @JvmOverloads constructor(
         val tvTitle = view?.findViewById<TextView>(R.id.tv_item_match_selector)
         tvTitle?.text = itemTitle
         val checkBox = view?.findViewById<CheckBox>(R.id.cb_item_match_selector)
-        checkBox?.setOnCheckedChangeListener { _, b ->
-            type?.let { listener.getFilterType(it, b) }
+        checkBox?.setOnCheckedChangeListener { _, isChecked ->
+            type?.let { listener.getFilterType(it, isChecked) }
+            changeItemStyle(isChecked)
+        }
+    }
+
+    private fun changeItemStyle(isChecked: Boolean) {
+        val tvTitle = view?.findViewById<TextView>(R.id.tv_item_match_selector)
+        val bg = view?.findViewById<ConstraintLayout>(R.id.bg_item_match_selector)
+        when (isChecked) {
+            true -> {
+                bg?.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context,
+                        android.R.color.holo_blue_light
+                    )
+                )
+                tvTitle?.setTextColor(ContextCompat.getColor(context, android.R.color.white))
+            }
+            false -> {
+                bg?.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white))
+                tvTitle?.setTextColor(ContextCompat.getColor(context, android.R.color.black))
+            }
         }
     }
 

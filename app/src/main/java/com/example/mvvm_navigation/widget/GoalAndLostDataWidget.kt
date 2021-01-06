@@ -104,11 +104,9 @@ class GoalAndLostDataWidget @JvmOverloads constructor(
                 stringBuilder.append("-")
             } else {
                 if (data.notContinuedCount > 0) {
-                    val string = String.format("連%s場", data.notContinuedCount)
                     stringBuilder.append(String.format("連%s場", data.notContinuedCount))
                 }
                 if (data.notContinuedSeasons > 0) {
-                    val string = String.format("(跨%s季)", data.notContinuedSeasons)
                     stringBuilder.append(String.format("(跨%s季)", data.notContinuedSeasons))
                 }
                 stringBuilder.append("未出現")
@@ -118,11 +116,9 @@ class GoalAndLostDataWidget @JvmOverloads constructor(
                 stringBuilder.append("-")
             } else {
                 if (data.continuedCount > 0) {
-                    val string = String.format("連,%s場", data.continuedCount)
                     stringBuilder.append(String.format("連%s場", data.continuedCount))
                 }
                 if (data.continuedSeasons > 0) {
-                    val string = String.format("(跨%s季)", data.continuedCount)
                     stringBuilder.append(String.format("(跨%s季)", data.continuedSeasons))
                 }
                 stringBuilder.append("出現")

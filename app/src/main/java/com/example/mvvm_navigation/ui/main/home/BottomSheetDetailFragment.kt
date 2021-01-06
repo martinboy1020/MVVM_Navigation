@@ -14,15 +14,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
+import com.example.base.utils.DateUtils
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.LeagueTeamData
 import com.example.mvvm_navigation.di.bottomSheetDialogModule
 import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailContract
 import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailViewModel
+import com.example.mvvm_navigation.widget.ImageShapeWidget
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -52,11 +56,13 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
     }
 
     private val viewModel by kodein.instance<BottomSheetDetailContract.ViewModelImpl>()
+    private var leagueTeamData: LeagueTeamData? = null
+    private var binding: ViewDataBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.BottomSheetDialogRoundCorner)
-        val leagueTeamData = arguments?.let {
+        leagueTeamData = arguments?.let {
             BottomSheetDetailFragmentArgs.fromBundle(
                 it
             ).leagueTeamData
@@ -88,21 +94,24 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(
+        binding = DataBindingUtil.inflate<ViewDataBinding>(
             inflater,
             R.layout.fragment_bottom_sheet_detail,
             container,
             false
         )
-        binding.lifecycleOwner = this
-        binding.setVariable(BR.viewModel, this.viewModel.getSubmitter())
+        binding?.lifecycleOwner = this
+        binding?.setVariable(BR.viewModel, this.viewModel.getSubmitter())
         dialog?.window?.setBackgroundDrawable(ColorDrawable(TRANSPARENT))
         dialog?.setCancelable(false)
         dialog?.setCanceledOnTouchOutside(false)
 
-        val spinner = binding.root.spinner_match_filter
-        spinner.setSelection(1)
-        return binding.root
+        val spinner = binding?.root?.spinner_match_filter
+        spinner?.setSelection(1)
+
+        initRecentMatch(leagueTeamData)
+
+        return binding?.root
     }
 
     private fun initDataAndButton(leagueTeamData: LeagueTeamData?) {
@@ -114,6 +123,25 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
             !((matchStatisticsValue.homeId != null && matchStatisticsValue.awayId != null) ||
                     (matchStatisticsValue.homeId == null && matchStatisticsValue.awayId == null))
         this.viewModel.getMatchStatistics(matchStatisticsValue)
+    }
+
+    private fun initRecentMatch(leagueTeamData: LeagueTeamData?) {
+        val recentMatch = binding?.root?.recent_match
+        Log.d("tag12345", "recent_match?: " + recentMatch)
+        val leagueName = recentMatch?.findViewById<TextView>(R.id.tv_league_name)
+        val homeName = recentMatch?.findViewById<TextView>(R.id.tv_home_team_name)
+        val awayName = recentMatch?.findViewById<TextView>(R.id.tv_away_team_name)
+        val homeLogo = recentMatch?.findViewById<ImageShapeWidget>(R.id.img_home_logo)
+        val awayLogo = recentMatch?.findViewById<ImageShapeWidget>(R.id.img_away_logo)
+        val openDate = recentMatch?.findViewById<TextView>(R.id.tv_match_start_time)
+        val bg = recentMatch?.findViewById<ConstraintLayout>(R.id.layout_recent_match_item)
+        recentMatch?.setBackgroundResource(R.drawable.rectangle_stroke_black_solid_white)
+        leagueName?.text = leagueTeamData?.leagueName
+        homeName?.text = leagueTeamData?.homeName
+        awayName?.text = leagueTeamData?.awayName
+        homeLogo?.setImage(leagueTeamData?.homeLogo)
+        awayLogo?.setImage(leagueTeamData?.awayLogo)
+        openDate?.text = DateUtils.convertTimestampToStringDate(leagueTeamData?.openDate?.toInt(), DateUtils.HHMM)
     }
 
     override fun closeDialog() {

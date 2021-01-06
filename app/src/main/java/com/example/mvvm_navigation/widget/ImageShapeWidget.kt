@@ -46,9 +46,9 @@ class ImageShapeWidget @JvmOverloads constructor(
         typedArray.recycle()
     }
 
-    fun setImage(imgSrc: String) {
+    fun setImage(imgSrc: String? = "") {
         val img = view?.findViewById<ImageView>(R.id.img_shape_widget)
-        if (img != null) {
+        if (img != null && imgSrc.isNullOrEmpty()) {
             when (shapeType) {
                 ShapeType.CIRCLE.code -> Glide.with(this).load(imgSrc).circleCrop()
                     .into(img)

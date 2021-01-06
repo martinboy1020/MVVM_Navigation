@@ -11,9 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.base.utils.DateUtils
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import kotlinx.android.synthetic.main.layout_rv_match_item.view.*
+import org.w3c.dom.Text
 
 //class MatchListAdapter(
 //    val context: Context,
@@ -170,6 +172,7 @@ class MatchListAdapter(
             holder.homeName.setTextColor(ContextCompat.getColor(context, android.R.color.black))
             holder.awayName.setTextColor(ContextCompat.getColor(context, android.R.color.black))
         }
+        holder.openDate.text = DateUtils.convertTimestampToStringDate(data[position].openDate.toInt(), DateUtils.HHMM)
         holder.bg.setOnClickListener { listener?.onSetTopClick(data[position]) }
     }
 
@@ -183,6 +186,7 @@ class MatchListAdapter(
         var awayName: TextView = root.tv_away_team_name
         var bg: ConstraintLayout = root.layout_match_item
         var imgTop: ImageView = root.img_top
+        var openDate: TextView = root.tv_match_start_time
     }
 
 }

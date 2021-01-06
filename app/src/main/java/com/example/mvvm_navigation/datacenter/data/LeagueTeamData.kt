@@ -12,7 +12,8 @@ data class LeagueTeamData(
     val homeLogo: String = "",
     val awayId: Int = 0,
     val awayName: String = "",
-    val awayLogo: String = ""
+    val awayLogo: String = "",
+    val openDate: Long = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -23,7 +24,8 @@ data class LeagueTeamData(
         parcel.readString().toString(),
         parcel.readInt(),
         parcel.readString().toString(),
-        parcel.readString().toString()
+        parcel.readString().toString(),
+        parcel.readLong()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -36,6 +38,7 @@ data class LeagueTeamData(
         parcel.writeInt(awayId)
         parcel.writeString(awayName)
         parcel.writeString(awayLogo)
+        parcel.writeLong(openDate)
     }
 
     override fun describeContents(): Int {

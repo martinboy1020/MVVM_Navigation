@@ -5,8 +5,8 @@
     <data>
         <import type="androidx.core.content.ContextCompat" />
         <variable
-            name="recentMatch"
-            type="com.example.mvvm_navigation.datacenter.network.response.TgMatchRecent.Recent" />
+            name="match"
+            type="com.example.mvvm_navigation.datacenter.network.response.MatchList.Match" />
         <variable
             name="isTopListImg"
             type="Integer" />
@@ -38,7 +38,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="5dp"
-            android:text="@{recentMatch.league}"
+            android:text="@{match.leagueName}"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -99,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            android:text="@{recentMatch.home, default=主隊名稱六字}"
+            android:text="@{match.homeName, default=主隊名稱六字}"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_score"
             app:layout_constraintEnd_toStartOf="@+id/tv_score"
@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:text="@{recentMatch.away, default=客隊名稱六字}"
+            android:text="@{match.awayName, default=客隊名稱六字}"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_score"
             app:layout_constraintStart_toEndOf="@+id/tv_score"

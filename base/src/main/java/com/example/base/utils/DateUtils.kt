@@ -18,8 +18,8 @@ object DateUtils {
         return System.currentTimeMillis()
     }
 
-    fun convertTimestampToStringDate(timestamp: Int, format: String): String {
-        return if (timestamp == 0) {
+    fun convertTimestampToStringDate(timestamp: Int? = 0, format: String): String {
+        return if (timestamp == null || timestamp == 0) {
             ""
         } else {
             val cal = Calendar.getInstance(Locale.ENGLISH)
