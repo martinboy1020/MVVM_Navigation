@@ -234,7 +234,7 @@
                         app:layout_manager_type="vertical"
                         app:listener="@{viewModel.matchesRecentClickListener}"
                         app:matchesRecentList="@{viewModel.matchesRecentList}"
-                        tools:listitem="@layout/layout_rv_match_item" />
+                        tools:listitem="@layout/layout_rv_recent_match_item" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

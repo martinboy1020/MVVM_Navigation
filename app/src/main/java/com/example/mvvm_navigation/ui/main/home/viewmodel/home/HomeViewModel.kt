@@ -41,6 +41,8 @@ class HomeViewModel constructor(
     private val submitter =
         HomeFragmentSubmitter()
 
+    private var nowTimeKey = timeKey12HR
+
     init {
         if (UserSharePreferences(context).userToken.isEmpty()) userLogin() else tokenRefresh()
         this.submitter.onClickListener.value = this
@@ -160,7 +162,7 @@ class HomeViewModel constructor(
         }
     }
 
-    private fun getHomeInfo() {
+    override fun getHomeInfo() {
         CoroutineScope(Dispatchers.IO).launch {
             val homeInfo = model.getHomeInfo()
             withContext(Dispatchers.Main) {
@@ -192,10 +194,10 @@ class HomeViewModel constructor(
         }
     }
 
-    private fun getTgMatchRecent(timeKey: String = timeKey12HR) {
+    private fun getTgMatchRecent() {
         this@HomeViewModel.submitter.recentMatchTimeKeyBtnClickable.value = false
         CoroutineScope(Dispatchers.IO).launch {
-            val tgMatchesRecent = model.getTgMatchesRecent(timeKey)
+            val tgMatchesRecent = model.getTgMatchesRecent(nowTimeKey)
             withContext(Dispatchers.Main) {
                 this@HomeViewModel.submitter.recentMatchTimeKeyBtnClickable.value = true
                 when (tgMatchesRecent) {
@@ -246,18 +248,19 @@ class HomeViewModel constructor(
         val radBtn = p0?.findViewById<RadioButton>(p1)
         when (radBtn?.id) {
             R.id.btn_4hr -> {
-                getTgMatchRecent(timeKey4HR)
+                this@HomeViewModel.nowTimeKey = timeKey4HR
             }
             R.id.btn_8hr -> {
-                getTgMatchRecent(timeKey8HR)
+                this@HomeViewModel.nowTimeKey = timeKey8HR
             }
             R.id.btn_12hr -> {
-                getTgMatchRecent(timeKey12HR)
+                this@HomeViewModel.nowTimeKey = timeKey12HR
             }
             R.id.btn_24hr -> {
-                getTgMatchRecent(timeKey24HR)
+                this@HomeViewModel.nowTimeKey = timeKey24HR
             }
         }
+        getTgMatchRecent()
         Toast.makeText(this.context, "Filter is ${radBtn?.text}", Toast.LENGTH_SHORT).show()
     }
 

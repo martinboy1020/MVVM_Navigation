@@ -3,6 +3,7 @@ package com.example.mvvm_navigation.widget
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -48,7 +49,7 @@ class ImageShapeWidget @JvmOverloads constructor(
 
     fun setImage(imgSrc: String? = "") {
         val img = view?.findViewById<ImageView>(R.id.img_shape_widget)
-        if (img != null && imgSrc.isNullOrEmpty()) {
+        if (img != null && !imgSrc.isNullOrEmpty()) {
             when (shapeType) {
                 ShapeType.CIRCLE.code -> Glide.with(this).load(imgSrc).circleCrop()
                     .into(img)

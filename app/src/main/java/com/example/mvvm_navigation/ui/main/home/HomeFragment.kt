@@ -49,6 +49,7 @@ class HomeFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         (this.binding as FragmentHomeBinding).bannerWidget.setBannerTurning(true)
+        this.viewModel.getHomeInfo()
     }
 
     override fun onPause() {

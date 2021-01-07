@@ -31,9 +31,9 @@
             android:text="-"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_match_start_time"
-            app:layout_constraintStart_toStartOf="@+id/tv_match_start_time"
-            app:layout_constraintTop_toBottomOf="@+id/tv_match_start_time" />
+            app:layout_constraintEnd_toEndOf="@id/tv_match_start_time"
+            app:layout_constraintStart_toStartOf="@id/tv_match_start_time"
+            app:layout_constraintTop_toBottomOf="@id/tv_match_start_time" />
 
         <View
             android:id="@+id/line"
@@ -43,7 +43,7 @@
             android:layout_marginLeft="20dp"
             android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_match_start_time"
+            app:layout_constraintStart_toEndOf="@id/tv_match_start_time"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,8 +75,8 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginRight="15dp"
                 android:src="@drawable/ic_baseline_keyboard_arrow_down"
-                app:layout_constraintEnd_toStartOf="@+id/img_favorite"
-                app:layout_constraintTop_toTopOf="@+id/img_favorite" />
+                app:layout_constraintEnd_toStartOf="@id/img_favorite"
+                app:layout_constraintTop_toTopOf="@id/img_favorite" />
 
             <ImageView
                 android:id="@+id/img_favorite"
@@ -98,7 +98,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_top" />
+                app:layout_constraintTop_toBottomOf="@id/img_top" />
 
             <TextView
                 android:id="@+id/tv_home_team_name"
@@ -112,9 +112,9 @@
                 android:text="主隊名稱六字"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_score"
-                app:layout_constraintEnd_toStartOf="@+id/img_home_logo"
-                app:layout_constraintTop_toTopOf="@+id/tv_score" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_score"
+                app:layout_constraintEnd_toStartOf="@id/img_home_logo"
+                app:layout_constraintTop_toTopOf="@id/tv_score" />
 
             <TextView
                 android:id="@+id/tv_away_team_name"
@@ -127,9 +127,9 @@
                 android:singleLine="true"
                 android:text="客隊名稱六字"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_score"
-                app:layout_constraintStart_toEndOf="@+id/img_away_logo"
-                app:layout_constraintTop_toTopOf="@+id/tv_score" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_score"
+                app:layout_constraintStart_toEndOf="@id/img_away_logo"
+                app:layout_constraintTop_toTopOf="@id/tv_score" />
 
             <com.example.mvvm_navigation.widget.ImageShapeWidget
                 android:id="@+id/img_home_logo"
@@ -137,9 +137,9 @@
                 android:layout_height="30dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginRight="15dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_score"
-                app:layout_constraintEnd_toStartOf="@+id/tv_score"
-                app:layout_constraintTop_toTopOf="@+id/tv_score"
+                app:layout_constraintBottom_toBottomOf="@id/tv_score"
+                app:layout_constraintEnd_toStartOf="@id/tv_score"
+                app:layout_constraintTop_toTopOf="@id/tv_score"
                 app:shapeType="circle" />
 
             <com.example.mvvm_navigation.widget.ImageShapeWidget
@@ -148,9 +148,9 @@
                 android:layout_height="30dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_score"
-                app:layout_constraintStart_toEndOf="@+id/tv_score"
-                app:layout_constraintTop_toTopOf="@+id/tv_score"
+                app:layout_constraintBottom_toBottomOf="@id/tv_score"
+                app:layout_constraintStart_toEndOf="@id/tv_score"
+                app:layout_constraintTop_toTopOf="@id/tv_score"
                 app:shapeType="circle" />
 
 

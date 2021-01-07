@@ -19,5 +19,6 @@ class HomeContract {
         fun drawerNavigationClick(itemId: Int)
         fun userLogin()
         fun tokenRefresh()
+        fun getHomeInfo()
     }
 }

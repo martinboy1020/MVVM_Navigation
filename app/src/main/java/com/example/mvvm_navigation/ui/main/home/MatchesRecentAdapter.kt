@@ -59,7 +59,6 @@ class MatchesRecentAdapter(
 
     override fun getItemCount(): Int = data.size
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewDataBinding = (holder as ViewHolderUserItem).binding
         holder.homeLogo.setImage(data[position].homeLogo)
