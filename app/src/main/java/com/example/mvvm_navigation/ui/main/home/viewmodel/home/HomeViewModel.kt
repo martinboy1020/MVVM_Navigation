@@ -194,7 +194,7 @@ class HomeViewModel constructor(
         }
     }
 
-    private fun getTgMatchRecent() {
+    override fun getTgMatchRecent() {
         this@HomeViewModel.submitter.recentMatchTimeKeyBtnClickable.value = false
         CoroutineScope(Dispatchers.IO).launch {
             val tgMatchesRecent = model.getTgMatchesRecent(nowTimeKey)

@@ -3,6 +3,7 @@ package com.example.base.utils
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object DateUtils {
 
@@ -40,44 +41,32 @@ object DateUtils {
         )
     }
 
-    fun getDayOfWeekString(dayOfWeek: Int): String {
-
+    private fun getDayOfWeekString(dayOfWeek: Int): String {
         var dayOfWeekString = ""
-
         when (dayOfWeek) {
-
             1 -> {
                 dayOfWeekString = "SUN"
             }
-
             2 -> {
                 dayOfWeekString = "MON"
             }
-
             3 -> {
                 dayOfWeekString = "TUE"
             }
-
             4 -> {
                 dayOfWeekString = "WED"
             }
-
             5 -> {
                 dayOfWeekString = "THU"
             }
-
             6 -> {
                 dayOfWeekString = "FRI"
             }
-
             7 -> {
                 dayOfWeekString = "SAT"
             }
-
         }
-
         return dayOfWeekString
-
     }
 
     fun getLastDayTimeStamp(timestamp: Long): Long {
@@ -95,19 +84,19 @@ object DateUtils {
     }
 
     fun convertDateHasDash(date: String): String {
-        return if (date.isNullOrEmpty()) {
+        return if (date.isEmpty()) {
             ""
         } else {
-            var date = formatDate(date.toDate(YYYYMMDD)!!, YYYY_MM_DD)
+            val date = formatDate(date.toDate(YYYYMMDD)!!, YYYY_MM_DD)
             date
         }
     }
 
     fun convertDateNoDash(date: String): String {
-        return if (date.isNullOrEmpty()) {
+        return if (date.isEmpty()) {
             ""
         } else {
-            var date = formatDate(date.toDate(YYYY_MM_DD)!!, YYYYMMDD)
+            val date = formatDate(date.toDate(YYYY_MM_DD)!!, YYYYMMDD)
             date
         }
     }
@@ -126,24 +115,60 @@ object DateUtils {
 
     }
 
+    /**
+     * 計算該時間戳與現在時間的差距 返回到倒數文字
+     * @param timeStampMills 時間戳(毫秒)
+     * @return String
+     */
+    fun diffTimeString(timeStampMills: Long?): String {
+        if (timeStampMills != null) {
+            val timeDiff = diffTime(timeStampMills)
+            if (timeDiff.hours > 0) {
+                return String.format(
+                    "倒數%s小時內",
+                    timeDiff.hours
+                )
+            } else if (timeDiff.minutes > 0) {
+                return String.format(
+                    "倒數%s分鐘內",
+                    timeDiff.minutes
+                )
+            }
+        }
+        return ""
+    }
+
+    /**
+     * 計算該時間戳與現在時間的差距 返回TimeDiff物件
+     * @param timeStampMills 時間戳(毫秒)
+     * @return TimeDiff
+     */
+    fun diffTime(timeStampMills: Long): TimeDiff {
+        val diffInMills = timeStampMills - System.currentTimeMillis()
+        val diffInHours = TimeUnit.MILLISECONDS.toHours(diffInMills).toInt()
+        val diffInMinute = TimeUnit.MILLISECONDS.toMinutes(diffInMills).toInt()
+        return TimeDiff(diffInHours, diffInMinute)
+    }
+
     private fun formatDate(date: Date, pattern: String? = "yyyy-MM-dd HH:mm:ss"): String =
         SimpleDateFormat(pattern, Locale.ENGLISH).format(date)
 
-    //String轉日期
+    /**
+     * String轉日期
+     */
     private fun String.toDate(pattern: String = "yyyy-MM-dd HH:mm:ss"): Date? {
         val sdFormat = try {
             SimpleDateFormat(pattern, Locale.ENGLISH)
         } catch (e: IllegalArgumentException) {
             null
         }
-        val date = sdFormat?.let {
+        return sdFormat?.let {
             try {
                 it.parse(this)
             } catch (e: ParseException) {
                 null
             }
         }
-        return date
     }
 
     data class DateObject(
@@ -152,5 +177,7 @@ object DateUtils {
         val day: Int = 0,
         val week: String = ""
     )
+
+    data class TimeDiff(val hours: Int = 0, val minutes: Int = 0)
 
 }

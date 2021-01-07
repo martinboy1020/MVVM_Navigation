@@ -126,22 +126,27 @@ class BottomSheetDetailFragment : BottomSheetDialogFragment(), KodeinAware,
     }
 
     private fun initRecentMatch(leagueTeamData: LeagueTeamData?) {
-        val recentMatch = binding?.root?.recent_match
-        Log.d("tag12345", "recent_match?: " + recentMatch)
-        val leagueName = recentMatch?.findViewById<TextView>(R.id.tv_league_name)
-        val homeName = recentMatch?.findViewById<TextView>(R.id.tv_home_team_name)
-        val awayName = recentMatch?.findViewById<TextView>(R.id.tv_away_team_name)
-        val homeLogo = recentMatch?.findViewById<ImageShapeWidget>(R.id.img_home_logo)
-        val awayLogo = recentMatch?.findViewById<ImageShapeWidget>(R.id.img_away_logo)
-        val openDate = recentMatch?.findViewById<TextView>(R.id.tv_match_start_time)
-        val bg = recentMatch?.findViewById<ConstraintLayout>(R.id.layout_recent_match_item)
-        recentMatch?.setBackgroundResource(R.drawable.rectangle_stroke_black_solid_white)
-        leagueName?.text = leagueTeamData?.leagueName
-        homeName?.text = leagueTeamData?.homeName
-        awayName?.text = leagueTeamData?.awayName
-        homeLogo?.setImage(leagueTeamData?.homeLogo)
-        awayLogo?.setImage(leagueTeamData?.awayLogo)
-        openDate?.text = DateUtils.convertTimestampToStringDate(leagueTeamData?.openDate?.toInt(), DateUtils.HHMM)
+        if(leagueTeamData != null) {
+            val recentMatch = binding?.root?.recent_match
+            val leagueName = recentMatch?.findViewById<TextView>(R.id.tv_league_name)
+            val homeName = recentMatch?.findViewById<TextView>(R.id.tv_home_team_name)
+            val awayName = recentMatch?.findViewById<TextView>(R.id.tv_away_team_name)
+            val homeLogo = recentMatch?.findViewById<ImageShapeWidget>(R.id.img_home_logo)
+            val awayLogo = recentMatch?.findViewById<ImageShapeWidget>(R.id.img_away_logo)
+            val openDate = recentMatch?.findViewById<TextView>(R.id.tv_match_start_time)
+            val countDown = recentMatch?.findViewById<TextView>(R.id.tv_match_count_down_time)
+            recentMatch?.setBackgroundResource(R.drawable.rectangle_stroke_black_solid_white)
+            leagueName?.text = leagueTeamData.leagueName
+            homeName?.text = leagueTeamData.homeName
+            awayName?.text = leagueTeamData.awayName
+            homeLogo?.setImage(leagueTeamData.homeLogo)
+            awayLogo?.setImage(leagueTeamData.awayLogo)
+            openDate?.text = DateUtils.convertTimestampToStringDate(
+                leagueTeamData.openDate.toInt(),
+                DateUtils.HHMM
+            )
+            countDown?.text = DateUtils.diffTimeString(leagueTeamData.openDate * 1000)
+        }
     }
 
     override fun closeDialog() {

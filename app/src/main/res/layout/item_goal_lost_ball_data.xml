@@ -4,10 +4,21 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="ballNumber" type="String" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="ballNumber"
+            type="String" />
+
         <variable
             name="data"
             type="com.example.mvvm_navigation.widget.GoalAndLostDataWidget.GoalAndLostWidgetData" />
+
+        <variable
+            name="visibleUp"
+            type="Boolean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,15 +36,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/img_up"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:background="@drawable/ic_baseline_arrow_drop_up"
+            android:visibility="@{visibleUp? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_goal_lost_ball_num"
+            app:layout_constraintStart_toEndOf="@id/tv_goal_lost_ball_num"
+            app:layout_constraintTop_toTopOf="@id/tv_goal_lost_ball_num" />
+
         <View
             android:id="@+id/view"
             android:layout_width="1dp"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:background="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_goal_lost_ball_num"
+            app:layout_constraintStart_toEndOf="@id/img_up"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -44,7 +65,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:text="@{data.titleString}"
-            app:layout_constraintStart_toEndOf="@+id/view"
+            app:layout_constraintStart_toEndOf="@id/view"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -56,8 +77,8 @@
             android:text="@{data.descriptionString}"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_occurrence_rate"
-            app:layout_constraintTop_toBottomOf="@+id/tv_occurrence_rate" />
+            app:layout_constraintStart_toStartOf="@id/tv_occurrence_rate"
+            app:layout_constraintTop_toBottomOf="@id/tv_occurrence_rate" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

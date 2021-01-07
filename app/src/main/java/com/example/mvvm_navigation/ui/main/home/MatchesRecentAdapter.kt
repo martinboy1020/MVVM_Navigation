@@ -73,6 +73,7 @@ class MatchesRecentAdapter(
         holder.awayName.text = data[position].away
         holder.imgTop.setOnClickListener { listener?.onSetTopClick(data[position]) }
         holder.openDate.text = DateUtils.convertTimestampToStringDate(data[position].openDate.toInt(), DateUtils.HHMM)
+        holder.countDown.text = DateUtils.diffTimeString(data[position].openDate * 1000)
         viewDataBinding.root.layout_recent_match_item.setOnClickListener { listener?.onClickItem(data[position]) }
         viewDataBinding.executePendingBindings()
     }

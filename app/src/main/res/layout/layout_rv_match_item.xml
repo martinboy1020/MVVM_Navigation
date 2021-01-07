@@ -3,26 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="androidx.core.content.ContextCompat" />
+
         <variable
             name="match"
             type="com.example.mvvm_navigation.datacenter.network.response.MatchList.Match" />
+
         <variable
             name="isTopListImg"
             type="Integer" />
+
         <variable
             name="openDate"
             type="String" />
-<!--        <variable-->
-<!--            name="homeTeamName"-->
-<!--            type="String" />-->
+        <!--        <variable-->
+        <!--            name="homeTeamName"-->
+        <!--            type="String" />-->
 
-<!--        <variable-->
-<!--            name="awayTeamName"-->
-<!--            type="String" />-->
-<!--        <variable-->
-<!--            name="leagueName"-->
-<!--            type="String" />-->
+        <!--        <variable-->
+        <!--            name="awayTeamName"-->
+        <!--            type="String" />-->
+        <!--        <variable-->
+        <!--            name="leagueName"-->
+        <!--            type="String" />-->
 
     </data>
 
@@ -59,7 +63,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="10dp"
-            android:src="@{ContextCompat.getDrawable(context, isTopListImg), default=@drawable/ic_baseline_keyboard_arrow_down}"
+            android:src="@{ContextCompat.getDrawable(context, isTopListImg), default=@drawable/ic_baseline_keyboard_arrow_up}"
             app:layout_constraintStart_toStartOf="@+id/tv_league_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_league_name" />
 
@@ -101,6 +105,7 @@
             android:layout_marginRight="20dp"
             android:text="@{match.homeName, default=主隊名稱六字}"
             android:textSize="10sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tv_score"
             app:layout_constraintEnd_toStartOf="@+id/tv_score"
             app:layout_constraintTop_toTopOf="@+id/tv_score" />

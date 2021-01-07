@@ -20,5 +20,6 @@ class HomeContract {
         fun userLogin()
         fun tokenRefresh()
         fun getHomeInfo()
+        fun getTgMatchRecent()
     }
 }
