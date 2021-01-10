@@ -24,6 +24,9 @@
         <activity
             android:name=".ui.match.MatchListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.filter.FilterActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -20,15 +20,17 @@ class MatchListToolBarWidget @JvmOverloads constructor(
     private var tvDay: TextView? = null
     private var btnLastDay: ImageView? = null
     private var btnNextDay: ImageView? = null
-    private var changeDateListener: ChangeDateListener? = null
+    private var btnFilter: ImageView? = null
+    private var changeDateListener: MatchListToolBarListener? = null
     private var nowTimestamp: Long = 0
 
     init {
         initView()
     }
 
-    interface ChangeDateListener {
+    interface MatchListToolBarListener {
         fun changeDate(timestamp: Long)
+        fun clickFilter()
     }
 
     private fun initView() {
@@ -37,6 +39,7 @@ class MatchListToolBarWidget @JvmOverloads constructor(
         tvDay = view?.findViewById(R.id.tv_day)
         btnLastDay = view?.findViewById(R.id.btn_last_day)
         btnNextDay = view?.findViewById(R.id.btn_next_day)
+        btnFilter = view?.findViewById(R.id.btn_filter)
         nowTimestamp = System.currentTimeMillis()
         changeDateText(DateUtils.getCalendarFromTimeStamp(nowTimestamp))
 
@@ -52,6 +55,9 @@ class MatchListToolBarWidget @JvmOverloads constructor(
             changeDateListener?.changeDate(DateUtils.getNextDayTimeStamp(nowTimestamp))
         }
 
+        btnFilter?.setOnClickListener {
+            changeDateListener?.clickFilter()
+        }
     }
 
     private fun changeDateText(date: DateUtils.DateObject) {
@@ -59,7 +65,7 @@ class MatchListToolBarWidget @JvmOverloads constructor(
         tvDay?.text = date.day.toString()
     }
 
-    fun setListener(listener: ChangeDateListener) {
+    fun setListener(listener: MatchListToolBarListener) {
         changeDateListener = listener
     }
 

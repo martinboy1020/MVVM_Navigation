@@ -1,5 +1,6 @@
 package com.example.mvvm_navigation.ui.match
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.viewpager2.widget.ViewPager2
@@ -8,6 +9,7 @@ import com.example.base.utils.DateUtils
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseActivity
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
+import com.example.mvvm_navigation.ui.filter.FilterActivity
 import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
 import com.example.mvvm_navigation.widget.LogoToolBarWidget
 import com.example.mvvm_navigation.widget.MatchListToolBarWidget
@@ -18,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_match_list.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 @LayoutId(R.layout.activity_match_list)
-class MatchListActivity : BaseActivity(), MatchListToolBarWidget.ChangeDateListener {
+class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBarListener {
 
     private var pageAdapter: MatchListFragmentPageAdapter? = null
 
@@ -52,6 +54,10 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.ChangeDateListe
         if(matchListFragment is MatchListFragment) matchListFragment.changeDate(timestamp)
     }
 
+    override fun clickFilter() {
+        val intent = Intent(this, FilterActivity::class.java)
+        startActivity(intent)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
