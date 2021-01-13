@@ -93,11 +93,11 @@ private fun getBottomSheetDialogViewModel(fragment: BottomSheetDetailFragment): 
 
 val matchFilterModule = Kodein.Module(Contract.ModuleName.MATCH_FILTER) {
     bind<MatchFilterViewModelImpl>() with singleton {
-        getMatchFilterViewModel(instance(MatchFilterFragment().javaClass.simpleName))
+        getMatchFilterViewModel(instance(MatchFilterFragment::class.java.simpleName))
     }
 }
 
-private fun getMatchFilterViewModel(fragment: MatchListFragment): MatchFilterViewModelImpl {
+private fun getMatchFilterViewModel(fragment: MatchFilterFragment): MatchFilterViewModelImpl {
     val repository = Repository.getInstance(fragment.requireContext())
     val model = MatchFilterModel.getInstance(repository)
     var findNavController: NavController? = null
@@ -117,7 +117,7 @@ private fun getMatchFilterViewModel(fragment: MatchListFragment): MatchFilterVie
 
 val incorrectScoreFilterModule = Kodein.Module(Contract.ModuleName.INCORRECT_SCORE_FILTER) {
     bind<InCorrectScoreViewModelImpl>() with singleton {
-        getIncorrectScoreFilterViewModel(instance(IncorrectScoreFilterFragment().javaClass.simpleName))
+        getIncorrectScoreFilterViewModel(instance(IncorrectScoreFilterFragment::class.java.simpleName))
     }
 }
 

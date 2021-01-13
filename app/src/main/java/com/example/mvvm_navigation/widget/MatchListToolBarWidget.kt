@@ -2,6 +2,7 @@ package com.example.mvvm_navigation.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -46,13 +47,13 @@ class MatchListToolBarWidget @JvmOverloads constructor(
         btnLastDay?.setOnClickListener {
             nowTimestamp = DateUtils.getLastDayTimeStamp(nowTimestamp)
             changeDateText(DateUtils.getCalendarFromTimeStamp(nowTimestamp))
-            changeDateListener?.changeDate(DateUtils.getLastDayTimeStamp(nowTimestamp))
+            changeDateListener?.changeDate(nowTimestamp)
         }
 
         btnNextDay?.setOnClickListener {
             nowTimestamp = DateUtils.getNextDayTimeStamp(nowTimestamp)
             changeDateText(DateUtils.getCalendarFromTimeStamp(nowTimestamp))
-            changeDateListener?.changeDate(DateUtils.getNextDayTimeStamp(nowTimestamp))
+            changeDateListener?.changeDate(nowTimestamp)
         }
 
         btnFilter?.setOnClickListener {

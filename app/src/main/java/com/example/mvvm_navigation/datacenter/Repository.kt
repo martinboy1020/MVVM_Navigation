@@ -3,7 +3,6 @@ package com.example.mvvm_navigation.datacenter
 import android.content.Context
 import android.util.Log
 import com.bumptech.glide.Glide
-import com.example.base.extension.fromJson
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.data.BetData
@@ -225,6 +224,7 @@ class Repository constructor(val context: Context) {
                 ).await()
             if (response.statusCode == "0") {
                 dataCenter.matchList = response.payload.matches
+                filterList(response.payload)
                 HttpResult.onSuccess(response)
             } else HttpResult.onError(
                 response.statusCode,
@@ -234,6 +234,30 @@ class Repository constructor(val context: Context) {
             Log.d("tag12345", "getWebMatchList e.message: ${e.message}")
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
+
+    private fun filterList(list: MatchList.Data) {
+        val areaList = list.areas
+        dataCenter.filterAreaList = areaList
+    }
+
+    fun getFilterAreaList(): MutableList<MatchList.Area> {
+        val responseString = GetAssetsUtils.getJsonDataFromAsset(context, "matchlist.json")
+        if (responseString != null) {
+            val matchListType = object : TypeToken<HttpStatus<MatchList.Data>>() {}.type
+            val data: HttpStatus<MatchList.Data> = Gson().fromJson(responseString, matchListType)
+            filterList(data.payload)
+        }
+        Log.d("tag123456789", "dataCenter.filterAreaList: ${dataCenter.filterAreaList}")
+        return dataCenter.filterAreaList
+    }
+
+    fun getFilterCountryList(): MutableList<MatchList.Country> {
+        return dataCenter.filterCountryList
+    }
+
+    fun getFilterLeagueList(): MutableList<MatchList.Leagues> {
+        return dataCenter.filterLeagueList
+    }
 
     fun getTestMatchListData(): HttpStatus<MatchList.Data>? {
         val responseString = GetAssetsUtils.getJsonDataFromAsset(context, "matchlist.json")

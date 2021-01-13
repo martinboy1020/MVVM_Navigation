@@ -8,12 +8,15 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.mvvm_navigation.R
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 
 class BuildRecyclerView constructor(context: Context, val attributeSet: AttributeSet? = null) :
     RecyclerView(context, attributeSet) {
@@ -23,7 +26,7 @@ class BuildRecyclerView constructor(context: Context, val attributeSet: Attribut
     }
 
     enum class ManagerType(val code: Int) {
-        HORIZONTAL(0), VERTICAL(1), GRID(2)
+        HORIZONTAL(0), VERTICAL(1), GRID(2), FLEXBOX(3)
     }
 
     private fun init() {
@@ -33,22 +36,36 @@ class BuildRecyclerView constructor(context: Context, val attributeSet: Attribut
         val column = typedArray.getInt(R.styleable.BuildRecyclerView_column, 0)
         val hasDivider = typedArray.getBoolean(R.styleable.BuildRecyclerView_has_divider, false)
         val dividerHeight = typedArray.getInt(R.styleable.BuildRecyclerView_divider_height, 1)
-        val itemSpaceMarginTop = typedArray.getInt(R.styleable.BuildRecyclerView_item_space_margin, 0)
+        val itemSpaceMarginTop =
+            typedArray.getInt(R.styleable.BuildRecyclerView_item_space_margin, 0)
         this.layoutManager =
             when (managerType) {
                 ManagerType.GRID.code -> GridLayoutManager(this.context, column)
+                ManagerType.FLEXBOX.code -> FlexboxLayoutManager(this.context)
                 else -> LinearLayoutManager(this.context, managerType, false)
             }
-        if (hasDivider)
-            this.addItemDecoration(DividerItemDecoration(this.context, dividerHeight, itemSpaceMarginTop))
-        if(managerType == ManagerType.GRID.code) {
-            this.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
+        if (managerType == ManagerType.FLEXBOX.code) {
+            (this.layoutManager as FlexboxLayoutManager).flexDirection = FlexDirection.ROW
+            (this.layoutManager as FlexboxLayoutManager).flexWrap = FlexWrap.WRAP
+            (this.layoutManager as FlexboxLayoutManager).alignItems = AlignItems.STRETCH
         }
+        if (hasDivider)
+            this.addItemDecoration(
+                DividerItemDecoration(
+                    this.context,
+                    dividerHeight,
+                    itemSpaceMarginTop
+                )
+            )
+//        if(managerType == ManagerType.GRID.code) {
+//            this.addItemDecoration(GridSpacingItemDecoration(2, 20, false))
+//        }
         typedArray.recycle()
     }
 }
 
-class DividerItemDecoration(context: Context, dividerHeight: Int, itemSpaceMarginTop: Int) : RecyclerView.ItemDecoration() {
+class DividerItemDecoration(context: Context, dividerHeight: Int, itemSpaceMarginTop: Int) :
+    RecyclerView.ItemDecoration() {
 
     private var mContext = context
     private var mDividerHeight = 0f

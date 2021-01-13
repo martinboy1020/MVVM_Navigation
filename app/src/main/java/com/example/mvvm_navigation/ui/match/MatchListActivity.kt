@@ -5,19 +5,20 @@ import android.os.Bundle
 import android.util.Log
 import androidx.viewpager2.widget.ViewPager2
 import com.example.base.components.LayoutId
-import com.example.base.utils.DateUtils
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseActivity
+import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.ui.filter.FilterActivity
 import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
-import com.example.mvvm_navigation.widget.LogoToolBarWidget
 import com.example.mvvm_navigation.widget.MatchListToolBarWidget
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_match_list.*
 import kotlinx.android.synthetic.main.activity_match_list.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import java.lang.reflect.Type
 
 @LayoutId(R.layout.activity_match_list)
 class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBarListener {
@@ -29,6 +30,7 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
         val vpMatchListFragment: ViewPager2 = binding.root.vp_match_list_fragment
         pageAdapter = MatchListFragmentPageAdapter(supportFragmentManager, lifecycle)
         vpMatchListFragment.adapter = pageAdapter
+        vpMatchListFragment.offscreenPageLimit = 4
         vpMatchListFragment.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -55,8 +57,17 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
     }
 
     override fun clickFilter() {
-        val intent = Intent(this, FilterActivity::class.java)
-        startActivity(intent)
+        val matchListFragment = supportFragmentManager.findFragmentByTag("f" + vp_match_list_fragment.currentItem)
+        val areaList: MutableList<MatchList.Area>? = if(matchListFragment is MatchListFragment) matchListFragment.getAreaList() else null
+        if(!areaList.isNullOrEmpty()) {
+            val intent = Intent(this, FilterActivity::class.java)
+            val type: Type = object : TypeToken<MutableList<MatchList.Area>>() {}.type
+            val json: String = Gson().toJson(areaList, type)
+            val bundle = Bundle()
+            bundle.putString("filter", json)
+            intent.putExtras(bundle)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroy() {

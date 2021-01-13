@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.example.mvvm_navigation.base.BaseViewModel
-import com.example.mvvm_navigation.ui.filter.viewmodel.incorrect_score_filter.IncorrectScoreFilterFragmentSubmitter
+import com.example.mvvm_navigation.datacenter.network.response.MatchList
 
 class MatchFilterViewModel constructor(
     application: Application,
@@ -14,6 +14,9 @@ class MatchFilterViewModel constructor(
     val model: MatchFilterContract.ModelImpl,
     navController: NavController?
 ) : BaseViewModel(application, context, navController), MatchFilterContract.ViewModelImpl {
+
+    private val submitter =
+        MatchFilterFragmentSubmitter()
 
     companion object {
         fun getInstance(
@@ -30,6 +33,10 @@ class MatchFilterViewModel constructor(
             )
     }
 
+    init {
+//        this.submitter.areaList.value = this.model.getFilterAreaList()
+    }
+
     class Factory(
         val application: Application,
         val context: Context,
@@ -44,8 +51,10 @@ class MatchFilterViewModel constructor(
         ) as T
     }
 
-    override fun getSubmitter(): IncorrectScoreFilterFragmentSubmitter {
-        TODO("Not yet implemented")
+    override fun setMatchFilter(mutableList: MutableList<MatchList.Area>) {
+        this.submitter.areaList.value = mutableList
     }
+
+    override fun getSubmitter(): MatchFilterFragmentSubmitter = this.submitter
 
 }

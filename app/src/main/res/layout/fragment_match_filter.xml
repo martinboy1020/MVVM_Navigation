@@ -2,7 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data></data>
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.mvvm_navigation.ui.filter.viewmodel.match_filter.MatchFilterFragmentSubmitter" />
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,16 +23,45 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.example.mvvm_navigation.widget.BuildRecyclerView
-            android:id="@+id/rv_match_filter"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/match_filter_scroll_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/layout_bottom"
+            app:layout_constraintBottom_toTopOf="@+id/layout_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_manager_type="grid"
-            app:column="3"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/layout_scroll_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <com.example.mvvm_navigation.widget.MatchFilterWidget
+                    android:id="@+id/match_filter_widget_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dataType="area"
+                    app:areaList="@{viewModel.areaList}"/>
+
+                <com.example.mvvm_navigation.widget.MatchFilterWidget
+                    android:id="@+id/match_filter_widget_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dataType="country"
+                    app:areaList="@{viewModel.areaList}"/>
+
+                <com.example.mvvm_navigation.widget.MatchFilterWidget
+                    android:id="@+id/match_filter_widget_league"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:dataType="league"
+                    app:areaList="@{viewModel.areaList}"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

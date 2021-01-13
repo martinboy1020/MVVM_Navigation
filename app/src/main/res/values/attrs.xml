@@ -6,6 +6,7 @@
             <enum name="horizontal" value="0"/>
             <enum name="vertical" value="1"/>
             <enum name="grid" value="2"/>
+            <enum name="flex" value="3"/>
         </attr>
         <attr name="has_divider" format="boolean"/>
         <attr name="divider_height" format="integer"/>
@@ -28,6 +29,14 @@
             <enum name="roundedCorners" value="2"/>
         </attr>
         <attr name="roundCornersRadius" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="MatchFilterWidget">
+        <attr name="dataType" format="enum">
+            <enum name="area" value="0"/>
+            <enum name="country" value="1"/>
+            <enum name="league" value="2"/>
+        </attr>
     </declare-styleable>
 
 </resources>

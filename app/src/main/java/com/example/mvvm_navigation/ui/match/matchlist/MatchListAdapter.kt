@@ -68,6 +68,7 @@ class MatchListAdapter(
             holder.awayName.setTextColor(ContextCompat.getColor(context, android.R.color.black))
         }
         holder.openDate.text = DateUtils.convertTimestampToStringDate(data[position].openDate.toInt(), DateUtils.HHMM)
+        holder.favoritePerson.text = data[position].betsCount.toString()
         holder.bg.setOnClickListener { listener?.onSetTopClick(data[position]) }
     }
 
@@ -82,6 +83,7 @@ class MatchListAdapter(
         var bg: ConstraintLayout = root.layout_match_item
         var imgTop: ImageView = root.img_top
         var openDate: TextView = root.tv_match_start_time
+        var favoritePerson: TextView = root.tv_favorite_person
     }
 
 }

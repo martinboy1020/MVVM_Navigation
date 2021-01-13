@@ -9,6 +9,8 @@ import androidx.navigation.NavDirections
 
 open class ViewModelRigger constructor(application: Application, val context: Context, val navController: NavController?): AndroidViewModel(application){
 
+//    val context: Context = application.applicationContext
+
     fun transFragment(id: Int){ this.navController?.navigate(id) }
 
     fun transFragment(node: NavDirections){ this.navController?.navigate(node) }

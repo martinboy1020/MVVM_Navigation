@@ -11,4 +11,7 @@ class DataCenter {
     var matchAllList: MutableList<MatchList.Match> = mutableListOf()
     var matchList: MutableList<MatchList.Match> = mutableListOf()
     var betList: MutableList<BetData> = mutableListOf()
+    var filterAreaList: MutableList<MatchList.Area> = mutableListOf()
+    var filterCountryList: MutableList<MatchList.Country> = mutableListOf()
+    var filterLeagueList: MutableList<MatchList.Leagues> = mutableListOf()
 }

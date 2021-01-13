@@ -50,4 +50,8 @@ class MatchListFragment : BaseFragment() {
         this.viewModel.changeDate(timestamp)
     }
 
+    fun getAreaList(): MutableList<MatchList.Area>? {
+        return this.viewModel.getSubmitter().areaList.value
+    }
+
 }

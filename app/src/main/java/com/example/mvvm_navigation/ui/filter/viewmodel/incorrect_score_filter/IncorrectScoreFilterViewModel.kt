@@ -14,6 +14,9 @@ class IncorrectScoreFilterViewModel constructor(
     navController: NavController?
 ) : BaseViewModel(application, context, navController), IncorrectScoreFilterContract.ViewModelImpl {
 
+    private val submitter =
+        IncorrectScoreFilterFragmentSubmitter()
+
     companion object {
         fun getInstance(
             application: Application,
@@ -43,8 +46,6 @@ class IncorrectScoreFilterViewModel constructor(
         ) as T
     }
 
-    override fun getSubmitter(): IncorrectScoreFilterFragmentSubmitter {
-        TODO("Not yet implemented")
-    }
+    override fun getSubmitter(): IncorrectScoreFilterFragmentSubmitter = this.submitter
 
 }

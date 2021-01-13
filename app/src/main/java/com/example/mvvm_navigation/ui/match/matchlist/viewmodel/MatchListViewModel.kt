@@ -96,6 +96,7 @@ class MatchListViewModel constructor(
                     is HttpResult.onSuccess -> {
                         this@MatchListViewModel.submitter.matchList.value =
                             result.data.payload.matches
+                        this@MatchListViewModel.submitter.areaList.value = result.data.payload.areas
                     }
                     is HttpResult.onError -> {
 

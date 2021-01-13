@@ -22,12 +22,15 @@ class MatchList {
     data class Country(
         @SerializedName(ApiDataKey.ID) val id: Int = 0,
         @SerializedName(ApiDataKey.NAME) val name: String = "",
-        @SerializedName(ApiDataKey.LEAGUES) val leagues: MutableList<Leagues> = mutableListOf()
+        @SerializedName(ApiDataKey.LEAGUES) val leagues: MutableList<Leagues> = mutableListOf(),
+        var areaId: Int = 0
     )
 
     data class Leagues(
         @SerializedName(ApiDataKey.ID) val id: Int = 0,
-        @SerializedName(ApiDataKey.NAME) val name: String = ""
+        @SerializedName(ApiDataKey.NAME) val name: String = "",
+        val areaId: Int = 0,
+        var countryId: Int = 0
     )
 
     data class Match(
@@ -48,6 +51,20 @@ class MatchList {
         @SerializedName(ApiDataKey.AWAY_LOGO) val awayLogo: String = "",
         @SerializedName(ApiDataKey.HOME_SCORE) val homeScore: Int = 0,
         @SerializedName(ApiDataKey.AWAY_SCORE) val awayScore: Int = 0,
+        @SerializedName(ApiDataKey.HOME_HALF_SCORE) val homeHalfScore: Int = 0,
+        @SerializedName(ApiDataKey.AWAY_HALF_SCORE) val awayHalfScore: Int = 0,
+        @SerializedName(ApiDataKey.HOME_YELLOW_CARD) val homeYellowCard: Int = 0,
+        @SerializedName(ApiDataKey.AWAY_YELLOW_CARD) val awayYellowCard: Int = 0,
+        @SerializedName(ApiDataKey.HOME_RED_CARD) val homeRedCard: Int = 0,
+        @SerializedName(ApiDataKey.AWAY_RED_CARD) val awayRedCard: Int = 0,
+        @SerializedName(ApiDataKey.HOME_CORNER) val homeCorner: Int = 0,
+        @SerializedName(ApiDataKey.AWAY_CORNER) val awayCorner: Int = 0,
+        @SerializedName(ApiDataKey.ANIMATION) val animation: Int = 0,
+        @SerializedName(ApiDataKey.LIVE_STREAMING) val liveStreaming: Int = 0,
+        @SerializedName(ApiDataKey.FULL_GAME_TIME) val fullGameTime: Int = 0,
+        @SerializedName(ApiDataKey.NEUTRAL) val neutral: Int = 0,
+        @SerializedName(ApiDataKey.ROUND) val round: Int = 0,
+        @SerializedName(ApiDataKey.BETS_COUNT) val betsCount: Int = 0,
         var isTopOfList: Boolean = false
     )
 
