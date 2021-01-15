@@ -11,26 +11,29 @@ class MatchList {
     )
 
     data class Data(@SerializedName(ApiDataKey.AREAS) val areas: MutableList<Area> = mutableListOf(),
-                    @SerializedName(ApiDataKey.MATCHES) val matches: MutableList<Match> = mutableListOf())
+                    @SerializedName(ApiDataKey.MATCHES) var matches: MutableList<Match> = mutableListOf())
 
     data class Area(
         @SerializedName(ApiDataKey.ID) val id: Int = 0,
         @SerializedName(ApiDataKey.NAME) val name: String = "",
-        @SerializedName(ApiDataKey.COUNTRIES) val countries: MutableList<Country> = mutableListOf()
+        @SerializedName(ApiDataKey.COUNTRIES) val countries: MutableList<Country> = mutableListOf(),
+        var isCheck: Boolean = false
     )
 
     data class Country(
         @SerializedName(ApiDataKey.ID) val id: Int = 0,
         @SerializedName(ApiDataKey.NAME) val name: String = "",
         @SerializedName(ApiDataKey.LEAGUES) val leagues: MutableList<Leagues> = mutableListOf(),
-        var areaId: Int = 0
+        var areaId: Int = 0,
+        var isCheck: Boolean = false
     )
 
     data class Leagues(
         @SerializedName(ApiDataKey.ID) val id: Int = 0,
         @SerializedName(ApiDataKey.NAME) val name: String = "",
         val areaId: Int = 0,
-        var countryId: Int = 0
+        var countryId: Int = 0,
+        var isCheck: Boolean = false
     )
 
     data class Match(

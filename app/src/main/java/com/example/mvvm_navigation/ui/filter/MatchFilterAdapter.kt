@@ -11,15 +11,25 @@ import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.widget.ImageShapeWidget
 import kotlinx.android.synthetic.main.layout_item_cb_match_selector.view.*
 
-class MatchFilterAdapter(typeData: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MatchFilterAdapter(
+    typeData: Int,
+    listener: MatchFilterAdapterOnChangeListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var type: Int? = 0
     private var areaList: MutableList<MatchList.Area> = mutableListOf()
     private var countryList: MutableList<MatchList.Country> = mutableListOf()
     private var leagueList: MutableList<MatchList.Leagues> = mutableListOf()
+    private var matchFilterOnChangeListener: MatchFilterAdapterOnChangeListener? = null
+    private var isSelectedAll: Boolean = false
 
     init {
         type = typeData
+        matchFilterOnChangeListener = listener
+    }
+
+    interface MatchFilterAdapterOnChangeListener {
+        fun changeStatus(id: Int, name: String, isCheck: Boolean)
     }
 
     companion object {
@@ -40,7 +50,7 @@ class MatchFilterAdapter(typeData: Int) : RecyclerView.Adapter<RecyclerView.View
     }
 
     override fun getItemCount(): Int {
-        return when(type) {
+        return when (type) {
             TYPE_AREA -> {
                 areaList.size
             }
@@ -59,7 +69,7 @@ class MatchFilterAdapter(typeData: Int) : RecyclerView.Adapter<RecyclerView.View
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val itemHolder = holder as FilterItemViewHolder
         itemHolder.img.visibility = View.GONE
-        when(type) {
+        when (type) {
             TYPE_AREA -> {
                 itemHolder.itemName.text = areaList[position].name
             }
@@ -70,7 +80,25 @@ class MatchFilterAdapter(typeData: Int) : RecyclerView.Adapter<RecyclerView.View
                 itemHolder.itemName.text = leagueList[position].name
             }
         }
-        itemHolder.cb.setOnCheckedChangeListener { compoundButton, b -> }
+        itemHolder.cb.isChecked = isSelectedAll
+        itemHolder.cb.setOnClickListener {
+            val isChecked = holder.cb.isChecked
+            holder.cb.isChecked = isChecked
+            when (type) {
+                TYPE_AREA -> {
+                    areaList[position].isCheck = isChecked
+                    matchFilterOnChangeListener?.changeStatus(areaList[holder.getAdapterPosition()].id, areaList[holder.getAdapterPosition()].name, isChecked)
+                }
+                TYPE_COUNTRY -> {
+                    countryList[position].isCheck = isChecked
+                    matchFilterOnChangeListener?.changeStatus(countryList[position].id, countryList[holder.getAdapterPosition()].name, isChecked)
+                }
+                TYPE_LEAGUE -> {
+                    leagueList[position].isCheck = isChecked
+                    matchFilterOnChangeListener?.changeStatus(leagueList[position].id, leagueList[holder.getAdapterPosition()].name, isChecked)
+                }
+            }
+        }
     }
 
     fun setAreaList(areaList: MutableList<MatchList.Area>) {
@@ -92,6 +120,28 @@ class MatchFilterAdapter(typeData: Int) : RecyclerView.Adapter<RecyclerView.View
         var cb: CheckBox = itemView.cb_item_match_selector
         var itemName: TextView = itemView.tv_item_match_selector
         var img: ImageShapeWidget = itemView.img_item_match_selector
+    }
+
+    fun allSelected() {
+        isSelectedAll = true
+        notifyDataSetChanged()
+    }
+
+    fun allUnselected() {
+        isSelectedAll = false
+        notifyDataSetChanged()
+    }
+
+    fun getAreaList(): MutableList<MatchList.Area> {
+        return areaList
+    }
+
+    fun getCountryList(): MutableList<MatchList.Country> {
+        return countryList
+    }
+
+    fun getLeagueList(): MutableList<MatchList.Leagues> {
+        return leagueList
     }
 
 }

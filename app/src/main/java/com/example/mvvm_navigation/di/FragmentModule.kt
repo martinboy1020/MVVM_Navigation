@@ -32,7 +32,7 @@ import com.example.mvvm_navigation.ui.filter.viewmodel.incorrect_score_filter.In
 
 val mainModule = Kodein.Module(Contract.ModuleName.MAIN) {
     bind<HomeViewModelImpl>() with singleton {
-        getMainViewModel(instance(HomeFragment().TAG))
+        getMainViewModel(instance(HomeFragment::class.java.simpleName))
     }
 }
 
@@ -50,7 +50,7 @@ private fun getMainViewModel(fragment: HomeFragment): HomeViewModelImpl {
 
 val matchListModule = Kodein.Module(Contract.ModuleName.MATCH_LIST) {
     bind<MatchListViewModelImpl>() with singleton {
-        getMatchListViewModel(instance(MatchListFragment().javaClass.simpleName))
+        getMatchListViewModel(instance(MatchListFragment::class.java.simpleName))
     }
 }
 
@@ -74,7 +74,7 @@ private fun getMatchListViewModel(fragment: MatchListFragment): MatchListViewMod
 
 val bottomSheetDialogModule = Kodein.Module(Contract.ModuleName.BOTTOM_SHEET) {
     bind<BottomSheetDetailViewModelImpl>() with singleton {
-        getBottomSheetDialogViewModel(instance(BottomSheetDetailFragment().javaClass.simpleName))
+        getBottomSheetDialogViewModel(instance(BottomSheetDetailFragment::class.java.simpleName))
     }
 }
 

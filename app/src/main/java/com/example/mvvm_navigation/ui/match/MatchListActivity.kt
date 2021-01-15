@@ -23,6 +23,7 @@ import java.lang.reflect.Type
 @LayoutId(R.layout.activity_match_list)
 class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBarListener {
 
+    private var REQUEST_CODE_FILTER = 0
     private var pageAdapter: MatchListFragmentPageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,6 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 val matchListFragment = supportFragmentManager.findFragmentByTag("f" + vp_match_list_fragment.currentItem)
-                Log.d("tag12345", "matchListFragment $position: $matchListFragment")
                 if(matchListFragment is MatchListFragment) matchListFragment.changeDate(UserSharePreferences(this@MatchListActivity).matchListDate)
             }
         })
@@ -66,7 +66,7 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
             val bundle = Bundle()
             bundle.putString("filter", json)
             intent.putExtras(bundle)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_FILTER)
         }
     }
 
@@ -78,4 +78,11 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
         )
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == REQUEST_CODE_FILTER) {
+            val matchListFragment = supportFragmentManager.findFragmentByTag("f" + vp_match_list_fragment.currentItem)
+            if(matchListFragment is MatchListFragment) matchListFragment.changeDate(UserSharePreferences(this@MatchListActivity).matchListDate)
+        }
+    }
 }

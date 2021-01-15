@@ -26,13 +26,12 @@ import org.kodein.di.generic.singleton
 
 @LayoutId(R.layout.fragment_home)
 class HomeFragment : BaseFragment() {
-    val TAG = "MainFragment"
 
     /** Dependency Injection **/
     override val kodeinContext: KodeinContext<*> get() = kcontext(activity)
 
     override val kodein = Kodein.lazy {
-        bind<HomeFragment>(TAG) with singleton { this@HomeFragment }
+        bind<HomeFragment>(HomeFragment::class.java.simpleName) with singleton { this@HomeFragment }
         import(mainModule)
     }
 

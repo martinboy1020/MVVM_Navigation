@@ -19,7 +19,14 @@ import org.kodein.di.generic.kcontext
 import org.kodein.di.generic.singleton
 
 @LayoutId(R.layout.fragment_matchlist)
-class MatchListFragment : BaseFragment() {
+class MatchListFragment(var status: Int) : BaseFragment() {
+
+    companion object {
+        const val MATCH_ING = 0
+        const val MATCH_UNOPEN = 1
+        const val MATCH_ENDING = 2
+        const val MATCH_TOP = 3
+    }
 
     /** Dependency Injection **/
     override val kodeinContext: KodeinContext<*> get() = kcontext(activity)
@@ -43,6 +50,7 @@ class MatchListFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        this.viewModel.getSubmitter().matchStatus.value = status
         this.binding.setVariable(BR.viewModel, this.viewModel.getSubmitter())
     }
 

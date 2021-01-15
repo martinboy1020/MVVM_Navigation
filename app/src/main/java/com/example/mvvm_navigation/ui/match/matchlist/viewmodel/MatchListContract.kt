@@ -9,8 +9,8 @@ import java.sql.Timestamp
 class MatchListContract {
     interface ModelImpl {
         //        suspend fun getUser(): HttpResult<List<UserData.User>>
-        fun setMatchItemToTopList(data: MatchList.Match): MutableList<MatchList.Match>
-        suspend fun getMatchesList(date: Long): HttpResult<HttpStatus<MatchList.Data>>
+        fun setMatchItemToTopList(data: MatchList.Match, status: Int): MutableList<MatchList.Match>
+        suspend fun getMatchesList(date: Long, status: Int): HttpResult<HttpStatus<MatchList.Data>>
         fun getTestMatchesList(): HttpStatus<MatchList.Data>?
     }
 

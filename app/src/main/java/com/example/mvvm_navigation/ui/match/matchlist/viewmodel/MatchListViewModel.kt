@@ -75,7 +75,7 @@ class MatchListViewModel constructor(
 
     override fun onSetTopClick(data: MatchList.Match) {
         CoroutineScope(Dispatchers.IO).launch {
-            val matchList = this@MatchListViewModel.model.setMatchItemToTopList(data)
+            val matchList = this@MatchListViewModel.model.setMatchItemToTopList(data, getSubmitter().matchStatus.value!!)
             withContext(Dispatchers.Main) {
                 this@MatchListViewModel.submitter.matchList.value = matchList
             }
@@ -90,7 +90,7 @@ class MatchListViewModel constructor(
 
     private fun getMatchList(date: Long = DateUtils.getTodayDatMillis()) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = model.getMatchesList(date)
+            val result = model.getMatchesList(date, getSubmitter().matchStatus.value!!)
             withContext(Dispatchers.Main) {
                 when (result) {
                     is HttpResult.onSuccess -> {

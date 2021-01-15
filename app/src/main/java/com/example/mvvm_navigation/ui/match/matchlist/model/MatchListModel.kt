@@ -22,12 +22,12 @@ class MatchListModel constructor(val repository: Repository) : BaseModel(), Matc
 //        }
 //    }
 
-    override fun setMatchItemToTopList(data: MatchList.Match): MutableList<MatchList.Match> {
-        return this@MatchListModel.repository.refreshTopListMatch(data)
+    override fun setMatchItemToTopList(data: MatchList.Match, status: Int): MutableList<MatchList.Match> {
+        return this@MatchListModel.repository.refreshTopListMatch(data, status)
     }
 
-    override suspend fun getMatchesList(date: Long): HttpResult<HttpStatus<MatchList.Data>> {
-        return this@MatchListModel.repository.getWebMatchList(date / 1000)
+    override suspend fun getMatchesList(date: Long, status: Int): HttpResult<HttpStatus<MatchList.Data>> {
+        return this@MatchListModel.repository.getWebMatchList(date / 1000, status)
     }
 
     override fun getTestMatchesList(): HttpStatus<MatchList.Data>? {

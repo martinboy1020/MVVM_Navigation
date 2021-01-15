@@ -13,6 +13,8 @@ import com.example.mvvm_navigation.datacenter.network.RetrofitClient
 import com.example.mvvm_navigation.datacenter.network.StatusCode
 import com.example.mvvm_navigation.datacenter.network.response.*
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
+import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
+import com.example.mvvm_navigation.utils.GameStatusUtils
 import com.example.mvvm_navigation.utils.GetAssetsUtils
 import com.example.mvvm_navigation.utils.ReflectViewUtils
 import com.google.gson.Gson
@@ -215,7 +217,7 @@ class Repository constructor(val context: Context) {
         return recentMatchConditionList
     }
 
-    suspend fun getWebMatchList(date: Long): HttpResult<HttpStatus<MatchList.Data>> =
+    suspend fun getWebMatchList(date: Long, status: Int): HttpResult<HttpStatus<MatchList.Data>> =
         try {
             val response =
                 RetrofitClient.getInstance(context).getApiMethod().getWebMatchesListAsync(
@@ -223,8 +225,20 @@ class Repository constructor(val context: Context) {
                     date
                 ).await()
             if (response.statusCode == "0") {
-                dataCenter.matchList = response.payload.matches
-                filterList(response.payload)
+                getAreaList(response.payload)
+                val filterList = filterList(response.payload.matches, status)
+                when(status) {
+                    MatchListFragment.MATCH_UNOPEN -> {
+                        dataCenter.matchUnOpenList = filterList
+                    }
+                    MatchListFragment.MATCH_ENDING -> {
+                        dataCenter.matchEndingList = filterList
+                    }
+                    else -> {
+                        dataCenter.matchIngList = filterList
+                    }
+                }
+                response.payload.matches = filterList
                 HttpResult.onSuccess(response)
             } else HttpResult.onError(
                 response.statusCode,
@@ -235,9 +249,37 @@ class Repository constructor(val context: Context) {
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
-    private fun filterList(list: MatchList.Data) {
+    private fun getAreaList(list: MatchList.Data) {
         val areaList = list.areas
         dataCenter.filterAreaList = areaList
+    }
+
+    private fun filterList(list: MutableList<MatchList.Match>, status: Int): MutableList<MatchList.Match> {
+        val filterList = mutableListOf<MatchList.Match>()
+        for(i in list.indices) {
+            when(status) {
+
+                MatchListFragment.MATCH_UNOPEN -> {
+                    if(!GameStatusUtils.MatchStatus.checkGameMatchIsStarted(list[i].status)) {
+                        filterList.add(list[i])
+                    }
+                }
+
+                MatchListFragment.MATCH_ENDING -> {
+                    if(list[i].status == GameStatusUtils.MatchStatus.ENDING) {
+                        filterList.add(list[i])
+                    }
+                }
+
+                else -> {
+                    if(list[i].status == status) {
+                        filterList.add(list[i])
+                    }
+                }
+
+            }
+        }
+        return filterList
     }
 
     fun getFilterAreaList(): MutableList<MatchList.Area> {
@@ -245,9 +287,8 @@ class Repository constructor(val context: Context) {
         if (responseString != null) {
             val matchListType = object : TypeToken<HttpStatus<MatchList.Data>>() {}.type
             val data: HttpStatus<MatchList.Data> = Gson().fromJson(responseString, matchListType)
-            filterList(data.payload)
+            getAreaList(data.payload)
         }
-        Log.d("tag123456789", "dataCenter.filterAreaList: ${dataCenter.filterAreaList}")
         return dataCenter.filterAreaList
     }
 
@@ -264,13 +305,13 @@ class Repository constructor(val context: Context) {
         if (responseString != null) {
             val matchListType = object : TypeToken<HttpStatus<MatchList.Data>>() {}.type
             val data: HttpStatus<MatchList.Data> = Gson().fromJson(responseString, matchListType)
-            dataCenter.matchList = data.payload.matches
+            dataCenter.matchAllList = data.payload.matches
             return Gson().fromJson(responseString, matchListType)
         }
         return null
     }
 
-    fun refreshTopListMatch(data: MatchList.Match): MutableList<MatchList.Match> {
+    fun refreshTopListMatch(data: MatchList.Match, status: Int): MutableList<MatchList.Match> {
 
         var isExitsInTop = false
         var isExitsInTopPosition = -1
@@ -285,18 +326,47 @@ class Repository constructor(val context: Context) {
         if (isExitsInTop) {
             dataCenter.matchTopList.removeAt(isExitsInTopPosition)
             data.isTopOfList = false
-            dataCenter.matchList.add(data)
+            when(status) {
+                GameStatusUtils.MatchStatus.UNOPENED -> {
+                    dataCenter.matchUnOpenList.add(data)
+                }
+                GameStatusUtils.MatchStatus.ENDING -> {
+                    dataCenter.matchEndingList.add(data)
+                }
+                else -> {
+                    if(GameStatusUtils.MatchStatus.checkGameMatchIsStarted(status)) {
+                        dataCenter.matchIngList.add(data)
+                    }
+                }
+            }
         } else {
             data.isTopOfList = true
             dataCenter.matchTopList.add(0, data)
             dataCenter.matchTopList.sortWith(compareBy({ it.openDate }, { it.matchId }))
-            dataCenter.matchList.remove(data)
+            when(status) {
+                MatchListFragment.MATCH_UNOPEN -> {
+                    dataCenter.matchUnOpenList.remove(data)
+                    dataCenter.matchUnOpenList.sortWith(compareBy({ it.openDate }, { it.matchId }))
+                    dataCenter.matchAllList.clear()
+                    dataCenter.matchAllList.addAll(dataCenter.matchTopList)
+                    dataCenter.matchAllList.addAll(dataCenter.matchUnOpenList)
+                }
+                MatchListFragment.MATCH_ENDING -> {
+                    dataCenter.matchEndingList.remove(data)
+                    dataCenter.matchEndingList.sortWith(compareBy({ it.openDate }, { it.matchId }))
+                    dataCenter.matchAllList.clear()
+                    dataCenter.matchAllList.addAll(dataCenter.matchTopList)
+                    dataCenter.matchAllList.addAll(dataCenter.matchEndingList)
+                }
+                MatchListFragment.MATCH_ING -> {
+                    dataCenter.matchIngList.remove(data)
+                    dataCenter.matchIngList.sortWith(compareBy({ it.openDate }, { it.matchId }))
+                    dataCenter.matchAllList.clear()
+                    dataCenter.matchAllList.addAll(dataCenter.matchTopList)
+                    dataCenter.matchAllList.addAll(dataCenter.matchIngList)
+                }
+            }
         }
-        dataCenter.matchList.sortWith(compareBy({ it.openDate }, { it.matchId }))
-        dataCenter.matchAllList.clear()
-        dataCenter.matchAllList = mutableListOf()
-        dataCenter.matchAllList.addAll(dataCenter.matchTopList)
-        dataCenter.matchAllList.addAll(dataCenter.matchList)
 
 
 //        for (i in dataCenter.matchList.indices) {
