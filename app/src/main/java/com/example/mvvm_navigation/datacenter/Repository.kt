@@ -219,6 +219,7 @@ class Repository constructor(val context: Context) {
 
     suspend fun getWebMatchList(date: Long, status: Int): HttpResult<HttpStatus<MatchList.Data>> =
         try {
+            Log.d("tag123456789", "getWebMatchList date: $date")
             val response =
                 RetrofitClient.getInstance(context).getApiMethod().getWebMatchesListAsync(
                     "Bearer " + UserSharePreferences(context).userToken,
@@ -254,26 +255,29 @@ class Repository constructor(val context: Context) {
         dataCenter.filterAreaList = areaList
     }
 
-    private fun filterList(list: MutableList<MatchList.Match>, status: Int): MutableList<MatchList.Match> {
+    private fun filterList(list: MutableList<MatchList.Match>, pageType: Int): MutableList<MatchList.Match> {
         val filterList = mutableListOf<MatchList.Match>()
         for(i in list.indices) {
-            when(status) {
+            when(pageType) {
 
                 MatchListFragment.MATCH_UNOPEN -> {
-                    if(!GameStatusUtils.MatchStatus.checkGameMatchIsStarted(list[i].status)) {
+                    if(GameStatusUtils.MatchStatus.checkGameMatchIsUnOpen(list[i].status)) {
                         filterList.add(list[i])
+                        Log.d("tag123456789", "Unopen: " + list[i])
                     }
                 }
 
                 MatchListFragment.MATCH_ENDING -> {
                     if(list[i].status == GameStatusUtils.MatchStatus.ENDING) {
                         filterList.add(list[i])
+                        Log.d("tag123456789", "Ending: " + list[i])
                     }
                 }
 
                 else -> {
-                    if(list[i].status == status) {
+                    if(GameStatusUtils.MatchStatus.checkGameMatchIsStarted(list[i].status)) {
                         filterList.add(list[i])
+                        Log.d("tag123456789", "Ing: " + list[i])
                     }
                 }
 
@@ -311,7 +315,7 @@ class Repository constructor(val context: Context) {
         return null
     }
 
-    fun refreshTopListMatch(data: MatchList.Match, status: Int): MutableList<MatchList.Match> {
+    fun refreshTopListMatch(data: MatchList.Match, pageType: Int): MutableList<MatchList.Match> {
 
         var isExitsInTop = false
         var isExitsInTopPosition = -1
@@ -326,24 +330,30 @@ class Repository constructor(val context: Context) {
         if (isExitsInTop) {
             dataCenter.matchTopList.removeAt(isExitsInTopPosition)
             data.isTopOfList = false
-            when(status) {
-                GameStatusUtils.MatchStatus.UNOPENED -> {
+            dataCenter.matchAllList.clear()
+            dataCenter.matchAllList.addAll(dataCenter.matchTopList)
+            when(pageType) {
+                MatchListFragment.MATCH_UNOPEN -> {
                     dataCenter.matchUnOpenList.add(data)
+                    dataCenter.matchUnOpenList.sortWith(compareBy({ it.openDate }, { it.matchId }))
+                    dataCenter.matchAllList.addAll(dataCenter.matchUnOpenList)
                 }
-                GameStatusUtils.MatchStatus.ENDING -> {
+                MatchListFragment.MATCH_ENDING -> {
                     dataCenter.matchEndingList.add(data)
+                    dataCenter.matchEndingList.sortWith(compareBy({ it.openDate }, { it.matchId }))
+                    dataCenter.matchAllList.addAll(dataCenter.matchEndingList)
                 }
                 else -> {
-                    if(GameStatusUtils.MatchStatus.checkGameMatchIsStarted(status)) {
-                        dataCenter.matchIngList.add(data)
-                    }
+                    dataCenter.matchIngList.add(data)
+                    dataCenter.matchIngList.sortWith(compareBy({ it.openDate }, { it.matchId }))
+                    dataCenter.matchAllList.addAll(dataCenter.matchIngList)
                 }
             }
         } else {
             data.isTopOfList = true
             dataCenter.matchTopList.add(0, data)
             dataCenter.matchTopList.sortWith(compareBy({ it.openDate }, { it.matchId }))
-            when(status) {
+            when(pageType) {
                 MatchListFragment.MATCH_UNOPEN -> {
                     dataCenter.matchUnOpenList.remove(data)
                     dataCenter.matchUnOpenList.sortWith(compareBy({ it.openDate }, { it.matchId }))
@@ -358,7 +368,7 @@ class Repository constructor(val context: Context) {
                     dataCenter.matchAllList.addAll(dataCenter.matchTopList)
                     dataCenter.matchAllList.addAll(dataCenter.matchEndingList)
                 }
-                MatchListFragment.MATCH_ING -> {
+                else -> {
                     dataCenter.matchIngList.remove(data)
                     dataCenter.matchIngList.sortWith(compareBy({ it.openDate }, { it.matchId }))
                     dataCenter.matchAllList.clear()

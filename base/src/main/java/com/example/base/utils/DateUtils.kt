@@ -16,10 +16,6 @@ object DateUtils {
     const val HHMM = "HH:mm"
     const val EEEE = "EEEE"
 
-    fun getTodayDatMillis(): Long {
-        return System.currentTimeMillis()
-    }
-
     fun convertTimestampToStringDate(timestamp: Int? = 0, format: String): String {
         return if (timestamp == null || timestamp == 0) {
             ""
@@ -70,6 +66,21 @@ object DateUtils {
         return dayOfWeekString
     }
 
+    /**
+     * 抓取今天凌晨12點的時間軸
+     */
+    fun getTodayTimeStamp(): Long {
+        val cal = Calendar.getInstance(Locale.ENGLISH)
+        cal.timeInMillis = System.currentTimeMillis()
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        return cal.timeInMillis
+    }
+
+    /**
+     * 抓取前一天的時間軸
+     */
     fun getLastDayTimeStamp(timestamp: Long): Long {
         val cal = Calendar.getInstance(Locale.ENGLISH)
         cal.timeInMillis = timestamp
@@ -77,6 +88,9 @@ object DateUtils {
         return cal.timeInMillis
     }
 
+    /**
+     * 抓取後一天的時間軸
+     */
     fun getNextDayTimeStamp(timestamp: Long): Long {
         val cal = Calendar.getInstance(Locale.ENGLISH)
         cal.timeInMillis = timestamp

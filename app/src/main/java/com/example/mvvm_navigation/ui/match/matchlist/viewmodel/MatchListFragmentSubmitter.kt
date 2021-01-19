@@ -9,7 +9,7 @@ import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
 import com.example.mvvm_navigation.utils.GameStatusUtils
 
 class MatchListFragmentSubmitter {
-    val matchStatus = MutableLiveData<Int>().default(MatchListFragment.MATCH_ING)
+    val pageType = MutableLiveData<Int>().default(MatchListFragment.MATCH_ING)
     val onClickListener = MutableLiveData<View.OnClickListener>()
     val matchList = MutableLiveData<MutableList<MatchList.Match>>().default(mutableListOf())
     val areaList = MutableLiveData<MutableList<MatchList.Area>>().default(mutableListOf())

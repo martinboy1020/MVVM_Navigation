@@ -3,4 +3,22 @@
     <string name="drawer_open">DrawerOpen</string>
     <string name="drawer_close">DrawerClose</string>
     <string name="title_testdynamic">TestDynamic</string>
+
+    <string name="game_status_abnormal_game">比赛异常</string>
+    <string name="game_status_not">未</string>
+    <string name="game_status_midfield">中场</string>
+    <string name="game_status_overtime">加时</string>
+    <string name="game_status_pk">PK</string>
+    <string name="game_status_ending">完场</string>
+    <string name="game_status_put_off">推迟</string>
+    <string name="game_status_interrupt">中断</string>
+    <string name="game_status_waist">腰斩</string>
+    <string name="game_status_to_be_determined">待定</string>
+    <string name="game_status_game_final">完</string>
+    <string name="game_status_game_coming_soon">即将开赛</string>
+    <string name="game_status_game_overtime">加时赛</string>
+    <string name="game_status_game_penalty_shootout">点球决战</string>
+    <string name="game_status_first_half">上半场</string>
+    <string name="game_status_second_half">下半场</string>
+    <string name="game_status_common_cancel">取消</string>
 </resources>

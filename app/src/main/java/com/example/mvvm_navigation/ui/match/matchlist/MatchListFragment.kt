@@ -50,7 +50,7 @@ class MatchListFragment(var status: Int) : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        this.viewModel.getSubmitter().matchStatus.value = status
+        this.viewModel.getSubmitter().pageType.value = status
         this.binding.setVariable(BR.viewModel, this.viewModel.getSubmitter())
     }
 

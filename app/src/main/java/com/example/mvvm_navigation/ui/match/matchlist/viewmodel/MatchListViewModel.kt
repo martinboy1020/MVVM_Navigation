@@ -75,7 +75,7 @@ class MatchListViewModel constructor(
 
     override fun onSetTopClick(data: MatchList.Match) {
         CoroutineScope(Dispatchers.IO).launch {
-            val matchList = this@MatchListViewModel.model.setMatchItemToTopList(data, getSubmitter().matchStatus.value!!)
+            val matchList = this@MatchListViewModel.model.setMatchItemToTopList(data, getSubmitter().pageType.value!!)
             withContext(Dispatchers.Main) {
                 this@MatchListViewModel.submitter.matchList.value = matchList
             }
@@ -83,14 +83,14 @@ class MatchListViewModel constructor(
     }
 
     override fun changeDate(timestamp: Long) {
-        getMatchList(if(timestamp > 0) timestamp else DateUtils.getTodayDatMillis())
+        getMatchList(if(timestamp > 0) timestamp else DateUtils.getTodayTimeStamp())
     }
 
     override fun onClickItem(data: MatchList.Match) {}
 
-    private fun getMatchList(date: Long = DateUtils.getTodayDatMillis()) {
+    private fun getMatchList(date: Long = DateUtils.getTodayTimeStamp()) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = model.getMatchesList(date, getSubmitter().matchStatus.value!!)
+            val result = model.getMatchesList(date, getSubmitter().pageType.value!!)
             withContext(Dispatchers.Main) {
                 when (result) {
                     is HttpResult.onSuccess -> {

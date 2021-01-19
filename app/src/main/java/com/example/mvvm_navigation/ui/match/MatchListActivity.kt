@@ -28,6 +28,12 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        UserSharePreferences(this).removeData(
+            UserSharePreferences.PREFERENCE_TABLE_NAME_MATCH,
+            UserSharePreferences.KEY_MATCH_LIST_DATE
+        )
+
         val vpMatchListFragment: ViewPager2 = binding.root.vp_match_list_fragment
         pageAdapter = MatchListFragmentPageAdapter(supportFragmentManager, lifecycle)
         vpMatchListFragment.adapter = pageAdapter

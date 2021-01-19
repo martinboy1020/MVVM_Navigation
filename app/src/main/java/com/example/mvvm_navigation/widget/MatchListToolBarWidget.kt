@@ -41,7 +41,7 @@ class MatchListToolBarWidget @JvmOverloads constructor(
         btnLastDay = view?.findViewById(R.id.btn_last_day)
         btnNextDay = view?.findViewById(R.id.btn_next_day)
         btnFilter = view?.findViewById(R.id.btn_filter)
-        nowTimestamp = System.currentTimeMillis()
+        nowTimestamp = DateUtils.getTodayTimeStamp()
         changeDateText(DateUtils.getCalendarFromTimeStamp(nowTimestamp))
 
         btnLastDay?.setOnClickListener {

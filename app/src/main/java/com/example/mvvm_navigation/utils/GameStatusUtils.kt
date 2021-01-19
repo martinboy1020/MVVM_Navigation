@@ -1,5 +1,8 @@
 package com.example.mvvm_navigation.utils
 
+import android.content.Context
+import com.example.mvvm_navigation.R
+
 /**
  * 判斷賽事狀態工具類
  */
@@ -54,24 +57,38 @@ object GameStatusUtils {
             const val AWAITING = 13
 
             // 回傳賽事狀態文字
-            fun getGameStatusString(status: Int): String {
+            fun getGameStatusString(context: Context, status: Int): String {
                 var gameStatus = ""
                 when (status) {
-//                ABNORMAL -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.abnormal_game)
-//                UNOPENED -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.game_coming_soon)
-//                FIRST_HALF -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.first_half)
-//                HALF_TIME -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.midfield)
-//                SECOND_HALF -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.second_half)
-//                OVERTIME, OVERTIME_2 -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.game_overtime)
-//                PK -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.game_penalty_shootout)
-//                ENDING -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.ending)
-//                POSTPONE -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.put_off)
-//                SUSPEND -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.interrupt)
-//                WAIST -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.waist)
-//                CANCEL -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.common_cancel)
-//                AWAITING -> gameStatus = MainApplication.getCurrentActivity().getString(R.string.to_be_determined)
+                    ABNORMAL -> gameStatus = context.getString(R.string.game_status_abnormal_game)
+                    UNOPENED -> gameStatus =
+                        context.getString(R.string.game_status_not)
+                    FIRST_HALF -> gameStatus = context.getString(R.string.game_status_first_half)
+                    HALF_TIME -> gameStatus = context.getString(R.string.game_status_midfield)
+                    SECOND_HALF -> gameStatus = context.getString(R.string.game_status_second_half)
+                    OVERTIME, OVERTIME_2 -> gameStatus =
+                        context.getString(R.string.game_status_game_overtime)
+                    PK -> gameStatus = context.getString(R.string.game_status_game_penalty_shootout)
+                    ENDING -> gameStatus = context.getString(R.string.game_status_ending)
+                    POSTPONE -> gameStatus = context.getString(R.string.game_status_put_off)
+                    SUSPEND -> gameStatus = context.getString(R.string.game_status_interrupt)
+                    WAIST -> gameStatus = context.getString(R.string.game_status_waist)
+                    CANCEL -> gameStatus = context.getString(R.string.game_status_common_cancel)
+                    AWAITING -> gameStatus =
+                        context.getString(R.string.game_status_to_be_determined)
                 }
                 return gameStatus
+            }
+
+            // 檢查賽事狀態是否已開賽
+            fun checkGameMatchIsUnOpen(status: Int): Boolean {
+                return status != FIRST_HALF &&
+                        status != HALF_TIME &&
+                        status != SECOND_HALF &&
+                        status != OVERTIME &&
+                        status != OVERTIME_2 &&
+                        status != PK &&
+                        status != ENDING
             }
 
             // 檢查賽事狀態是否已開賽
