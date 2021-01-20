@@ -2,6 +2,7 @@ package com.example.mvvm_navigation.ui.match.matchlist
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.example.base.components.LayoutId
@@ -9,6 +10,7 @@ import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseFragment
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
+import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.di.matchListModule
 import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListContract
 import org.kodein.di.Kodein
@@ -20,6 +22,8 @@ import org.kodein.di.generic.singleton
 
 @LayoutId(R.layout.fragment_matchlist)
 class MatchListFragment(var status: Int) : BaseFragment() {
+
+    private var firstEntry = true
 
     companion object {
         const val MATCH_ING = 0
@@ -41,6 +45,15 @@ class MatchListFragment(var status: Int) : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(firstEntry) {
+            firstEntry = false
+        } else {
+            this.viewModel.changeDate(UserSharePreferences(this.requireContext()).matchListDate)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

@@ -23,7 +23,6 @@ import java.lang.reflect.Type
 @LayoutId(R.layout.activity_match_list)
 class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBarListener {
 
-    private var REQUEST_CODE_FILTER = 0
     private var pageAdapter: MatchListFragmentPageAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +71,7 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
             val bundle = Bundle()
             bundle.putString("filter", json)
             intent.putExtras(bundle)
-            startActivityForResult(intent, REQUEST_CODE_FILTER)
+            startActivity(intent)
         }
     }
 
@@ -82,13 +81,5 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
             UserSharePreferences.PREFERENCE_TABLE_NAME_MATCH,
             UserSharePreferences.KEY_MATCH_LIST_DATE
         )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == REQUEST_CODE_FILTER) {
-            val matchListFragment = supportFragmentManager.findFragmentByTag("f" + vp_match_list_fragment.currentItem)
-            if(matchListFragment is MatchListFragment) matchListFragment.changeDate(UserSharePreferences(this@MatchListActivity).matchListDate)
-        }
     }
 }
