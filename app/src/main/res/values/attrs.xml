@@ -10,6 +10,8 @@
         </attr>
         <attr name="has_divider" format="boolean"/>
         <attr name="divider_height" format="integer"/>
+        <attr name="set_grid_space" format="boolean"/>
+        <attr name="grid_spacing" format="integer"/>
         <attr name="item_space_margin" format="integer"/>
         <attr name="column" format="integer"/>
     </declare-styleable>
