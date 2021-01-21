@@ -2,6 +2,7 @@ package com.example.mvvm_navigation.ui.filter.model
 
 import com.example.mvvm_navigation.base.BaseModel
 import com.example.mvvm_navigation.datacenter.Repository
+import com.example.mvvm_navigation.datacenter.data.IncorrectScoreData
 import com.example.mvvm_navigation.ui.filter.viewmodel.incorrect_score_filter.IncorrectScoreFilterContract
 
 class IncorrectScoreFilterModel constructor(val repository: Repository) : BaseModel(),
@@ -9,5 +10,9 @@ class IncorrectScoreFilterModel constructor(val repository: Repository) : BaseMo
     companion object {
         fun getInstance(repository: Repository) =
             IncorrectScoreFilterModel(repository)
+    }
+
+    override fun getIncorrectDataList(): MutableList<IncorrectScoreData>? {
+        return this.repository.getIncorrectDataList()
     }
 }

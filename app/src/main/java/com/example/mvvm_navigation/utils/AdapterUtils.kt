@@ -5,9 +5,11 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BetData
+import com.example.mvvm_navigation.datacenter.data.IncorrectScoreData
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.datacenter.network.response.MatchesStatistics
 import com.example.mvvm_navigation.datacenter.network.response.TgMatchRecent
+import com.example.mvvm_navigation.ui.filter.IncorrectScoreFilterAdapter
 import com.example.mvvm_navigation.ui.main.home.BetListAdapter
 import com.example.mvvm_navigation.ui.main.home.MatchesRecentAdapter
 import com.example.mvvm_navigation.ui.main.home.RecentConditionAdapter
@@ -19,7 +21,10 @@ object AdapterUtils {
 
     @JvmStatic
     @BindingAdapter("matchesRecentList", "listener", requireAll = false)
-    fun BuildRecyclerView.matchesRecentListAdapter(matchesRecentList: MutableList<TgMatchRecent.Recent>?, listener: Any?) {
+    fun BuildRecyclerView.matchesRecentListAdapter(
+        matchesRecentList: MutableList<TgMatchRecent.Recent>?,
+        listener: Any?
+    ) {
         this.adapter =
             MatchesRecentAdapter(
                 this.context,
@@ -71,6 +76,15 @@ object AdapterUtils {
             this.context,
             matchList as MutableList<BetData>
         )
+    }
+
+    @JvmStatic
+    @BindingAdapter("incorrectScoreList", "listener", requireAll = false)
+    fun BuildRecyclerView.incorrectScoreListAdapter(
+        incorrectScoreList: MutableList<IncorrectScoreData>?,
+        listener: IncorrectScoreFilterAdapter.IncorrectScoreFilterAdapterOnChangeListener?
+    ) {
+        this.adapter = IncorrectScoreFilterAdapter(incorrectScoreList, listener)
     }
 
 }

@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.data.BetData
+import com.example.mvvm_navigation.datacenter.data.IncorrectScoreData
 import com.example.mvvm_navigation.datacenter.data.RecentMatchCondition
 import com.example.mvvm_navigation.datacenter.network.DataCenter
 import com.example.mvvm_navigation.datacenter.network.HttpResult
@@ -395,6 +396,17 @@ class Repository constructor(val context: Context) {
 
         return dataCenter.matchAllList
 
+    }
+
+    fun getIncorrectDataList(): MutableList<IncorrectScoreData>? {
+        LogUtils.d("tag123456789", "getIncorrectDataList")
+        val responseString = GetAssetsUtils.getJsonDataFromAsset(context, "incorrect_score.json")
+        LogUtils.d("tag123456789", "getIncorrectDataList responseString: $responseString")
+        if (responseString != null) {
+            val incorrectScoreDataType = object : TypeToken<MutableList<IncorrectScoreData>>() {}.type
+            return Gson().fromJson(responseString, incorrectScoreDataType)
+        }
+        return null
     }
 
 }

@@ -22,6 +22,15 @@
 
         <!--android name 設定為官方的DynamicNavHostFragment 可進行跨模塊轉換 在navigation裡的要使用fragment頁籤帶入Fragment 轉換Fragment的方式為replace -->
 
+<!--        <fragment-->
+<!--            android:id="@+id/filterActivityNavHostFragment"-->
+<!--            android:name="androidx.navigation.dynamicfeatures.fragment.DynamicNavHostFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:defaultNavHost="true"-->
+<!--            app:navGraph="@navigation/filter"-->
+<!--            tools:layout="@layout/fragment_match_filter" />-->
+
         <fragment
             android:id="@+id/filterActivityNavHostFragment"
             android:name="androidx.navigation.dynamicfeatures.fragment.DynamicNavHostFragment"
@@ -29,7 +38,7 @@
             android:layout_height="match_parent"
             app:defaultNavHost="true"
             app:navGraph="@navigation/filter"
-            tools:layout="@layout/fragment_match_filter" />
+            tools:layout="@layout/fragment_incorrect_score_filter" />
 
         <!--android name 設定為自定義的TabNavHostFragment 在navigation裡的要使用show_hide_fragment頁籤帶入Fragment 轉換Fragment的方式為Show&Hide -->
 

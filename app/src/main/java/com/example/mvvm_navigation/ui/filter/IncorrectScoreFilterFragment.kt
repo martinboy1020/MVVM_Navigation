@@ -1,6 +1,8 @@
 package com.example.mvvm_navigation.ui.filter
 
+import android.os.Bundle
 import com.example.base.components.LayoutId
+import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseFragment
 import com.example.mvvm_navigation.di.incorrectScoreFilterModule
@@ -25,5 +27,9 @@ class IncorrectScoreFilterFragment : BaseFragment() {
 
     private val viewModel by kodein.instance<IncorrectScoreFilterContract.ViewModelImpl>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.binding.setVariable(BR.viewModel, this.viewModel.getSubmitter())
+    }
 }
 
