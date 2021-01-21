@@ -49,11 +49,7 @@ class MatchListFragment(var status: Int) : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        if(firstEntry) {
-            firstEntry = false
-        } else {
-            this.viewModel.changeDate(UserSharePreferences(this.requireContext()).matchListDate)
-        }
+        this.viewModel.changeDate(UserSharePreferences(this.requireContext()).matchListDate)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

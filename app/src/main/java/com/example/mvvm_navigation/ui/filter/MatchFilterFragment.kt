@@ -1,7 +1,6 @@
 package com.example.mvvm_navigation.ui.filter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.example.base.components.LayoutId
 import com.example.mvvm_navigation.BR
@@ -11,6 +10,7 @@ import com.example.mvvm_navigation.databinding.FragmentMatchFilterBinding
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.di.matchFilterModule
 import com.example.mvvm_navigation.ui.filter.viewmodel.match_filter.MatchFilterContract
+import com.example.mvvm_navigation.utils.LogUtils
 import com.example.mvvm_navigation.widget.MatchFilterWidget
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -96,13 +96,13 @@ class MatchFilterFragment : BaseFragment(), MatchFilterWidget.MatchFilterWidgetO
                 }
             }
             MatchFilterWidget.FilterType.LEAGUE.code -> {
-                Log.d("tag12345", "MatchFilterFragment changeStatus name: $name, isCheck: $isCheck")
+                LogUtils.d("tag12345", "MatchFilterFragment changeStatus name: $name, isCheck: $isCheck")
                 if (isCheck) {
                     if (!selectedLeagueList.contains(id)) selectedLeagueList.add(id)
                 } else {
                     if(selectedLeagueList.contains(id)) selectedLeagueList.remove(id)
                 }
-                Log.d("tag12345", "selectedLeagueList size: ${selectedLeagueList.size}")
+                LogUtils.d("tag12345", "selectedLeagueList size: ${selectedLeagueList.size}")
             }
         }
     }

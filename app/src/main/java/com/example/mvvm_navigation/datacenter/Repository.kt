@@ -1,7 +1,6 @@
 package com.example.mvvm_navigation.datacenter
 
 import android.content.Context
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BannerItem
@@ -16,6 +15,7 @@ import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePrefere
 import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
 import com.example.mvvm_navigation.utils.GameStatusUtils
 import com.example.mvvm_navigation.utils.GetAssetsUtils
+import com.example.mvvm_navigation.utils.LogUtils
 import com.example.mvvm_navigation.utils.ReflectViewUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -184,7 +184,7 @@ class Repository constructor(val context: Context) {
                 )
             }
         } catch (e: Throwable) {
-            Log.d("tag12345", "getMatchStatistics e.message: ${e.message}")
+            LogUtils.d("tag12345", "getMatchStatistics e.message: ${e.message}")
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
@@ -219,7 +219,7 @@ class Repository constructor(val context: Context) {
 
     suspend fun getWebMatchList(date: Long, status: Int): HttpResult<HttpStatus<MatchList.Data>> =
         try {
-            Log.d("tag123456789", "getWebMatchList date: $date")
+            LogUtils.d("tag123456789", "getWebMatchList date: $date")
             val response =
                 RetrofitClient.getInstance(context).getApiMethod().getWebMatchesListAsync(
                     "Bearer " + UserSharePreferences(context).userToken,
@@ -228,7 +228,7 @@ class Repository constructor(val context: Context) {
             if (response.statusCode == "0") {
                 getAreaList(response.payload)
                 val filterList = filterList(response.payload.matches, status)
-                when(status) {
+                when (status) {
                     MatchListFragment.MATCH_UNOPEN -> {
                         dataCenter.matchUnOpenList = filterList
                     }
@@ -246,7 +246,7 @@ class Repository constructor(val context: Context) {
                 response.message
             )
         } catch (e: Throwable) {
-            Log.d("tag12345", "getWebMatchList e.message: ${e.message}")
+            LogUtils.d("tag12345", "getWebMatchList e.message: ${e.message}")
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
@@ -255,29 +255,34 @@ class Repository constructor(val context: Context) {
         dataCenter.filterAreaList = areaList
     }
 
-    private fun filterList(list: MutableList<MatchList.Match>, pageType: Int): MutableList<MatchList.Match> {
+    private fun filterList(
+        list: MutableList<MatchList.Match>,
+        pageType: Int
+    ): MutableList<MatchList.Match> {
         val filterList = mutableListOf<MatchList.Match>()
-        for(i in list.indices) {
-            when(pageType) {
+        for (i in list.indices) {
+            when (pageType) {
 
                 MatchListFragment.MATCH_UNOPEN -> {
-                    if(GameStatusUtils.MatchStatus.checkGameMatchIsUnOpen(list[i].status)) {
+                    if (GameStatusUtils.MatchStatus.checkGameMatchIsUnOpen(list[i].status)
+                        && !GameStatusUtils.MatchStatus.checkMatchTransaction(list[i].status)
+                    ) {
                         filterList.add(list[i])
-                        Log.d("tag123456789", "Unopen: " + list[i])
+                        LogUtils.d("tag123456789", "Unopen: " + list[i])
                     }
                 }
 
                 MatchListFragment.MATCH_ENDING -> {
-                    if(list[i].status == GameStatusUtils.MatchStatus.ENDING) {
+                    if (list[i].status == GameStatusUtils.MatchStatus.ENDING) {
                         filterList.add(list[i])
-                        Log.d("tag123456789", "Ending: " + list[i])
+                        LogUtils.d("tag123456789", "Ending: " + list[i])
                     }
                 }
 
                 else -> {
-                    if(GameStatusUtils.MatchStatus.checkGameMatchIsStarted(list[i].status)) {
+                    if (GameStatusUtils.MatchStatus.checkGameMatchIsStarted(list[i].status)) {
                         filterList.add(list[i])
-                        Log.d("tag123456789", "Ing: " + list[i])
+                        LogUtils.d("tag123456789", "Ing: " + list[i])
                     }
                 }
 
@@ -332,7 +337,7 @@ class Repository constructor(val context: Context) {
             data.isTopOfList = false
             dataCenter.matchAllList.clear()
             dataCenter.matchAllList.addAll(dataCenter.matchTopList)
-            when(pageType) {
+            when (pageType) {
                 MatchListFragment.MATCH_UNOPEN -> {
                     dataCenter.matchUnOpenList.add(data)
                     dataCenter.matchUnOpenList.sortWith(compareBy({ it.openDate }, { it.matchId }))
@@ -353,7 +358,7 @@ class Repository constructor(val context: Context) {
             data.isTopOfList = true
             dataCenter.matchTopList.add(0, data)
             dataCenter.matchTopList.sortWith(compareBy({ it.openDate }, { it.matchId }))
-            when(pageType) {
+            when (pageType) {
                 MatchListFragment.MATCH_UNOPEN -> {
                     dataCenter.matchUnOpenList.remove(data)
                     dataCenter.matchUnOpenList.sortWith(compareBy({ it.openDate }, { it.matchId }))

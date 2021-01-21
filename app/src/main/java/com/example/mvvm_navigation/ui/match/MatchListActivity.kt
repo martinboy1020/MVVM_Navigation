@@ -37,14 +37,14 @@ class MatchListActivity : BaseActivity(), MatchListToolBarWidget.MatchListToolBa
         pageAdapter = MatchListFragmentPageAdapter(supportFragmentManager, lifecycle)
         vpMatchListFragment.adapter = pageAdapter
         vpMatchListFragment.offscreenPageLimit = 4
-        vpMatchListFragment.registerOnPageChangeCallback(object :
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                val matchListFragment = supportFragmentManager.findFragmentByTag("f" + vp_match_list_fragment.currentItem)
-                if(matchListFragment is MatchListFragment) matchListFragment.changeDate(UserSharePreferences(this@MatchListActivity).matchListDate)
-            }
-        })
+//        vpMatchListFragment.registerOnPageChangeCallback(object :
+//            ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                val matchListFragment = supportFragmentManager.findFragmentByTag("f" + vp_match_list_fragment.currentItem)
+//                if(matchListFragment is MatchListFragment) matchListFragment.changeDate(UserSharePreferences(this@MatchListActivity).matchListDate)
+//            }
+//        })
         val tabLayout: TabLayout = binding.root.tabLayout
         val title: ArrayList<String> = arrayListOf("進行中", "未開始", "已完賽", "置頂")
         TabLayoutMediator(tabLayout, vpMatchListFragment) { tab, position ->
