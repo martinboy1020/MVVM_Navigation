@@ -34,9 +34,6 @@ class MatchFilterFragment : BaseFragment(), MatchFilterWidget.MatchFilterWidgetO
     }
 
     private val viewModel by kodein.instance<MatchFilterContract.ViewModelImpl>()
-    private val selectedAreaList: MutableList<String> = mutableListOf()
-    private val selectedCountryList: MutableList<String> = mutableListOf()
-    private val selectedLeagueList: MutableList<Int> = mutableListOf()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -59,10 +56,10 @@ class MatchFilterFragment : BaseFragment(), MatchFilterWidget.MatchFilterWidgetO
     override fun changeStatus(id: Int, name: String, type: Int, isCheck: Boolean) {
         when (type) {
             MatchFilterWidget.FilterType.AREA.code -> {
-                if (isCheck) selectedAreaList.add(name) else selectedAreaList.remove(name)
+                if (isCheck) this.viewModel.getSelectedAreaList().add(name) else this.viewModel.getSelectedAreaList().remove(name)
                 (this.binding as FragmentMatchFilterBinding).matchFilterWidgetCountry.post {
                     (this.binding as FragmentMatchFilterBinding).matchFilterWidgetArea.showAttention(
-                        selectedAreaList.size > 0
+                        this.viewModel.getSelectedAreaList().size > 0
                     )
                     (this.binding as FragmentMatchFilterBinding).matchFilterWidgetCountry.showCountryRow(
                         id,
@@ -70,18 +67,18 @@ class MatchFilterFragment : BaseFragment(), MatchFilterWidget.MatchFilterWidgetO
                         isCheck
                     )
                     (this.binding as FragmentMatchFilterBinding).matchFilterWidgetCountry.visibility =
-                        if (selectedAreaList.size > 0) View.VISIBLE else View.GONE
-                    if (selectedAreaList.size <= 0) {
+                        if (this.viewModel.getSelectedAreaList().size > 0) View.VISIBLE else View.GONE
+                    if (this.viewModel.getSelectedAreaList().size <= 0) {
                         (this.binding as FragmentMatchFilterBinding).matchFilterWidgetCountry.allUnSelected(false)
                         (this.binding as FragmentMatchFilterBinding).matchFilterWidgetLeague.allUnSelected(false)
                     }
                 }
             }
             MatchFilterWidget.FilterType.COUNTRY.code -> {
-                if (isCheck) selectedCountryList.add(name) else selectedCountryList.remove(name)
+                if (isCheck) this.viewModel.getSelectedCountryList().add(name) else this.viewModel.getSelectedCountryList().remove(name)
                 (this.binding as FragmentMatchFilterBinding).matchFilterWidgetCountry.post {
                     (this.binding as FragmentMatchFilterBinding).matchFilterWidgetCountry.showAttention(
-                        selectedCountryList.size > 0
+                        this.viewModel.getSelectedCountryList().size > 0
                     )
                     (this.binding as FragmentMatchFilterBinding).matchFilterWidgetLeague.showLeagueRow(
                         id,
@@ -89,8 +86,8 @@ class MatchFilterFragment : BaseFragment(), MatchFilterWidget.MatchFilterWidgetO
                         isCheck
                     )
                     (this.binding as FragmentMatchFilterBinding).matchFilterWidgetLeague.visibility =
-                        if (selectedCountryList.size > 0) View.VISIBLE else View.GONE
-                    if (selectedCountryList.size <= 0) {
+                        if (this.viewModel.getSelectedCountryList().size > 0) View.VISIBLE else View.GONE
+                    if (this.viewModel.getSelectedCountryList().size <= 0) {
                         (this.binding as FragmentMatchFilterBinding).matchFilterWidgetLeague.allUnSelected(false)
                     }
                 }
@@ -98,11 +95,11 @@ class MatchFilterFragment : BaseFragment(), MatchFilterWidget.MatchFilterWidgetO
             MatchFilterWidget.FilterType.LEAGUE.code -> {
                 LogUtils.d("tag12345", "MatchFilterFragment changeStatus name: $name, isCheck: $isCheck")
                 if (isCheck) {
-                    if (!selectedLeagueList.contains(id)) selectedLeagueList.add(id)
+                    if (!this.viewModel.getSelectedLeagueList().contains(id)) this.viewModel.getSelectedLeagueList().add(id)
                 } else {
-                    if(selectedLeagueList.contains(id)) selectedLeagueList.remove(id)
+                    if(this.viewModel.getSelectedLeagueList().contains(id)) this.viewModel.getSelectedLeagueList().remove(id)
                 }
-                LogUtils.d("tag12345", "selectedLeagueList size: ${selectedLeagueList.size}")
+                LogUtils.d("tag12345", "selectedLeagueList size: ${this.viewModel.getSelectedLeagueList().size}")
             }
         }
     }

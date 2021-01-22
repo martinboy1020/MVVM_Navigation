@@ -18,6 +18,10 @@ class MatchFilterViewModel constructor(
     private val submitter =
         MatchFilterFragmentSubmitter()
 
+    private var selectedAreaList: MutableList<String> = mutableListOf()
+    private var selectedCountryList: MutableList<String> = mutableListOf()
+    private var selectedLeagueList: MutableList<Int> = mutableListOf()
+
     companion object {
         fun getInstance(
             application: Application,
@@ -31,10 +35,6 @@ class MatchFilterViewModel constructor(
                 model,
                 navController
             )
-    }
-
-    init {
-//        this.submitter.areaList.value = this.model.getFilterAreaList()
     }
 
     class Factory(
@@ -53,6 +53,18 @@ class MatchFilterViewModel constructor(
 
     override fun setMatchFilter(mutableList: MutableList<MatchList.Area>) {
         this.submitter.areaList.value = mutableList
+    }
+
+    override fun getSelectedAreaList(): MutableList<String> {
+        return selectedAreaList
+    }
+
+    override fun getSelectedCountryList(): MutableList<String> {
+        return selectedCountryList
+    }
+
+    override fun getSelectedLeagueList(): MutableList<Int> {
+        return selectedLeagueList
     }
 
     override fun getSubmitter(): MatchFilterFragmentSubmitter = this.submitter

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/filter"
-    app:startDestination="@id/incorrectScoreFragment">
+    app:startDestination="@id/matchFilterFragment">
 
     <fragment
         android:id="@+id/matchFilterFragment"

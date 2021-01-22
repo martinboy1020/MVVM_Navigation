@@ -13,6 +13,9 @@ class MatchFilterContract {
 
     interface ViewModelImpl : BaseViewModelImpl<MatchFilterFragmentSubmitter> {
         fun setMatchFilter(mutableList: MutableList<MatchList.Area>)
+        fun getSelectedAreaList(): MutableList<String>
+        fun getSelectedCountryList(): MutableList<String>
+        fun getSelectedLeagueList(): MutableList<Int>
     }
 
 }
