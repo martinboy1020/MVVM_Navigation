@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.example.mvvm_navigation.ui.filter.viewmodel.incorrect_score_filter.IncorrectScoreFilterFragmentSubmitter" />
@@ -11,6 +13,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/rectangle_stroke_black_solid_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_title_score"
@@ -39,7 +52,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_score"
             app:layout_manager_type="grid"
-            app:listener="@{viewModel.incorrectScoreListListener}" />
+            app:listener="@{viewModel.incorrectScoreListListener}"
+            tools:listitem="@layout/layout_item_cb_match_selector" />
 
         <TextView
             android:id="@+id/tv_title_recent_match"
@@ -62,25 +76,114 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
+            android:onCheckedChanged="@{viewModel.onCheckedChangeListener}"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_recent_match">
 
             <RadioButton
+                android:id="@+id/rdb_appear_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="出現率"
-                android:checked="true"/>
+                android:checked="true"
+                android:minHeight="0dp"
+                android:text="出現率" />
 
             <RadioButton
+                android:id="@+id/rdb_continue_match"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:text="連續場次"/>
+                android:layout_marginLeft="20dp"
+                android:minHeight="0dp"
+                android:text="連續場次" />
 
         </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/sb_appear_rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="@{viewModel.sbAppearRateVisible}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup_recent_match" />
+
+        <LinearLayout
+            android:id="@+id/layout_appear_rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:visibility="@{viewModel.layoutContinueMatchVisible}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup_recent_match">
+
+            <ToggleButton
+                android:id="@+id/btn_match_2_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/toggle_button_selector"
+                android:checked="false"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="3dp"
+                android:stateListAnimator="@null"
+                android:textOff="2-3"
+                android:textOn="2-3"
+                android:textSize="14dp" />
+
+            <ToggleButton
+                android:id="@+id/btn_match_4_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/toggle_button_selector"
+                android:checked="false"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="3dp"
+                android:stateListAnimator="@null"
+                android:textOff="4-5"
+                android:textOn="4-5"
+                android:textSize="14dp" />
+
+            <ToggleButton
+                android:id="@+id/btn_match_over_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/toggle_button_selector"
+                android:checked="false"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="3dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="3dp"
+                android:stateListAnimator="@null"
+                android:textOff="6場以上"
+                android:textOn="6場以上"
+                android:textSize="14dp" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
