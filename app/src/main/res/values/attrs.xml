@@ -41,4 +41,8 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="TextThumbSeekBar">
+        <attr name="keyProgressIncrement" format="integer" />
+    </declare-styleable>
+
 </resources>

@@ -101,8 +101,7 @@
 
         </RadioGroup>
 
-        <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/sb_appear_rate"
+        <com.warkiz.widget.IndicatorStayLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -112,7 +111,40 @@
             android:visibility="@{viewModel.sbAppearRateVisible}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup_recent_match" />
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup_recent_match">
+
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/sb_appear_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:isb_indicator_text_color="@color/black"
+                app:isb_indicator_content_layout="@layout/custom_indicator_oval"
+                app:isb_max="100"
+                app:isb_progress="0"
+                app:isb_show_indicator="custom"
+                app:isb_show_tick_marks_type="divider"
+                app:isb_ticks_count="5" />
+
+        </com.warkiz.widget.IndicatorStayLayout>
+
+        <!--        <com.example.mvvm_navigation.widget.TextThumbSeekBar-->
+        <!--            android:id="@+id/sb_appear_rate"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="10dp"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:layout_marginEnd="10dp"-->
+        <!--            android:layout_marginRight="10dp"-->
+        <!--            android:max="100"-->
+        <!--            android:progress="0"-->
+        <!--            android:visibility="@{viewModel.sbAppearRateVisible}"-->
+        <!--            android:thumb="@drawable/shape_seek_bar_text_thumb"-->
+        <!--            android:thumbOffset="20dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/radioGroup_recent_match"-->
+        <!--            android:splitTrack="false"/>-->
 
         <LinearLayout
             android:id="@+id/layout_appear_rate"

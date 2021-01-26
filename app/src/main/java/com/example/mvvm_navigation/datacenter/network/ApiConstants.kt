@@ -14,6 +14,7 @@ class ApiConstants {
             const val STATISTICS_OCCURRENCE_RATE = "v2/statistics/occurrence_rate"
             const val SEARCH = "v2/search"
             const val MATCH_STATS = "/v2/matches/{matchId}/stats"
+            const val MATCH_DETAIL = "/v2/matches/{matchId}/detail"
         }
     }
 

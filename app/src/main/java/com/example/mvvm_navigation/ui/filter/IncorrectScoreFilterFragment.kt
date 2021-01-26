@@ -2,18 +2,14 @@ package com.example.mvvm_navigation.ui.filter
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.example.base.components.LayoutId
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseFragment
-import com.example.mvvm_navigation.databinding.FragmentIncorrectScoreFilterBinding
-import com.example.mvvm_navigation.databinding.FragmentIncorrectScoreFilterBindingImpl
 import com.example.mvvm_navigation.di.incorrectScoreFilterModule
 import com.example.mvvm_navigation.ui.filter.viewmodel.incorrect_score_filter.IncorrectScoreFilterContract
-import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinContext
 import org.kodein.di.generic.bind
@@ -53,5 +49,6 @@ class IncorrectScoreFilterFragment : BaseFragment(), RadioGroup.OnCheckedChangeL
             }
         }
     }
+
 }
 
