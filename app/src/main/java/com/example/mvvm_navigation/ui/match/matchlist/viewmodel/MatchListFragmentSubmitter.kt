@@ -14,4 +14,5 @@ class MatchListFragmentSubmitter {
     val matchList = MutableLiveData<MutableList<MatchList.Match>>().default(mutableListOf())
     val areaList = MutableLiveData<MutableList<MatchList.Area>>().default(mutableListOf())
     val matchListAdapterListener = MutableLiveData<MatchListAdapter.MatchListAdapterItemClickListener>()
+    val viewModelToFragmentListener = MutableLiveData<MatchListViewModel.ViewModelToFragmentListener>()
 }

@@ -8,6 +8,7 @@ class Contract {
             const val BOTTOM_SHEET = "BottomSheetDetailModule"
             const val MATCH_FILTER = "MatchFilterModule"
             const val INCORRECT_SCORE_FILTER = "IncorrectScoreFilter"
+            const val MATCH_DETAIL = "MatchDetail"
         }
     }
 }

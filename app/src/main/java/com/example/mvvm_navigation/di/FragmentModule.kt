@@ -19,6 +19,9 @@ import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeViewModel
 import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
 import com.example.mvvm_navigation.ui.match.matchlist.model.MatchListModel
 import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListViewModel
+import com.example.mvvm_navigation.ui.match_detail.MatchDetailFragment
+import com.example.mvvm_navigation.ui.match_detail.model.MatchDetailModel
+import com.example.mvvm_navigation.ui.match_detail.viewmodel.MatchDetailViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -29,6 +32,7 @@ import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeContract.View
 import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListContract.ViewModelImpl as MatchListViewModelImpl
 import com.example.mvvm_navigation.ui.filter.viewmodel.match_filter.MatchFilterContract.ViewModelImpl as MatchFilterViewModelImpl
 import com.example.mvvm_navigation.ui.filter.viewmodel.incorrect_score_filter.IncorrectScoreFilterContract.ViewModelImpl as InCorrectScoreViewModelImpl
+import com.example.mvvm_navigation.ui.match_detail.viewmodel.MatchDetailContract.ViewModelImpl as MatchDetailViewModelImpl
 
 val mainModule = Kodein.Module(Contract.ModuleName.MAIN) {
     bind<HomeViewModelImpl>() with singleton {
@@ -137,4 +141,28 @@ private fun getIncorrectScoreFilterViewModel(fragment: IncorrectScoreFilterFragm
         findNavController
     )
     return ViewModelProvider(fragment, factory).get(IncorrectScoreFilterViewModel::class.java)
+}
+
+val matchDetailModule = Kodein.Module(Contract.ModuleName.MATCH_DETAIL) {
+    bind<MatchDetailViewModelImpl>() with singleton {
+        getMatchDetailViewModel(instance(MatchDetailFragment::class.java.simpleName))
+    }
+}
+
+private fun getMatchDetailViewModel(fragment: MatchDetailFragment): MatchDetailViewModelImpl {
+    val repository = Repository.getInstance(fragment.requireContext())
+    val model = MatchDetailModel.getInstance(repository)
+    var findNavController: NavController? = null
+    try {
+        findNavController = findNavController(fragment)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+    val factory = MatchDetailViewModel.Factory(
+        fragment.requireActivity().application,
+        fragment.requireContext(),
+        model,
+        findNavController
+    )
+    return ViewModelProvider(fragment, factory).get(MatchDetailViewModel::class.java)
 }

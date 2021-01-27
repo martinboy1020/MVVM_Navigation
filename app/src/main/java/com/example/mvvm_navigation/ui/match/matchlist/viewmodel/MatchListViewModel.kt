@@ -29,6 +29,10 @@ class MatchListViewModel constructor(
     private val submitter =
         MatchListFragmentSubmitter()
 
+    interface ViewModelToFragmentListener {
+        fun goToMatchDetail(matchId: Int)
+    }
+
     init {
         this.submitter.onClickListener.value = this
         this.submitter.matchListAdapterListener.value = this
@@ -74,12 +78,13 @@ class MatchListViewModel constructor(
     }
 
     override fun onSetTopClick(data: MatchList.Match) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val matchList = this@MatchListViewModel.model.setMatchItemToTopList(data, getSubmitter().pageType.value!!)
-            withContext(Dispatchers.Main) {
-                this@MatchListViewModel.submitter.matchList.value = matchList
-            }
-        }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val matchList = this@MatchListViewModel.model.setMatchItemToTopList(data, getSubmitter().pageType.value!!)
+//            withContext(Dispatchers.Main) {
+//                this@MatchListViewModel.submitter.matchList.value = matchList
+//            }
+//        }
+        this.submitter.viewModelToFragmentListener.value?.goToMatchDetail(data.matchId)
     }
 
     override fun changeDate(timestamp: Long) {

@@ -2,7 +2,6 @@ package com.example.mvvm_navigation.datacenter.network.response
 
 import com.google.gson.annotations.SerializedName
 
-
 class MatchDetail {
 
     data class Data(
@@ -19,14 +18,14 @@ class MatchDetail {
         @SerializedName(ApiDataKey.AWAY_LOGO) var awayLogo: String = "",
         @SerializedName(ApiDataKey.AWAY_SCORE) var awayScore: Int = 0,
         @SerializedName(ApiDataKey.AWAY_HALF_SCORE) var awayHalfScore: Int = 0,
-        @SerializedName(ApiDataKey.OPEN_DATE) var openDate: String = "",
+        @SerializedName(ApiDataKey.OPEN_DATE) var openDate: Long = 0,
         @SerializedName(ApiDataKey.STATUS) var status: Int = 0,
-        @SerializedName(ApiDataKey.START_TIME) var startTime: Int = 0,
+        @SerializedName(ApiDataKey.START_TIME) var startTime: Long = 0,
         @SerializedName(ApiDataKey.ANIMATION) var animation: String = "",
         @SerializedName(ApiDataKey.LIVE_STREAMING) var liveStreaming: String = "",
-        @SerializedName(ApiDataKey.STATS) var stats: Stats,
-        @SerializedName(ApiDataKey.T_LIVE) var tlive: TLive,
-        @SerializedName(ApiDataKey.INCIDENTS) var incidents: Incidents,
+        @SerializedName(ApiDataKey.STATS) var stats: MutableList<Stats>,
+        @SerializedName(ApiDataKey.T_LIVE) var tlive: MutableList<TLive>,
+        @SerializedName(ApiDataKey.INCIDENTS) var incidents: MutableList<Incidents>,
         @SerializedName(ApiDataKey.BATTLE_RECORD) var battleRecord: BattleRecordRecentMatches,
         @SerializedName(ApiDataKey.RECENT_MATCHES) var recentMatches: BattleRecordRecentMatches
     )
@@ -47,7 +46,7 @@ class MatchDetail {
     data class Incidents(
         @SerializedName(ApiDataKey.TYPE) var type: Int = 0,
         @SerializedName(ApiDataKey.POSITION) var position: Int = 0,
-        @SerializedName(ApiDataKey.TIME) var time: Int = 0,
+        @SerializedName(ApiDataKey.TIME) var time: String = "",
         @SerializedName(ApiDataKey.PLAYER_ID) var playerId: Int = 0,
         @SerializedName(ApiDataKey.PLAYER_NAME) var playerName: String = "",
         @SerializedName(ApiDataKey.ASSIST_1_ID) var assist1Id: Int = 0,
@@ -72,7 +71,7 @@ class MatchDetail {
         @SerializedName(ApiDataKey.LOST) var lost: Int = 0,
         @SerializedName(ApiDataKey.TIE) var tie: Int = 0,
         @SerializedName(ApiDataKey.TOTAL) var total: Int = 0,
-        @SerializedName(ApiDataKey.MATCHES) var matches: Matches,
+        @SerializedName(ApiDataKey.MATCHES) var matches: MutableList<Matches>,
         @SerializedName(ApiDataKey.LEAGUES) var leagues: LeaguesTeams,
         @SerializedName(ApiDataKey.TEAMS) var teams: LeaguesTeams
     )
@@ -80,7 +79,7 @@ class MatchDetail {
     data class Matches(
         @SerializedName(ApiDataKey.MATCH_ID) var matchId: Int = 0,
         @SerializedName(ApiDataKey.LEAGUE_ID) var leagueId: Int = 0,
-        @SerializedName(ApiDataKey.OPEN_DATE) var openDate: String = "",
+        @SerializedName(ApiDataKey.OPEN_DATE) var openDate: Long = 0,
         @SerializedName(ApiDataKey.HOME_ID) var homeId: Int = 0,
         @SerializedName(ApiDataKey.AWAY_ID) var awayId: Int = 0,
         @SerializedName(ApiDataKey.HOME_SCORE) var homeScore: Int = 0,

@@ -84,6 +84,6 @@ interface ApiMethod {
 
     @GET(ApiConstants.HttpPath.MATCH_DETAIL)
     fun getMatchDetail(@Header("Authorization") token: String = "",
-    @Path("matchId") matchId: Int): Deferred<HttpStatus<MatchDetail>>
+    @Path("matchId") matchId: Int): Deferred<HttpStatus<MatchDetail.Data>>
 
 }

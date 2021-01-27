@@ -1,5 +1,6 @@
 package com.example.mvvm_navigation.ui.match.matchlist
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,19 +10,26 @@ import com.example.base.components.LayoutId
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseFragment
+import com.example.mvvm_navigation.datacenter.network.response.MatchDetail
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.di.matchListModule
+import com.example.mvvm_navigation.ui.filter.FilterActivity
 import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListContract
+import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListViewModel
+import com.example.mvvm_navigation.ui.match_detail.MatchDetailActivity
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinContext
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.kcontext
 import org.kodein.di.generic.singleton
+import java.lang.reflect.Type
 
 @LayoutId(R.layout.fragment_matchlist)
-class MatchListFragment(var status: Int) : BaseFragment() {
+class MatchListFragment(var status: Int) : BaseFragment(), MatchListViewModel.ViewModelToFragmentListener {
 
     private var firstEntry = true
 
@@ -45,10 +53,12 @@ class MatchListFragment(var status: Int) : BaseFragment() {
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.viewModel.getSubmitter().viewModelToFragmentListener.value = this
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d("tag123456789", "MatchListFragment changeDate")
         this.viewModel.changeDate(UserSharePreferences(this.requireContext()).matchListDate)
     }
 
@@ -69,6 +79,14 @@ class MatchListFragment(var status: Int) : BaseFragment() {
 
     fun getAreaList(): MutableList<MatchList.Area>? {
         return this.viewModel.getSubmitter().areaList.value
+    }
+
+    override fun goToMatchDetail(matchId: Int) {
+        val intent = Intent(this.requireContext(), MatchDetailActivity::class.java)
+        val bundle = Bundle()
+        bundle.putInt("matchId", matchId)
+        intent.putExtras(bundle)
+        startActivity(intent)
     }
 
 }

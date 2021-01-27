@@ -247,7 +247,7 @@ class Repository constructor(val context: Context) {
                 response.message
             )
         } catch (e: Throwable) {
-            LogUtils.d("tag12345", "getWebMatchList e.message: ${e.message}")
+            LogUtils.d("tag123456789", "getWebMatchList e.message: ${e.message}")
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
 
@@ -408,5 +408,21 @@ class Repository constructor(val context: Context) {
         }
         return null
     }
+
+    suspend fun getMatchDetail(matchId: Int): HttpResult<HttpStatus<MatchDetail.Data>> =
+        try {
+            val response = RetrofitClient.getInstance(this.context).getApiMethod()
+                .getMatchDetail("Bearer " + UserSharePreferences(context).userToken, matchId).await()
+            if (response.statusCode == "0") {
+                HttpResult.onSuccess(response)
+            } else {
+                HttpResult.onError(
+                    response.statusCode,
+                    response.message
+                )
+            }
+        } catch (e: Throwable) {
+            HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
+        }
 
 }
