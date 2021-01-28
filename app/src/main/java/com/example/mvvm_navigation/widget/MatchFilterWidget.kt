@@ -152,7 +152,7 @@ class MatchFilterWidget @JvmOverloads constructor(
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btn_all_selected -> {
-                allSelected()
+                allSelected(false)
             }
             R.id.btn_all_unselected -> {
                 allUnSelected(true)
@@ -160,19 +160,23 @@ class MatchFilterWidget @JvmOverloads constructor(
         }
     }
 
-    fun allSelected() {
+    fun allSelected(isFromOutSideButton: Boolean) {
         if (matchFilterRow != null) {
             for (i in 0 until matchFilterRow!!.childCount) {
                 val widget = matchFilterRow!![i] as MatchFilterItemWidget
-                if(widget.visibility == View.VISIBLE) widget.allSelected()
+                if(isFromOutSideButton) {
+                    widget.allSelected()
+                } else {
+                    if(widget.visibility == View.VISIBLE) widget.allSelected()
+                }
             }
         }
     }
 
-    fun allUnSelected(clickByButton: Boolean) {
+    fun allUnSelected(clickByWidgetButton: Boolean) {
         for (i in 0 until matchFilterRow!!.childCount) {
             val widget = matchFilterRow!![i] as MatchFilterItemWidget
-            if(clickByButton) {
+            if(clickByWidgetButton) {
                 widget.allUnselected()
             } else {
                 if(widget.visibility == View.GONE) widget.allUnselected()

@@ -245,15 +245,12 @@ class Repository constructor(val context: Context) {
                         dataCenter.matchIngList = filterList
                     }
                 }
-                restartApp()
                 response.payload.matches = filterList
                 HttpResult.onSuccess(response)
             } else {
-
                 if (response.statusCode == "1005") {
                     restartApp()
                 }
-
                 HttpResult.onError(
                     response.statusCode,
                     response.message

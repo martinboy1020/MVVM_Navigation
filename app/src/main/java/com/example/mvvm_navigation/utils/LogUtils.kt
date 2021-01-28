@@ -7,7 +7,7 @@ class LogUtils {
     companion object {
 
         //        private val printLog = BuildConfig.DEBUG
-        private val printLog = false
+        private val printLog = true
 
         fun v(tag: String, content: String) {
             if (printLog)

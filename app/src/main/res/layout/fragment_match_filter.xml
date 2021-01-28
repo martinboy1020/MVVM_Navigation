@@ -21,7 +21,35 @@
             android:background="@drawable/rectangle_stroke_black_solid_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btn_all_selected_all_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="全選"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_all_unselected_all_type"
+                app:layout_constraintEnd_toStartOf="@+id/btn_all_unselected_all_type"
+                app:layout_constraintTop_toTopOf="@+id/btn_all_unselected_all_type" />
+
+            <Button
+                android:id="@+id/btn_all_unselected_all_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="反選"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/match_filter_scroll_view"
@@ -36,28 +64,28 @@
                 android:id="@+id/layout_scroll_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <com.example.mvvm_navigation.widget.MatchFilterWidget
                     android:id="@+id/match_filter_widget_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dataType="area"
-                    app:areaList="@{viewModel.areaList}"/>
+                    app:areaList="@{viewModel.areaList}"
+                    app:dataType="area" />
 
                 <com.example.mvvm_navigation.widget.MatchFilterWidget
                     android:id="@+id/match_filter_widget_country"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dataType="country"
-                    app:areaList="@{viewModel.areaList}"/>
+                    app:areaList="@{viewModel.areaList}"
+                    app:dataType="country" />
 
                 <com.example.mvvm_navigation.widget.MatchFilterWidget
                     android:id="@+id/match_filter_widget_league"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:dataType="league"
-                    app:areaList="@{viewModel.areaList}"/>
+                    app:areaList="@{viewModel.areaList}"
+                    app:dataType="league" />
 
             </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.example.mvvm_navigation.ui.filter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.example.base.components.LayoutId
 import com.example.mvvm_navigation.BR
@@ -51,6 +52,16 @@ class MatchFilterFragment : BaseFragment(), MatchFilterWidget.MatchFilterWidgetO
         (this.binding as FragmentMatchFilterBinding).matchFilterWidgetLeague.setListener(this)
         (this.binding as FragmentMatchFilterBinding).matchFilterWidgetCountry.visibility = View.GONE
         (this.binding as FragmentMatchFilterBinding).matchFilterWidgetLeague.visibility = View.GONE
+
+        (this.binding as FragmentMatchFilterBinding).btnAllSelectedAllType.setOnClickListener {
+            (this@MatchFilterFragment.binding as FragmentMatchFilterBinding).matchFilterWidgetArea.allSelected(true)
+            (this@MatchFilterFragment.binding as FragmentMatchFilterBinding).matchFilterWidgetCountry.allSelected(true)
+            (this@MatchFilterFragment.binding as FragmentMatchFilterBinding).matchFilterWidgetLeague.allSelected(true)
+        }
+
+        (this.binding as FragmentMatchFilterBinding).btnAllUnselectedAllType.setOnClickListener {
+            (this@MatchFilterFragment.binding as FragmentMatchFilterBinding).matchFilterWidgetArea.allUnSelected(false)
+        }
     }
 
     override fun changeStatus(id: Int, name: String, type: Int, isCheck: Boolean) {
