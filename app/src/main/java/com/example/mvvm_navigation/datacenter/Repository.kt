@@ -1,7 +1,11 @@
 package com.example.mvvm_navigation.datacenter
 
 import android.content.Context
+import android.content.Intent
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
+import com.example.mvvm_navigation.MainApplication
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.data.BannerItem
 import com.example.mvvm_navigation.datacenter.data.BetData
@@ -13,6 +17,7 @@ import com.example.mvvm_navigation.datacenter.network.RetrofitClient
 import com.example.mvvm_navigation.datacenter.network.StatusCode
 import com.example.mvvm_navigation.datacenter.network.response.*
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
+import com.example.mvvm_navigation.ui.main.MainActivity
 import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
 import com.example.mvvm_navigation.utils.GameStatusUtils
 import com.example.mvvm_navigation.utils.GetAssetsUtils
@@ -240,12 +245,20 @@ class Repository constructor(val context: Context) {
                         dataCenter.matchIngList = filterList
                     }
                 }
+                restartApp()
                 response.payload.matches = filterList
                 HttpResult.onSuccess(response)
-            } else HttpResult.onError(
-                response.statusCode,
-                response.message
-            )
+            } else {
+
+                if (response.statusCode == "1005") {
+                    restartApp()
+                }
+
+                HttpResult.onError(
+                    response.statusCode,
+                    response.message
+                )
+            }
         } catch (e: Throwable) {
             LogUtils.d("tag123456789", "getWebMatchList e.message: ${e.message}")
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
@@ -403,7 +416,8 @@ class Repository constructor(val context: Context) {
         val responseString = GetAssetsUtils.getJsonDataFromAsset(context, "incorrect_score.json")
         LogUtils.d("tag123456789", "getIncorrectDataList responseString: $responseString")
         if (responseString != null) {
-            val incorrectScoreDataType = object : TypeToken<MutableList<IncorrectScoreData>>() {}.type
+            val incorrectScoreDataType =
+                object : TypeToken<MutableList<IncorrectScoreData>>() {}.type
             return Gson().fromJson(responseString, incorrectScoreDataType)
         }
         return null
@@ -412,7 +426,8 @@ class Repository constructor(val context: Context) {
     suspend fun getMatchDetail(matchId: Int): HttpResult<HttpStatus<MatchDetail.Data>> =
         try {
             val response = RetrofitClient.getInstance(this.context).getApiMethod()
-                .getMatchDetail("Bearer " + UserSharePreferences(context).userToken, matchId).await()
+                .getMatchDetail("Bearer " + UserSharePreferences(context).userToken, matchId)
+                .await()
             if (response.statusCode == "0") {
                 HttpResult.onSuccess(response)
             } else {
@@ -424,5 +439,13 @@ class Repository constructor(val context: Context) {
         } catch (e: Throwable) {
             HttpResult.onError(StatusCode.HTTP.BadRequest.toString(), e.message)
         }
+
+    private fun restartApp() {
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(context, intent, null)
+        val currentActivity = MainApplication().getCurrentActivity()
+        if (currentActivity != null) ActivityCompat.finishAffinity(currentActivity)
+    }
 
 }
