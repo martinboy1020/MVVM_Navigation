@@ -66,26 +66,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.example.mvvm_navigation.widget.MatchFilterWidget
-                    android:id="@+id/match_filter_widget_area"
+                <com.example.mvvm_navigation.widget.match_filter_widget.MatchFilterWidget
+                    android:id="@+id/match_filter_widget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:areaList="@{viewModel.areaList}"
-                    app:dataType="area" />
-
-                <com.example.mvvm_navigation.widget.MatchFilterWidget
-                    android:id="@+id/match_filter_widget_country"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:areaList="@{viewModel.areaList}"
-                    app:dataType="country" />
-
-                <com.example.mvvm_navigation.widget.MatchFilterWidget
-                    android:id="@+id/match_filter_widget_league"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:areaList="@{viewModel.areaList}"
-                    app:dataType="league" />
+                    app:areaList="@{viewModel.areaList}"/>
 
             </LinearLayout>
 

@@ -1,17 +1,16 @@
-package com.example.mvvm_navigation.widget
+package com.example.mvvm_navigation.widget.match_filter_widget
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
-import com.example.mvvm_navigation.ui.filter.MatchFilterAdapter
+import com.example.mvvm_navigation.widget.BuildRecyclerView
 
 // 賽事篩選Row(各個洲別, 國家, 賽事)
-class MatchFilterItemWidget @JvmOverloads constructor(
+class MatchFilterRowWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr),
     MatchFilterAdapter.MatchFilterAdapterOnChangeListener {
@@ -30,7 +29,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
     }
 
     interface MatchFilterItemWidgetOnChangeListener {
-        fun changeStatus(id: Int, name: String, isCheck: Boolean)
+        fun changeStatusFromRowWidget(id: Int, name: String, isCheck: Boolean)
     }
 
     init {
@@ -39,7 +38,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
     }
 
     private fun initView() {
-        view = View.inflate(context, R.layout.layout_match_filter_item_widget, this)
+        view = View.inflate(context, R.layout.layout_match_filter_row_widget, this)
         rvMatchItemFilter = view?.findViewById(R.id.rv_match_item_filter)
         tvMatchFilterItemTitle = view?.findViewById(R.id.tv_match_filter_item_title)
     }
@@ -48,7 +47,11 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         this.dataType = DataType.AREA.code
         if(title.isNullOrEmpty()) tvMatchFilterItemTitle?.visibility = View.GONE else View.VISIBLE
         tvMatchFilterItemTitle?.text = title
-        adapter = MatchFilterAdapter(MatchFilterAdapter.TYPE_AREA, this)
+        adapter =
+            MatchFilterAdapter(
+                MatchFilterAdapter.TYPE_AREA,
+                this
+            )
         rvMatchItemFilter?.adapter = adapter
         adapter?.setAreaList(areaList)
     }
@@ -58,7 +61,11 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         this.id = areaId
         if(title.isNullOrEmpty()) tvMatchFilterItemTitle?.visibility = View.GONE else View.VISIBLE
         tvMatchFilterItemTitle?.text = title
-        adapter = MatchFilterAdapter(MatchFilterAdapter.TYPE_COUNTRY, this)
+        adapter =
+            MatchFilterAdapter(
+                MatchFilterAdapter.TYPE_COUNTRY,
+                this
+            )
         rvMatchItemFilter?.adapter = adapter
         adapter?.setCountryList(countryList)
     }
@@ -68,7 +75,11 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         this.id = countryId
         if(title.isNullOrEmpty()) tvMatchFilterItemTitle?.visibility = View.GONE else View.VISIBLE
         tvMatchFilterItemTitle?.text = title
-        adapter = MatchFilterAdapter(MatchFilterAdapter.TYPE_LEAGUE, this)
+        adapter =
+            MatchFilterAdapter(
+                MatchFilterAdapter.TYPE_LEAGUE,
+                this
+            )
         rvMatchItemFilter?.adapter = adapter
         adapter?.setLeagueList(leagueList)
     }
@@ -81,7 +92,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         adapter?.allSelected()
         when(dataType) {
             DataType.AREA.code -> {
-               val areaList = adapter?.getAreaList()
+                val areaList = adapter?.getAreaList()
                 if(areaList != null) {
                     for(i in areaList.indices) {
                         changeStatus(areaList[i].id, areaList[i].name, true)
@@ -138,7 +149,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
     }
 
     override fun changeStatus(id: Int, name: String, isCheck: Boolean) {
-        listener?.changeStatus(id, name, isCheck)
+        listener?.changeStatusFromRowWidget(id, name, isCheck)
     }
 
 }

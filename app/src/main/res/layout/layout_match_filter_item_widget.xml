@@ -12,29 +12,61 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_match_filter_item_title"
+            android:id="@+id/tv_match_filter_warning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
-            android:gravity="left"
-            android:text="title"
+            android:background="@color/yellow"
+            android:gravity="center"
+            android:text="請選擇洲別"
             android:textColor="@color/black"
-            android:textSize="16sp"
-            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.example.mvvm_navigation.widget.BuildRecyclerView
-            android:id="@+id/rv_match_item_filter"
+        <TextView
+            android:id="@+id/tv_match_filter_widget_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="州別"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_match_filter_warning" />
+
+        <Button
+            android:id="@+id/btn_all_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="全選"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_match_filter_widget_title"
+            app:layout_constraintStart_toEndOf="@+id/tv_match_filter_widget_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_match_filter_widget_title" />
+
+        <Button
+            android:id="@+id/btn_all_unselected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="反選"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_match_filter_widget_title"
+            app:layout_constraintStart_toEndOf="@+id/btn_all_selected"
+            app:layout_constraintTop_toTopOf="@+id/tv_match_filter_widget_title" />
+
+        <LinearLayout
+            android:id="@+id/match_filter_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_match_filter_item_title"
-            app:layout_manager_type="flex"
-            tools:listitem="@layout/layout_item_cb_match_selector" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_match_filter_widget_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,4 +1,4 @@
-package com.example.mvvm_navigation.ui.filter
+package com.example.mvvm_navigation.widget.match_filter_widget
 
 import android.view.LayoutInflater
 import android.view.View
