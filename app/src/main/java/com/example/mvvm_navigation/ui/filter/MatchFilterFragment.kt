@@ -1,10 +1,12 @@
 package com.example.mvvm_navigation.ui.filter
 
 import android.os.Bundle
+import android.view.View
 import com.example.base.components.LayoutId
 import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseFragment
+import com.example.mvvm_navigation.databinding.FragmentMatchFilterBinding
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.di.matchFilterModule
 import com.example.mvvm_navigation.ui.filter.viewmodel.match_filter.MatchFilterContract
@@ -19,7 +21,7 @@ import org.kodein.di.generic.singleton
 import java.lang.reflect.Type
 
 @LayoutId(R.layout.fragment_match_filter)
-class MatchFilterFragment : BaseFragment() {
+class MatchFilterFragment : BaseFragment(), View.OnClickListener {
 
     /** Dependency Injection **/
     override val kodeinContext: KodeinContext<*> get() = kcontext(activity)
@@ -42,6 +44,11 @@ class MatchFilterFragment : BaseFragment() {
             val areaList = Gson().fromJson<MutableList<MatchList.Area>>(listString, type)
             if (!areaList.isNullOrEmpty()) this.viewModel.setMatchFilter(areaList)
         }
+        (this.binding as FragmentMatchFilterBinding).btnAllUnselectedAllType.setOnClickListener(this)
+    }
+
+    override fun onClick(p0: View?) {
+        if(p0?.id == R.id.btn_all_unselected_all_type) (this.binding as FragmentMatchFilterBinding).matchFilterWidget.clearAllSelected()
     }
 
 }

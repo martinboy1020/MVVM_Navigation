@@ -197,6 +197,18 @@ class MatchFilterWidget @JvmOverloads constructor(
             }
         }
 
-
     }
+
+    fun clearAllSelected() {
+        selectedAreaList.removeAll { true }
+        selectedCountryList.removeAll { true }
+        selectedLeagueList.removeAll { true }
+        matchFilterArea?.showAttention(false)
+        matchFilterArea?.hideAllFilterRow(true)
+        matchFilterCountry?.hideAllFilterRow(false)
+        matchFilterLeague?.hideAllFilterRow(false)
+        matchFilterCountry?.visibility = View.GONE
+        matchFilterLeague?.visibility = View.GONE
+    }
+
 }
