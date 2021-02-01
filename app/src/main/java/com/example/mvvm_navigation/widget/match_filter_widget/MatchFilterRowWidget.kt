@@ -120,32 +120,32 @@ class MatchFilterRowWidget @JvmOverloads constructor(
 
     fun allUnselected() {
         adapter?.allUnselected()
-        when(dataType) {
-            DataType.AREA.code -> {
-                val areaList = adapter?.getAreaList()
-                if(areaList != null) {
-                    for(i in areaList.indices) {
-                        changeStatus(areaList[i].id, areaList[i].name, false)
-                    }
-                }
-            }
-            DataType.COUNTRY.code -> {
-                val countryList = adapter?.getCountryList()
-                if(countryList != null) {
-                    for(i in countryList.indices) {
-                        changeStatus(countryList[i].id, countryList[i].name, false)
-                    }
-                }
-            }
-            DataType.LEAGUE.code -> {
-                val leagueList = adapter?.getLeagueList()
-                if(leagueList != null) {
-                    for(i in leagueList.indices) {
-                        changeStatus(leagueList[i].id, leagueList[i].name, false)
-                    }
-                }
-            }
-        }
+//        when(dataType) {
+//            DataType.AREA.code -> {
+//                val areaList = adapter?.getAreaList()
+//                if(areaList != null) {
+//                    for(i in areaList.indices) {
+//                        listener?.changeStatusFromRowWidget(areaList[i].id, areaList[i].name, false)
+//                    }
+//                }
+//            }
+//            DataType.COUNTRY.code -> {
+//                val countryList = adapter?.getCountryList()
+//                if(countryList != null) {
+//                    for(i in countryList.indices) {
+//                        listener?.changeStatusFromRowWidget(countryList[i].id, countryList[i].name, false)
+//                    }
+//                }
+//            }
+//            DataType.LEAGUE.code -> {
+//                val leagueList = adapter?.getLeagueList()
+//                if(leagueList != null) {
+//                    for(i in leagueList.indices) {
+//                        listener?.changeStatusFromRowWidget(leagueList[i].id, leagueList[i].name, false)
+//                    }
+//                }
+//            }
+//        }
     }
 
     override fun changeStatus(id: Int, name: String, isCheck: Boolean) {

@@ -37,6 +37,8 @@ class MatchFilterItemWidget @JvmOverloads constructor(
 
     interface MatchFilterWidgetOnChangeListener {
         fun changeStatusFromItemWidget(id: Int, name: String, type: Int, isCheck: Boolean)
+        fun allSelectedFromItemWidget(type: Int)
+        fun allUnSelectedFromItemWidget(type: Int)
     }
 
     init {
@@ -139,30 +141,29 @@ class MatchFilterItemWidget @JvmOverloads constructor(
     }
 
     fun showAttention(isExist: Boolean) {
-        this.post { tvMatchFilterWarning?.visibility = if(isExist) View.GONE else View.VISIBLE }
+        this.post { tvMatchFilterWarning?.visibility = if (isExist) View.GONE else View.VISIBLE }
     }
 
     fun showCountryRow(id: Int, name: String, isCheck: Boolean) {
         val position = countryListIndex[name]
         val widget = matchFilterRow!![position!!] as MatchFilterRowWidget
         widget.visibility = if (isCheck) View.VISIBLE else View.GONE
-        if(!isCheck) allUnSelected(false)
     }
 
     fun showLeagueRow(id: Int, name: String, isCheck: Boolean) {
         val position = leagueListIndex[name]
         val widget = matchFilterRow!![position!!] as MatchFilterRowWidget
         widget.visibility = if (isCheck) View.VISIBLE else View.GONE
-        if(!isCheck) allUnSelected(false)
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btn_all_selected -> {
+//                listener?.allSelectedFromItemWidget(dataType)
                 allSelected(false)
             }
             R.id.btn_all_unselected -> {
-                allUnSelected(true)
+                listener?.allUnSelectedFromItemWidget(dataType)
             }
         }
     }
@@ -172,7 +173,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
             for (i in 0 until matchFilterRow!!.childCount) {
                 val widget = matchFilterRow!![i] as MatchFilterRowWidget
                 Log.d("tag123456789", "allSelected widget: " + widget.tag)
-                if(widget.visibility == View.VISIBLE) widget.allSelected()
+                if (widget.visibility == View.VISIBLE) widget.allSelected()
 //                if(isFromOutSideButton) {
 //                    widget.allSelected()
 //                } else {
@@ -182,19 +183,25 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         }
     }
 
-    fun allUnSelected(clickByWidgetButton: Boolean) {
+    fun showAllFilterRow(isFromSelf: Boolean) {
         if (matchFilterRow != null) {
             for (i in 0 until matchFilterRow!!.childCount) {
                 val widget = matchFilterRow!![i] as MatchFilterRowWidget
-                if(widget.visibility == View.GONE) {
+                Log.d("tag123456789", "allSelected widget: " + widget.tag)
+                if (widget.visibility == View.VISIBLE) widget.allSelected()
+            }
+        }
+    }
+
+    fun hideAllFilterRow(isFromSelf: Boolean) {
+        if (matchFilterRow != null) {
+            for (i in 0 until matchFilterRow!!.childCount) {
+                val widget = matchFilterRow!![i] as MatchFilterRowWidget
+                if (widget.visibility == View.VISIBLE) {
                     Log.d("tag123456789", "allUnSelected widget: " + widget.tag)
                     widget.allUnselected()
+                    if(!isFromSelf) widget.visibility = View.GONE
                 }
-//                if(clickByWidgetButton) {
-//                    widget.allUnselected()
-//                } else {
-//                    if(widget.visibility == View.GONE) widget.allUnselected()
-//                }
             }
         }
     }
