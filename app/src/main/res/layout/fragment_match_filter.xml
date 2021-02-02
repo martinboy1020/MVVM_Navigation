@@ -70,7 +70,8 @@
                     android:id="@+id/match_filter_widget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:areaList="@{viewModel.areaList}"/>
+                    app:areaList="@{viewModel.areaList}"
+                    app:listener="@{viewModel.matchFilterWidgetListener}"/>
 
             </LinearLayout>
 

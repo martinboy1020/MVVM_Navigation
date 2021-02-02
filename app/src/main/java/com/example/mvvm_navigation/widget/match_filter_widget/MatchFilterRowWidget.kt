@@ -90,32 +90,32 @@ class MatchFilterRowWidget @JvmOverloads constructor(
 
     fun allSelected() {
         adapter?.allSelected()
-        when(dataType) {
-            DataType.AREA.code -> {
-                val areaList = adapter?.getAreaList()
-                if(areaList != null) {
-                    for(i in areaList.indices) {
-                        changeStatus(areaList[i].id, areaList[i].name, true)
-                    }
-                }
-            }
-            DataType.COUNTRY.code -> {
-                val countryList = adapter?.getCountryList()
-                if(countryList != null) {
-                    for(i in countryList.indices) {
-                        changeStatus(countryList[i].id, countryList[i].name, true)
-                    }
-                }
-            }
-            DataType.LEAGUE.code -> {
-                val leagueList = adapter?.getLeagueList()
-                if(leagueList != null) {
-                    for(i in leagueList.indices) {
-                        changeStatus(leagueList[i].id, leagueList[i].name, true)
-                    }
-                }
-            }
-        }
+//        when(dataType) {
+//            DataType.AREA.code -> {
+//                val areaList = adapter?.getAreaList()
+//                if(areaList != null) {
+//                    for(i in areaList.indices) {
+//                        changeStatus(areaList[i].id, areaList[i].name, true)
+//                    }
+//                }
+//            }
+//            DataType.COUNTRY.code -> {
+//                val countryList = adapter?.getCountryList()
+//                if(countryList != null) {
+//                    for(i in countryList.indices) {
+//                        changeStatus(countryList[i].id, countryList[i].name, true)
+//                    }
+//                }
+//            }
+//            DataType.LEAGUE.code -> {
+//                val leagueList = adapter?.getLeagueList()
+//                if(leagueList != null) {
+//                    for(i in leagueList.indices) {
+//                        changeStatus(leagueList[i].id, leagueList[i].name, true)
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun allUnselected() {

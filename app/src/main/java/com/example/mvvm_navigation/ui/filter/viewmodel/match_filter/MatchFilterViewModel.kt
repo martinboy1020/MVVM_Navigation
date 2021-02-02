@@ -2,25 +2,28 @@ package com.example.mvvm_navigation.ui.filter.viewmodel.match_filter
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.example.mvvm_navigation.base.BaseViewModel
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
+import com.example.mvvm_navigation.utils.LogUtils
+import com.example.mvvm_navigation.widget.match_filter_widget.MatchFilterWidget
 
 class MatchFilterViewModel constructor(
     application: Application,
     context: Context,
     val model: MatchFilterContract.ModelImpl,
     navController: NavController?
-) : BaseViewModel(application, context, navController), MatchFilterContract.ViewModelImpl {
+) : BaseViewModel(application, context, navController), MatchFilterContract.ViewModelImpl, MatchFilterWidget.MatchFilterWidgetListener {
 
     private val submitter =
         MatchFilterFragmentSubmitter()
 
-    private var selectedAreaList: MutableList<String> = mutableListOf()
-    private var selectedCountryList: MutableList<String> = mutableListOf()
-    private var selectedLeagueList: MutableList<Int> = mutableListOf()
+    init {
+        this.submitter.matchFilterWidgetListener.value = this
+    }
 
     companion object {
         fun getInstance(
@@ -55,18 +58,9 @@ class MatchFilterViewModel constructor(
         this.submitter.areaList.value = mutableList
     }
 
-    override fun getSelectedAreaList(): MutableList<String> {
-        return selectedAreaList
-    }
-
-    override fun getSelectedCountryList(): MutableList<String> {
-        return selectedCountryList
-    }
-
-    override fun getSelectedLeagueList(): MutableList<Int> {
-        return selectedLeagueList
-    }
-
     override fun getSubmitter(): MatchFilterFragmentSubmitter = this.submitter
+    override fun returnSelectedLeague(selectedLeagueList: MutableList<Int>) {
+        LogUtils.d("tag123456789", "now matchFilter Selected League List Size: " + selectedLeagueList.size)
+    }
 
 }

@@ -11,6 +11,7 @@ import androidx.core.view.get
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
+import com.example.mvvm_navigation.utils.LogUtils
 import com.example.mvvm_navigation.widget.BuildRecyclerView
 
 // 賽事篩選Widget
@@ -37,7 +38,9 @@ class MatchFilterItemWidget @JvmOverloads constructor(
 
     interface MatchFilterWidgetOnChangeListener {
         fun changeStatusFromItemWidget(id: Int, name: String, type: Int, isCheck: Boolean)
-        fun allSelectedFromItemWidget(type: Int)
+        fun allSelectedFromAreaItemWidget(type: Int)
+        fun allSelectedFromCountryItemWidget(type: Int)
+        fun allSelectedFromLeagueItemWidget(type: Int)
         fun allUnSelectedFromItemWidget(type: Int)
     }
 
@@ -101,7 +104,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
                 this.context
             )
         widget.setAreaData(areaList, null)
-        widget.tag = "All Area"
+        widget.tag = areaList
         widget.setListener(this)
         matchFilterRow?.addView(widget)
     }
@@ -114,7 +117,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
                 )
             countryListIndex[areaList[i].name] = i
             widget.setCountryData(areaList[i].countries, areaList[i].id, areaList[i].name)
-            widget.tag = areaList[i].id.toString() + ", " + areaList[i].name
+            widget.tag = areaList[i]
             widget.setListener(this)
             widget.visibility = View.GONE
             matchFilterRow?.addView(widget)
@@ -132,7 +135,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
                     )
                 leagueListIndex[countryList[j].name] = index++
                 widget.setLeagueData(countryList[j].leagues, countryList[j].id, countryList[j].name)
-                widget.tag = countryList[j].id.toString() + ", " + countryList[j].name
+                widget.tag = countryList[j]
                 widget.setListener(this)
                 widget.visibility = View.GONE
                 matchFilterRow?.addView(widget)
@@ -148,19 +151,32 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         val position = countryListIndex[name]
         val widget = matchFilterRow!![position!!] as MatchFilterRowWidget
         widget.visibility = if (isCheck) View.VISIBLE else View.GONE
+        if (!isCheck) widget.allUnselected()
     }
 
     fun showLeagueRow(id: Int, name: String, isCheck: Boolean) {
         val position = leagueListIndex[name]
         val widget = matchFilterRow!![position!!] as MatchFilterRowWidget
         widget.visibility = if (isCheck) View.VISIBLE else View.GONE
+        if (!isCheck) widget.allUnselected()
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btn_all_selected -> {
-//                listener?.allSelectedFromItemWidget(dataType)
-                allSelected(false)
+                when(dataType) {
+                    FilterType.AREA.code -> {
+                        listener?.allSelectedFromAreaItemWidget(dataType)
+                    }
+
+                    FilterType.COUNTRY.code -> {
+                        listener?.allSelectedFromCountryItemWidget(dataType)
+                    }
+
+                    FilterType.LEAGUE.code -> {
+                        listener?.allSelectedFromLeagueItemWidget(dataType)
+                    }
+                }
             }
             R.id.btn_all_unselected -> {
                 listener?.allUnSelectedFromItemWidget(dataType)
@@ -168,26 +184,10 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         }
     }
 
-    fun allSelected(isFromOutSideButton: Boolean) {
+    fun allSelected() {
         if (matchFilterRow != null) {
             for (i in 0 until matchFilterRow!!.childCount) {
                 val widget = matchFilterRow!![i] as MatchFilterRowWidget
-                Log.d("tag123456789", "allSelected widget: " + widget.tag)
-                if (widget.visibility == View.VISIBLE) widget.allSelected()
-//                if(isFromOutSideButton) {
-//                    widget.allSelected()
-//                } else {
-//                    if(widget.visibility == View.VISIBLE) widget.allSelected()
-//                }
-            }
-        }
-    }
-
-    fun showAllFilterRow(isFromSelf: Boolean) {
-        if (matchFilterRow != null) {
-            for (i in 0 until matchFilterRow!!.childCount) {
-                val widget = matchFilterRow!![i] as MatchFilterRowWidget
-                Log.d("tag123456789", "allSelected widget: " + widget.tag)
                 if (widget.visibility == View.VISIBLE) widget.allSelected()
             }
         }
@@ -198,9 +198,9 @@ class MatchFilterItemWidget @JvmOverloads constructor(
             for (i in 0 until matchFilterRow!!.childCount) {
                 val widget = matchFilterRow!![i] as MatchFilterRowWidget
                 if (widget.visibility == View.VISIBLE) {
-                    Log.d("tag123456789", "allUnSelected widget: " + widget.tag)
+//                    Log.d("tag123456789", "allUnSelected widget: " + widget.tag)
                     widget.allUnselected()
-                    if(!isFromSelf) widget.visibility = View.GONE
+                    if (!isFromSelf) widget.visibility = View.GONE
                 }
             }
         }
