@@ -77,6 +77,7 @@ class MatchFilterWidget @JvmOverloads constructor(
         matchFilterLeague?.setData(areaList)
     }
 
+    // 返回單點項目狀態
     override fun changeStatusFromItemWidget(id: Int, name: String, type: Int, isCheck: Boolean) {
         when (type) {
             MatchFilterItemWidget.FilterType.AREA.code -> {
@@ -107,9 +108,8 @@ class MatchFilterWidget @JvmOverloads constructor(
                     }
                 }
 
+                // 依據點選的洲別顯示該洲別的國家列
                 matchFilterCountry?.showCountryRow(id, name, isCheck)
-                matchFilterCountry?.visibility =
-                    if (selectedAreaList.size > 0) View.VISIBLE else View.GONE
 
                 if (selectedAreaList.size <= 0) {
                     matchFilterArea?.hideAllFilterRow(true)
@@ -135,12 +135,12 @@ class MatchFilterWidget @JvmOverloads constructor(
                     }
                 }
 
-                matchFilterCountry?.post {
-                    matchFilterLeague?.showLeagueRow(id, name, isCheck)
-                    if (selectedCountryList.size <= 0) {
-                        matchFilterCountry?.hideAllFilterRow(true)
-                        matchFilterLeague?.hideAllFilterRow(false)
-                    }
+                // 依據點選的國家顯示該國家的賽事列
+                matchFilterLeague?.showLeagueRow(id, name, isCheck)
+
+                if (selectedCountryList.size <= 0) {
+                    matchFilterCountry?.hideAllFilterRow(true)
+                    matchFilterLeague?.hideAllFilterRow(false)
                 }
             }
 
@@ -150,15 +150,17 @@ class MatchFilterWidget @JvmOverloads constructor(
                 } else {
                     if (selectedLeagueList.contains(id)) selectedLeagueList.remove(id)
                 }
-                listener?.returnSelectedLeague(selectedLeagueList)
             }
         }
 
         matchFilterArea?.showAttention(selectedAreaList.size > 0)
         matchFilterCountry?.showAttention(selectedCountryList.size > 0)
+        matchFilterCountry?.visibility =
+            if (selectedAreaList.size > 0) View.VISIBLE else View.GONE
         matchFilterLeague?.visibility =
             if (selectedCountryList.size > 0) View.VISIBLE else View.GONE
 
+        listener?.returnSelectedLeague(selectedLeagueList)
 
 //        LogUtils.d(
 //            "tag123456789",
@@ -177,30 +179,33 @@ class MatchFilterWidget @JvmOverloads constructor(
 
     }
 
+    // 返回全選洲別項目狀態
     override fun allSelectedFromAreaItemWidget(type: Int) {
         matchFilterArea?.showAttention(true)
-        matchFilterArea?.allSelected()
+        matchFilterArea?.showAllRow()
         matchFilterCountry?.visibility = View.VISIBLE
         for (i in areaList.indices) {
-            selectedAreaList.add(areaList[i].name)
+            if(!selectedAreaList.contains(areaList[i].name)) selectedAreaList.add(areaList[i].name)
             matchFilterCountry?.showCountryRow(areaList[i].id, areaList[i].name, true)
         }
     }
 
+    // 返回全選國家項目狀態
     override fun allSelectedFromCountryItemWidget(type: Int) {
         matchFilterCountry?.showAttention(true)
-        matchFilterCountry?.allSelected()
+        matchFilterCountry?.showAllRow()
         matchFilterLeague?.visibility = View.VISIBLE
         for (i in countryList.indices) {
-            selectedCountryList.add(countryList[i].name)
+            if(!selectedCountryList.contains(countryList[i].name)) selectedCountryList.add(countryList[i].name)
             matchFilterLeague?.showLeagueRow(countryList[i].id, countryList[i].name, true)
         }
     }
 
+    // 返回全選賽事項目狀態
     override fun allSelectedFromLeagueItemWidget(type: Int) {
-        matchFilterLeague?.allSelected()
+        matchFilterLeague?.showAllRow()
         for (i in leagueList.indices) {
-            selectedLeagueList.add(leagueList[i].id)
+            if(!selectedLeagueList.contains(leagueList[i].id)) selectedLeagueList.add(leagueList[i].id)
         }
 
         listener?.returnSelectedLeague(selectedLeagueList)
@@ -212,6 +217,7 @@ class MatchFilterWidget @JvmOverloads constructor(
 
     }
 
+    // 返回反選項目狀態
     override fun allUnSelectedFromItemWidget(type: Int) {
         when (type) {
             MatchFilterItemWidget.FilterType.AREA.code -> {
@@ -251,6 +257,24 @@ class MatchFilterWidget @JvmOverloads constructor(
 
     }
 
+    fun allSelectedAllType() {
+        LogUtils.d("tag123456789", "allSelectedAllType")
+        matchFilterArea?.showAttention(true)
+        matchFilterCountry?.showAttention(true)
+        matchFilterCountry?.visibility = View.VISIBLE
+        matchFilterLeague?.visibility = View.VISIBLE
+        matchFilterArea?.showAllRow()
+        matchFilterCountry?.showAllRow()
+        matchFilterLeague?.showAllRow()
+        for (i in leagueList.indices) {
+            if(!selectedLeagueList.contains(leagueList[i].id)) selectedLeagueList.add(leagueList[i].id)
+        }
+        listener?.returnSelectedLeague(selectedLeagueList)
+    }
+
+    /**
+     * 反選全項目
+     */
     fun clearAllSelected() {
         selectedAreaList.removeAll { true }
         selectedCountryList.removeAll { true }

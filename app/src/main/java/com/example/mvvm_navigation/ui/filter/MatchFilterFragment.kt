@@ -44,11 +44,15 @@ class MatchFilterFragment : BaseFragment(), View.OnClickListener {
             val areaList = Gson().fromJson<MutableList<MatchList.Area>>(listString, type)
             if (!areaList.isNullOrEmpty()) this.viewModel.setMatchFilter(areaList)
         }
+        (this.binding as FragmentMatchFilterBinding).btnAllSelectedAllType.setOnClickListener(this)
         (this.binding as FragmentMatchFilterBinding).btnAllUnselectedAllType.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
-        if(p0?.id == R.id.btn_all_unselected_all_type) (this.binding as FragmentMatchFilterBinding).matchFilterWidget.clearAllSelected()
+        when(p0?.id) {
+            R.id.btn_all_selected_all_type -> (this.binding as FragmentMatchFilterBinding).matchFilterWidget.allSelectedAllType()
+            R.id.btn_all_unselected_all_type -> (this.binding as FragmentMatchFilterBinding).matchFilterWidget.clearAllSelected()
+        }
     }
 
 }

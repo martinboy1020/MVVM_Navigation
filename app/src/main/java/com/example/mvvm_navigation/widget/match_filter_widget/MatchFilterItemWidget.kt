@@ -1,6 +1,7 @@
 package com.example.mvvm_navigation.widget.match_filter_widget
 
 import android.content.Context
+import android.opengl.Visibility
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.get
+import androidx.core.view.size
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
@@ -147,6 +149,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         this.post { tvMatchFilterWarning?.visibility = if (isExist) View.GONE else View.VISIBLE }
     }
 
+    // 依據點選的洲別顯示該洲別的國家列
     fun showCountryRow(id: Int, name: String, isCheck: Boolean) {
         val position = countryListIndex[name]
         val widget = matchFilterRow!![position!!] as MatchFilterRowWidget
@@ -154,11 +157,23 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         if (!isCheck) widget.allUnselected()
     }
 
+    // 依據點選的國家顯示該國家的賽事列
     fun showLeagueRow(id: Int, name: String, isCheck: Boolean) {
         val position = leagueListIndex[name]
         val widget = matchFilterRow!![position!!] as MatchFilterRowWidget
         widget.visibility = if (isCheck) View.VISIBLE else View.GONE
         if (!isCheck) widget.allUnselected()
+    }
+
+    // 直接顯示所有列並且將所有選項勾選
+    fun showAllRow() {
+        if(matchFilterRow != null) {
+            for(i in 0 until matchFilterRow!!.size) {
+                val widget = matchFilterRow!![i] as MatchFilterRowWidget
+                widget.visibility = View.VISIBLE
+                widget.allSelected()
+            }
+        }
     }
 
     override fun onClick(p0: View?) {
@@ -184,21 +199,11 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         }
     }
 
-    fun allSelected() {
-        if (matchFilterRow != null) {
-            for (i in 0 until matchFilterRow!!.childCount) {
-                val widget = matchFilterRow!![i] as MatchFilterRowWidget
-                if (widget.visibility == View.VISIBLE) widget.allSelected()
-            }
-        }
-    }
-
     fun hideAllFilterRow(isFromSelf: Boolean) {
         if (matchFilterRow != null) {
             for (i in 0 until matchFilterRow!!.childCount) {
                 val widget = matchFilterRow!![i] as MatchFilterRowWidget
                 if (widget.visibility == View.VISIBLE) {
-//                    Log.d("tag123456789", "allUnSelected widget: " + widget.tag)
                     widget.allUnselected()
                     if (!isFromSelf) widget.visibility = View.GONE
                 }

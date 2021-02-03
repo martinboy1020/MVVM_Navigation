@@ -88,7 +88,7 @@ class MatchListViewModel constructor(
     }
 
     override fun changeDate(timestamp: Long) {
-        getMatchList(if(timestamp > 0) timestamp else DateUtils.getTodayTimeStamp())
+        getMatchList(if (timestamp > 0) timestamp else DateUtils.getTodayTimeStamp())
     }
 
     override fun onClickItem(data: MatchList.Match) {}
@@ -99,8 +99,15 @@ class MatchListViewModel constructor(
             withContext(Dispatchers.Main) {
                 when (result) {
                     is HttpResult.onSuccess -> {
-                        this@MatchListViewModel.submitter.matchList.value =
-                            result.data.payload.matches
+//                        val list = result.data.payload.matches
+//                        val filterQuery = listOf(662, 24)
+//                        val emptyList = mutableListOf<MatchList.Match>()
+//                        for (i in filterQuery.indices) {
+//                            val filterList = list.filter { it.leagueId == filterQuery[i] }
+//                            emptyList.addAll(filterList as MutableList<MatchList.Match>)
+//                        }
+//                        emptyList.sortedWith(compareBy({ it.openDate }, { it.matchId }))
+                        this@MatchListViewModel.submitter.matchList.value =  result.data.payload.matches
                         this@MatchListViewModel.submitter.areaList.value = result.data.payload.areas
                     }
                     is HttpResult.onError -> {
