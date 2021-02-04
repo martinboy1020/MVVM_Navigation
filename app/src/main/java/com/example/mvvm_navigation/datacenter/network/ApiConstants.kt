@@ -15,6 +15,7 @@ class ApiConstants {
             const val SEARCH = "v2/search"
             const val MATCH_STATS = "v2/matches/{matchId}/stats"
             const val MATCH_DETAIL = "v2/matches/{matchId}/detail"
+            const val MEMBERS_INFO = "/v2/members/info"
         }
     }
 

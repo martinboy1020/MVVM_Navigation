@@ -423,7 +423,7 @@ class Repository constructor(val context: Context) {
     suspend fun getMatchDetail(matchId: Int): HttpResult<HttpStatus<MatchDetail.Data>> =
         try {
             val response = RetrofitClient.getInstance(this.context).getApiMethod()
-                .getMatchDetail("Bearer " + UserSharePreferences(context).userToken, matchId)
+                .getMatchDetailAsync("Bearer " + UserSharePreferences(context).userToken, matchId)
                 .await()
             if (response.statusCode == "0") {
                 HttpResult.onSuccess(response)

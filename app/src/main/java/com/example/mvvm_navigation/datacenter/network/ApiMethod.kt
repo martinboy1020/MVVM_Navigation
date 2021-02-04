@@ -31,6 +31,9 @@ interface ApiMethod {
         @Field(ApiConstants.LoginApiHeader.TOKEN) token: String = ""
     ): Deferred<HttpStatus<Login.TokenRefresh>>
 
+    @GET(ApiConstants.HttpPath.MEMBERS_INFO)
+    fun getMembersInfoAsync(@Header("Authorization") token: String = ""): Deferred<HttpStatus<Member.Info>>
+
     @GET(ApiConstants.HttpPath.WEB_HOME_INFO)
     fun getHomeInfoAsync(
         @Header("Authorization") token: String = ""
@@ -62,19 +65,19 @@ interface ApiMethod {
     ): Deferred<HttpStatus<MatchList.Data>>
 
     @GET(ApiConstants.HttpPath.TG_MATCHES_BET_INFO)
-    fun getMatchesBetInfo(
+    fun getMatchesBetInfoAsync(
         @Header("Authorization") token: String = "",
         @Path("matchId") matchId: Int
     ): Deferred<HttpStatus<Home.BetInfo>>
 
     @GET(ApiConstants.HttpPath.MATCH_STATS)
-    fun getMatchStats(
+    fun getMatchStatsAsync(
         @Header("Authorization") token: String = "",
         @Path("matchId") matchId: Int
     ): Deferred<HttpStatus<MatchStats.Data>>
 
     @GET(ApiConstants.HttpPath.SEARCH)
-    fun getSearch(
+    fun getSearchAsync(
         @Header("Authorization") token: String = "",
         @Query("q") keyword: String = "",
         @Query("lang") language: String = "zh",
@@ -83,7 +86,7 @@ interface ApiMethod {
     ): Deferred<HttpStatus<Search>>
 
     @GET(ApiConstants.HttpPath.MATCH_DETAIL)
-    fun getMatchDetail(@Header("Authorization") token: String = "",
+    fun getMatchDetailAsync(@Header("Authorization") token: String = "",
     @Path("matchId") matchId: Int): Deferred<HttpStatus<MatchDetail.Data>>
 
 }
