@@ -70,8 +70,8 @@ class MatchDetail {
         @SerializedName(ApiDataKey.AWAY_MANAGER) val awayManager: String = "",
         @SerializedName(ApiDataKey.HOME_FORMATION) val homeFormation: String = "",
         @SerializedName(ApiDataKey.AWAY_FORMATION) val awayFormation: String = "",
-        @SerializedName(ApiDataKey.HOME) val home: LineUpHomeAway,
-        @SerializedName(ApiDataKey.AWAY) val away: LineUpHomeAway
+        @SerializedName(ApiDataKey.HOME) val home: MutableList<LineUpHomeAway>,
+        @SerializedName(ApiDataKey.AWAY) val away: MutableList<LineUpHomeAway>
     )
 
     data class BattleRecordRecentMatches(
@@ -94,7 +94,7 @@ class MatchDetail {
         @SerializedName(ApiDataKey.FIRST) var first: Int = 0,
         @SerializedName(ApiDataKey.NAME) var name: String = "",
         @SerializedName(ApiDataKey.SHIRT_NUMBER) var shirtNumber: Int = 0,
-        @SerializedName(ApiDataKey.POSITION) var position: Int = 0,
+        @SerializedName(ApiDataKey.POSITION) var position: String = "",
         @SerializedName(ApiDataKey.POSITION_X) var x: Int = 0,
         @SerializedName(ApiDataKey.POSITION_Y) var y: Int = 0,
         @SerializedName(ApiDataKey.INCIDENTS) var incidents: MutableList<Incidents>

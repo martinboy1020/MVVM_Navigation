@@ -177,7 +177,6 @@ class MatchFilterWidget @JvmOverloads constructor(
             if(!selectedAreaList.contains(areaList[i].name)) selectedAreaList.add(areaList[i].name)
             matchFilterCountry?.showCountryRow(areaList[i].id, areaList[i].name, true)
         }
-        Log.d("tag123456789", "allSelectedFromAreaItemWidget selectedAreaList: ${selectedAreaList.size}")
     }
 
     /**

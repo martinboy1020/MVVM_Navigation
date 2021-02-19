@@ -33,7 +33,7 @@
         <attr name="roundCornersRadius" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="MatchFilterWidget">
+    <declare-styleable name="MatchFilterItemWidget">
         <attr name="dataType" format="enum">
             <enum name="area" value="0"/>
             <enum name="country" value="1"/>

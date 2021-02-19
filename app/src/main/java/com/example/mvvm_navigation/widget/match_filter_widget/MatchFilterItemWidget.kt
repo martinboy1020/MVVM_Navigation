@@ -61,8 +61,8 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         btnAllSelected?.setOnClickListener(this)
         btnAllUnSelected?.setOnClickListener(this)
         val typedArray =
-            this.context.obtainStyledAttributes(this.attrs, R.styleable.MatchFilterWidget)
-        dataType = typedArray.getInt(R.styleable.MatchFilterWidget_dataType, -1)
+            this.context.obtainStyledAttributes(this.attrs, R.styleable.MatchFilterItemWidget)
+        dataType = typedArray.getInt(R.styleable.MatchFilterItemWidget_dataType, -1)
         typedArray.recycle()
 
         when (dataType) {
