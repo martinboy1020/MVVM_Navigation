@@ -77,7 +77,9 @@ class MatchFilterWidget @JvmOverloads constructor(
         matchFilterLeague?.setData(areaList)
     }
 
-    // 返回單點項目狀態
+    /**
+     *  返回單點項目狀態
+     */
     override fun changeStatusFromItemWidget(id: Int, name: String, type: Int, isCheck: Boolean) {
         when (type) {
             MatchFilterItemWidget.FilterType.AREA.code -> {
@@ -110,7 +112,6 @@ class MatchFilterWidget @JvmOverloads constructor(
 
                 // 依據點選的洲別顯示該洲別的國家列
                 matchFilterCountry?.showCountryRow(id, name, isCheck)
-
                 if (selectedAreaList.size <= 0) {
                     matchFilterArea?.hideAllFilterRow(true)
                     matchFilterCountry?.hideAllFilterRow(false)
@@ -153,7 +154,9 @@ class MatchFilterWidget @JvmOverloads constructor(
             }
         }
 
+        // 根據已選擇的洲別列表判斷是否要顯示警示
         matchFilterArea?.showAttention(selectedAreaList.size > 0)
+        // 根據已選擇的國家列表判斷是否要顯示警示
         matchFilterCountry?.showAttention(selectedCountryList.size > 0)
         matchFilterCountry?.visibility =
             if (selectedAreaList.size > 0) View.VISIBLE else View.GONE
@@ -161,25 +164,11 @@ class MatchFilterWidget @JvmOverloads constructor(
             if (selectedCountryList.size > 0) View.VISIBLE else View.GONE
 
         listener?.returnSelectedLeague(selectedLeagueList)
-
-//        LogUtils.d(
-//            "tag123456789",
-//            "changeStatusFromItemWidget area selectedAreaList size: " + selectedAreaList.size
-//        )
-//
-//        LogUtils.d(
-//            "tag123456789",
-//            "changeStatusFromItemWidget area selectedCountryList size: " + selectedCountryList.size
-//        )
-//
-//        LogUtils.d(
-//            "tag123456789",
-//            "changeStatusFromItemWidget Selected League Size: " + selectedLeagueList.size
-//        )
-
     }
 
-    // 返回全選洲別項目狀態
+    /**
+     *  返回全選洲別項目狀態
+     */
     override fun allSelectedFromAreaItemWidget(type: Int) {
         matchFilterArea?.showAttention(true)
         matchFilterArea?.showAllRow()
@@ -188,9 +177,12 @@ class MatchFilterWidget @JvmOverloads constructor(
             if(!selectedAreaList.contains(areaList[i].name)) selectedAreaList.add(areaList[i].name)
             matchFilterCountry?.showCountryRow(areaList[i].id, areaList[i].name, true)
         }
+        Log.d("tag123456789", "allSelectedFromAreaItemWidget selectedAreaList: ${selectedAreaList.size}")
     }
 
-    // 返回全選國家項目狀態
+    /**
+     *  返回全選國家項目狀態
+     */
     override fun allSelectedFromCountryItemWidget(type: Int) {
         matchFilterCountry?.showAttention(true)
         matchFilterCountry?.showAllRow()
@@ -201,7 +193,9 @@ class MatchFilterWidget @JvmOverloads constructor(
         }
     }
 
-    // 返回全選賽事項目狀態
+    /**
+     * 返回全選賽事項目狀態
+     */
     override fun allSelectedFromLeagueItemWidget(type: Int) {
         matchFilterLeague?.showAllRow()
         for (i in leagueList.indices) {
@@ -209,15 +203,11 @@ class MatchFilterWidget @JvmOverloads constructor(
         }
 
         listener?.returnSelectedLeague(selectedLeagueList)
-
-//        LogUtils.d(
-//            "tag123456789",
-//            "allSelectedFromLeagueItemWidget Selected League size: " + selectedLeagueList.size
-//        )
-
     }
 
-    // 返回反選項目狀態
+    /**
+     * 返回反選項目狀態
+     */
     override fun allUnSelectedFromItemWidget(type: Int) {
         when (type) {
             MatchFilterItemWidget.FilterType.AREA.code -> {
@@ -249,16 +239,12 @@ class MatchFilterWidget @JvmOverloads constructor(
         }
 
         listener?.returnSelectedLeague(selectedLeagueList)
-
-//        LogUtils.d(
-//            "tag123456789",
-//            "allUnSelectedFromItemWidget Selected League size: " + selectedLeagueList.size
-//        )
-
     }
 
+    /**
+     * 反選所有項目
+     */
     fun allSelectedAllType() {
-        LogUtils.d("tag123456789", "allSelectedAllType")
         matchFilterArea?.showAttention(true)
         matchFilterCountry?.showAttention(true)
         matchFilterCountry?.visibility = View.VISIBLE
@@ -266,6 +252,12 @@ class MatchFilterWidget @JvmOverloads constructor(
         matchFilterArea?.showAllRow()
         matchFilterCountry?.showAllRow()
         matchFilterLeague?.showAllRow()
+        for(i in areaList.indices) {
+            if(!selectedAreaList.contains(areaList[i].name)) selectedAreaList.add(areaList[i].name)
+        }
+        for(i in countryList.indices) {
+            if(!selectedCountryList.contains(countryList[i].name)) selectedCountryList.add(countryList[i].name)
+        }
         for (i in leagueList.indices) {
             if(!selectedLeagueList.contains(leagueList[i].id)) selectedLeagueList.add(leagueList[i].id)
         }

@@ -10,7 +10,7 @@ class MatchFilterFragmentSubmitter {
     val areaList = MutableLiveData<MutableList<MatchList.Area>>().default(mutableListOf())
     val countryList = MutableLiveData<MutableList<MatchList.Country>>().default(mutableListOf())
     val leagueList = MutableLiveData<MutableList<MatchList.Leagues>>().default(mutableListOf())
-
+    val selectedLeagues = MutableLiveData<MutableList<Int>>().default(mutableListOf())
     val matchFilterWidgetListener = MutableLiveData<MatchFilterWidget.MatchFilterWidgetListener>()
 
 }

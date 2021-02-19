@@ -60,7 +60,7 @@ class MatchFilterViewModel constructor(
 
     override fun getSubmitter(): MatchFilterFragmentSubmitter = this.submitter
     override fun returnSelectedLeague(selectedLeagueList: MutableList<Int>) {
-        LogUtils.d("tag123456789", "now matchFilter Selected League List Size: " + selectedLeagueList.size)
+        this.submitter.selectedLeagues.value = selectedLeagueList
     }
 
 }
