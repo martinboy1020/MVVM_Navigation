@@ -28,6 +28,14 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="@{viewModel.matchDetailString}"/>
 
+        <com.example.mvvm_navigation.widget.stream_video_widget.StreamVideoView
+            android:id="@+id/stream_video_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_match_detail" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

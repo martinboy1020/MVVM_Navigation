@@ -30,6 +30,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.match_detail.MatchDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
     </application>
 
