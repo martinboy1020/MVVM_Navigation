@@ -165,13 +165,21 @@ class MatchFilterItemWidget @JvmOverloads constructor(
         if (!isCheck) widget.allUnselected()
     }
 
-    // 直接顯示所有列並且將所有選項勾選
-    fun showAllRow() {
+    // AllType為true時將所有的Row全部顯示出來且勾選
+    // 為false時判斷只有已經顯示的Row將其勾選
+    fun showRows(isAllType: Boolean) {
         if(matchFilterRow != null) {
-            for(i in 0 until matchFilterRow!!.size) {
-                val widget = matchFilterRow!![i] as MatchFilterRowWidget
-                widget.visibility = View.VISIBLE
-                widget.allSelected()
+            if(isAllType) {
+                for(i in 0 until matchFilterRow!!.size) {
+                    val widget = matchFilterRow!![i] as MatchFilterRowWidget
+                    widget.visibility = View.VISIBLE
+                    widget.allSelected()
+                }
+            } else {
+                for(i in 0 until matchFilterRow!!.size) {
+                    val widget = matchFilterRow!![i] as MatchFilterRowWidget
+                    if(widget.visibility == View.VISIBLE) widget.allSelected()
+                }
             }
         }
     }

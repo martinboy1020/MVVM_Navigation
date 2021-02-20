@@ -8,10 +8,13 @@ import android.widget.LinearLayout
 import androidx.databinding.BindingAdapter
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
-import com.example.mvvm_navigation.utils.LogUtils
 
 @BindingAdapter("areaList", "listener", requireAll = false)
-fun setData(view: MatchFilterWidget, areaList: MutableList<MatchList.Area>?, listener: MatchFilterWidget.MatchFilterWidgetListener?) {
+fun setData(
+    view: MatchFilterWidget,
+    areaList: MutableList<MatchList.Area>?,
+    listener: MatchFilterWidget.MatchFilterWidgetListener?
+) {
     if (areaList != null && areaList.size > 0) view.setData(areaList, listener)
 }
 
@@ -66,8 +69,11 @@ class MatchFilterWidget @JvmOverloads constructor(
         this.listener = listener
         for (i in areaList.indices) {
             for (j in areaList[i].countries.indices) {
+                areaList[i].countries[j].areaName = areaList[i].name
                 countryList.add(areaList[i].countries[j])
                 for (k in areaList[i].countries[j].leagues.indices) {
+                    areaList[i].countries[j].leagues[k].areaName = areaList[i].name
+                    areaList[i].countries[j].leagues[k].countryName = areaList[i].countries[j].name
                     leagueList.add(areaList[i].countries[j].leagues[k])
                 }
             }
@@ -171,10 +177,10 @@ class MatchFilterWidget @JvmOverloads constructor(
      */
     override fun allSelectedFromAreaItemWidget(type: Int) {
         matchFilterArea?.showAttention(true)
-        matchFilterArea?.showAllRow()
+        matchFilterArea?.showRows(true)
         matchFilterCountry?.visibility = View.VISIBLE
         for (i in areaList.indices) {
-            if(!selectedAreaList.contains(areaList[i].name)) selectedAreaList.add(areaList[i].name)
+            if (!selectedAreaList.contains(areaList[i].name)) selectedAreaList.add(areaList[i].name)
             matchFilterCountry?.showCountryRow(areaList[i].id, areaList[i].name, true)
         }
     }
@@ -184,11 +190,19 @@ class MatchFilterWidget @JvmOverloads constructor(
      */
     override fun allSelectedFromCountryItemWidget(type: Int) {
         matchFilterCountry?.showAttention(true)
-        matchFilterCountry?.showAllRow()
+        matchFilterCountry?.showRows(false)
         matchFilterLeague?.visibility = View.VISIBLE
         for (i in countryList.indices) {
-            if(!selectedCountryList.contains(countryList[i].name)) selectedCountryList.add(countryList[i].name)
-            matchFilterLeague?.showLeagueRow(countryList[i].id, countryList[i].name, true)
+            if (selectedAreaList.contains(countryList[i].areaName) && !selectedCountryList.contains(countryList[i].name)) {
+                selectedCountryList.add(
+                    countryList[i].name
+                )
+                matchFilterLeague?.showLeagueRow(
+                    countryList[i].id,
+                    countryList[i].name,
+                    true
+                )
+            }
         }
     }
 
@@ -196,11 +210,12 @@ class MatchFilterWidget @JvmOverloads constructor(
      * 返回全選賽事項目狀態
      */
     override fun allSelectedFromLeagueItemWidget(type: Int) {
-        matchFilterLeague?.showAllRow()
+        matchFilterLeague?.showRows(false)
         for (i in leagueList.indices) {
-            if(!selectedLeagueList.contains(leagueList[i].id)) selectedLeagueList.add(leagueList[i].id)
+            if(selectedCountryList.contains(leagueList[i].countryName) && !selectedLeagueList.contains(leagueList[i].id)) {
+                selectedLeagueList.add(leagueList[i].id)
+            }
         }
-
         listener?.returnSelectedLeague(selectedLeagueList)
     }
 
@@ -248,17 +263,19 @@ class MatchFilterWidget @JvmOverloads constructor(
         matchFilterCountry?.showAttention(true)
         matchFilterCountry?.visibility = View.VISIBLE
         matchFilterLeague?.visibility = View.VISIBLE
-        matchFilterArea?.showAllRow()
-        matchFilterCountry?.showAllRow()
-        matchFilterLeague?.showAllRow()
-        for(i in areaList.indices) {
-            if(!selectedAreaList.contains(areaList[i].name)) selectedAreaList.add(areaList[i].name)
+        matchFilterArea?.showRows(true)
+        matchFilterCountry?.showRows(true)
+        matchFilterLeague?.showRows(true)
+        for (i in areaList.indices) {
+            if (!selectedAreaList.contains(areaList[i].name)) selectedAreaList.add(areaList[i].name)
         }
-        for(i in countryList.indices) {
-            if(!selectedCountryList.contains(countryList[i].name)) selectedCountryList.add(countryList[i].name)
+        for (i in countryList.indices) {
+            if (!selectedCountryList.contains(countryList[i].name)) selectedCountryList.add(
+                countryList[i].name
+            )
         }
         for (i in leagueList.indices) {
-            if(!selectedLeagueList.contains(leagueList[i].id)) selectedLeagueList.add(leagueList[i].id)
+            if (!selectedLeagueList.contains(leagueList[i].id)) selectedLeagueList.add(leagueList[i].id)
         }
         listener?.returnSelectedLeague(selectedLeagueList)
     }

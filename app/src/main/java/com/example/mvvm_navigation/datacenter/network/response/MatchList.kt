@@ -24,15 +24,15 @@ class MatchList {
         @SerializedName(ApiDataKey.ID) val id: Int = 0,
         @SerializedName(ApiDataKey.NAME) val name: String = "",
         @SerializedName(ApiDataKey.LEAGUES) val leagues: MutableList<Leagues> = mutableListOf(),
-        var areaId: Int = 0,
+        var areaName: String = "",
         var isCheck: Boolean = false
     )
 
     data class Leagues(
         @SerializedName(ApiDataKey.ID) val id: Int = 0,
         @SerializedName(ApiDataKey.NAME) val name: String = "",
-        val areaId: Int = 0,
-        var countryId: Int = 0,
+        var areaName: String = "",
+        var countryName: String = "",
         var isCheck: Boolean = false
     )
 
