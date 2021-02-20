@@ -54,6 +54,11 @@ class MatchDetailFragment : BaseFragment() {
         this.activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
+    override fun onPause() {
+        super.onPause()
+        (this.binding as FragmentMatchDetailBinding).streamVideoView.pausePlayer()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
@@ -67,6 +72,7 @@ class MatchDetailFragment : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         this.activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        (this.binding as FragmentMatchDetailBinding).streamVideoView.releasePlayer()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
