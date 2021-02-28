@@ -91,7 +91,7 @@ class MatchFilterAdapter(
                 }
                 TYPE_COUNTRY -> {
                     countryList[position].isCheck = isChecked
-                    matchFilterOnChangeListener?.changeStatus(countryList[position].id, countryList[holder.getAdapterPosition()].name, isChecked)
+                    matchFilterOnChangeListener?.changeStatus(countryList[position].id, countryList[holder.getAdapterPosition()].name + ", " + countryList[holder.getAdapterPosition()].areaName, isChecked)
                 }
                 TYPE_LEAGUE -> {
                     leagueList[position].isCheck = isChecked

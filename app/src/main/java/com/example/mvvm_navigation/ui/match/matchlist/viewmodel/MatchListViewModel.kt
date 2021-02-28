@@ -13,6 +13,7 @@ import com.example.mvvm_navigation.datacenter.network.HttpResult
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.ui.match.matchlist.MatchListAdapter
+import com.example.mvvm_navigation.utils.LogUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -99,19 +100,33 @@ class MatchListViewModel constructor(
             withContext(Dispatchers.Main) {
                 when (result) {
                     is HttpResult.onSuccess -> {
-//                        val list = result.data.payload.matches
-//                        val filterQuery = listOf(662, 24)
-//                        val emptyList = mutableListOf<MatchList.Match>()
-//                        for (i in filterQuery.indices) {
-//                            val filterList = list.filter { it.leagueId == filterQuery[i] }
-//                            emptyList.addAll(filterList as MutableList<MatchList.Match>)
-//                        }
-//                        emptyList.sortedWith(compareBy({ it.openDate }, { it.matchId }))
-                        this@MatchListViewModel.submitter.matchList.value =  result.data.payload.matches
+                        val filterQuery =
+                            UserSharePreferences(this@MatchListViewModel.context).getMatchListFilterLeague()
+                        if (!filterQuery.isNullOrEmpty()) {
+                            val filterList = mutableListOf<MatchList.Match>()
+                            for (i in filterQuery.indices) {
+                                val list =
+                                    result.data.payload.matches.filter { it.leagueId == filterQuery[i] }
+                                filterList.addAll(list as MutableList<MatchList.Match>)
+                            }
+//                            val listMap = result.data.payload.matches.groupBy { it.leagueId }
+//                            for (i in filterQuery.indices) {
+//                                val list = listMap[i]
+//                                if (!list.isNullOrEmpty()) filterList.addAll(list)
+//                            }
+                            filterList.sortWith(compareBy({ it.openDate }, { it.matchId }))
+                            this@MatchListViewModel.submitter.matchList.value = filterList
+                        } else {
+                            this@MatchListViewModel.submitter.matchList.value =
+                                result.data.payload.matches
+                        }
                         this@MatchListViewModel.submitter.areaList.value = result.data.payload.areas
                     }
                     is HttpResult.onError -> {
-
+                        Log.d(
+                            "tag123456789",
+                            "getMatchList Fail errCode: " + result.errorCode + " Msg: " + result.errorMsg
+                        )
                     }
                 }
             }

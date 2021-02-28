@@ -135,7 +135,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
                     MatchFilterRowWidget(
                         this.context
                     )
-                leagueListIndex[countryList[j].name] = index++
+                leagueListIndex[countryList[j].name + ", " + countryList[j].areaName] = index++
                 widget.setLeagueData(countryList[j].leagues, countryList[j].id, countryList[j].name)
                 widget.tag = countryList[j]
                 widget.setListener(this)
@@ -159,6 +159,7 @@ class MatchFilterItemWidget @JvmOverloads constructor(
 
     // 依據點選的國家顯示該國家的賽事列
     fun showLeagueRow(id: Int, name: String, isCheck: Boolean) {
+        LogUtils.d("tag123456789", "showLeagueRow name: $name")
         val position = leagueListIndex[name]
         val widget = matchFilterRow!![position!!] as MatchFilterRowWidget
         widget.visibility = if (isCheck) View.VISIBLE else View.GONE

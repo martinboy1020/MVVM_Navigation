@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import com.example.mvvm_navigation.base.BaseViewModel
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
+import com.example.mvvm_navigation.datacenter.sharedPreferences.UserSharePreferences
 import com.example.mvvm_navigation.utils.LogUtils
 import com.example.mvvm_navigation.widget.match_filter_widget.MatchFilterWidget
 
@@ -61,6 +62,7 @@ class MatchFilterViewModel constructor(
     override fun getSubmitter(): MatchFilterFragmentSubmitter = this.submitter
     override fun returnSelectedLeague(selectedLeagueList: MutableList<Int>) {
         this.submitter.selectedLeagues.value = selectedLeagueList
+        UserSharePreferences(this.context).setMatchListFilterLeague(selectedLeagueList)
     }
 
 }

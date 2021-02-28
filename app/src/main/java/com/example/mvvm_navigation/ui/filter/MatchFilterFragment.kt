@@ -10,6 +10,7 @@ import com.example.mvvm_navigation.databinding.FragmentMatchFilterBinding
 import com.example.mvvm_navigation.datacenter.network.response.MatchList
 import com.example.mvvm_navigation.di.matchFilterModule
 import com.example.mvvm_navigation.ui.filter.viewmodel.match_filter.MatchFilterContract
+import com.example.mvvm_navigation.utils.LogUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.kodein.di.Kodein
@@ -38,6 +39,7 @@ class MatchFilterFragment : BaseFragment(), View.OnClickListener {
         this.binding.setVariable(BR.viewModel, this.viewModel.getSubmitter())
         val bundle = this.arguments
         val listString = bundle?.getString("filter", "")
+        LogUtils.d("tag1111111", "listString: $listString")
         if (!listString.isNullOrEmpty()) {
             val type: Type = object :
                 TypeToken<MutableList<MatchList.Area>?>() {}.type
