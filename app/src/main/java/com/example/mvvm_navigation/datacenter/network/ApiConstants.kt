@@ -8,7 +8,7 @@ class ApiConstants {
             const val LOGIN = "v1/login"
             const val AUTH_REFRESH = "v1/auth/refresh"
             const val WEB_HOME_INFO = "v2/web/home/info"
-            const val WEB_MATCHES_LIST = "v2/web/matches/list"
+            const val MATCHES_LIST = "v2/matches/list"
             const val TG_MATCHES_RECENT = "v2/tg/matches/recent"
             const val TG_MATCHES_BET_INFO = "v2/tg/matches/{matchId}/bet_info"
             const val STATISTICS_OCCURRENCE_RATE = "v2/statistics/occurrence_rate"

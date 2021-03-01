@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeFragmentSubmitter" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.mvvm_navigation.widget.BannerWidget
+                android:id="@+id/banner_widget"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:bannerData="@{viewModel.bannerData}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:listener="@{viewModel.bannerClickListener}"
+                app:showDots="@{viewModel.showBannerDots}" />
+
+            <TextView
+                android:id="@+id/tv_start_match"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="即將開賽"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/banner_widget" />
+
+            <TextClock
+                android:id="@+id/tv_now_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:format12Hour="現在時間: yyyy-MM-dd HH:mm:ss zzz"
+                android:format24Hour="現在時間: yyyy-MM-dd HH:mm:ss zzz"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_start_match"
+                app:layout_constraintStart_toEndOf="@+id/tv_start_match"
+                app:layout_constraintTop_toTopOf="@+id/tv_start_match"
+                tools:targetApi="jelly_bean_mr1" />
+
+            <ImageView
+                android:id="@+id/btn_sort_recent_match"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_baseline_sort"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_start_match"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_start_match" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout_recent_match"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_start_match"
+                app:tabMode="scrollable">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="置頂關注" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="即將開賽" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_recent_match"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tab_layout_recent_match" />
+
+            <!--            <com.example.mvvm_navigation.widget.BuildRecyclerView-->
+            <!--                android:id="@+id/rv_match_list"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_marginStart="10dp"-->
+            <!--                android:layout_marginLeft="10dp"-->
+            <!--                android:layout_marginEnd="10dp"-->
+            <!--                android:layout_marginRight="10dp"-->
+            <!--                android:layout_marginBottom="1dp"-->
+            <!--                android:background="@drawable/rectangle_stroke_black_solid_white"-->
+            <!--                android:nestedScrollingEnabled="false"-->
+            <!--                app:divider_height="1"-->
+            <!--                app:has_divider="true"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintHorizontal_bias="1.0"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/tv_start_match"-->
+            <!--                app:layout_manager_type="vertical"-->
+            <!--                app:listener="@{viewModel.matchesRecentClickListener}"-->
+            <!--                app:matchesRecentList="@{viewModel.matchesRecentList}"-->
+            <!--                tools:listitem="@layout/layout_rv_recent_match_item" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

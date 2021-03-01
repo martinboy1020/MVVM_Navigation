@@ -57,8 +57,8 @@ interface ApiMethod {
         @Query("lang") language: String? = "zh"
     ): Deferred<HttpStatus<MatchesStatistics.Data>>
 
-    @GET(ApiConstants.HttpPath.WEB_MATCHES_LIST)
-    fun getWebMatchesListAsync(
+    @GET(ApiConstants.HttpPath.MATCHES_LIST)
+    fun getMatchesListAsync(
         @Header("Authorization") token: String = "",
         @Query("date") date: Long,
         @Query("lang") language: String? = "zh"

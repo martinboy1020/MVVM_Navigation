@@ -18,7 +18,11 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_homeFragment_to_matchListFragment"
+            android:id="@+id/action_to_homeFragment"
+            app:destination="@+id/homeFragment" />
+
+        <action
+            android:id="@+id/action_to_matchListFragment"
             app:destination="@+id/matchListFragment" />
 
         <action
@@ -26,8 +30,40 @@
             app:destination="@+id/bottomSheetDetailFragment" />
 
         <action
-            android:id="@+id/action_homeFragment_to_matchListActivity"
+            android:id="@+id/action_to_matchListActivity"
             app:destination="@+id/matchListActivity" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_testDynamicFeatureFragment"
+            app:destination="@id/testDynamicFeatureFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragmentV2"
+        android:name="com.example.mvvm_navigation.ui.main.home.HomeFragmentV2"
+        android:label="HomeFragmentV2"
+        tools:layout="@layout/fragment_home_v2">
+
+        <action
+            android:id="@+id/action_to_matchListFragment"
+            app:destination="@+id/matchListFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_open_bottom_sheet_detail"
+            app:destination="@+id/bottomSheetDetailFragment" />
+
+        <action
+            android:id="@+id/action_to_matchListActivity"
+            app:destination="@+id/matchListActivity" />
+
+        <action
+            android:id="@+id/action_to_homeFragment"
+            app:destination="@+id/homeFragment" />
+
+        <action
+            android:id="@+id/action_to_homeFragmentV2"
+            app:destination="@+id/homeFragmentV2" />
 
         <action
             android:id="@+id/action_homeFragment_to_testDynamicFeatureFragment"

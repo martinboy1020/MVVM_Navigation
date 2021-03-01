@@ -223,11 +223,11 @@ class Repository constructor(val context: Context) {
         return recentMatchConditionList
     }
 
-    suspend fun getWebMatchList(date: Long, status: Int): HttpResult<HttpStatus<MatchList.Data>> =
+    suspend fun getMatchList(date: Long, status: Int): HttpResult<HttpStatus<MatchList.Data>> =
         try {
             LogUtils.d("tag123456789", "getWebMatchList date: $date")
             val response =
-                RetrofitClient.getInstance(context).getApiMethod().getWebMatchesListAsync(
+                RetrofitClient.getInstance(context).getApiMethod().getMatchesListAsync(
                     "Bearer " + UserSharePreferences(context).userToken,
                     date
                 ).await()

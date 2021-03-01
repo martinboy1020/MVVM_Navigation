@@ -29,7 +29,7 @@ import org.kodein.di.generic.singleton
 import java.lang.reflect.Type
 
 @LayoutId(R.layout.fragment_matchlist)
-class MatchListFragment(var status: Int) : BaseFragment(), MatchListViewModel.ViewModelToFragmentListener {
+class MatchListFragment(var status: Int = 2) : BaseFragment(), MatchListViewModel.ViewModelToFragmentListener {
 
     private var firstEntry = true
 

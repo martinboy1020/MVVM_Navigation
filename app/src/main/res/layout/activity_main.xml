@@ -26,10 +26,24 @@
             android:id="@+id/mainActivityNavHostFragment"
             android:name="androidx.navigation.dynamicfeatures.fragment.DynamicNavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:defaultNavHost="true"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/main"
-            tools:layout="@layout/fragment_home" />
+            tools:layout="@layout/fragment_home_v2" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/menu_bottom_navigation_item"
+            app:labelVisibilityMode="labeled"/>
 
         <!--android name 設定為自定義的TabNavHostFragment 在navigation裡的要使用show_hide_fragment頁籤帶入Fragment 轉換Fragment的方式為Show&Hide -->
 

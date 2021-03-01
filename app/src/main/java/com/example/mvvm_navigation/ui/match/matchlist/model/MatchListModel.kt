@@ -27,7 +27,7 @@ class MatchListModel constructor(val repository: Repository) : BaseModel(), Matc
     }
 
     override suspend fun getMatchesList(date: Long, pageType: Int): HttpResult<HttpStatus<MatchList.Data>> {
-        return this@MatchListModel.repository.getWebMatchList(date / 1000, pageType)
+        return this@MatchListModel.repository.getMatchList(date / 1000, pageType)
     }
 
     override fun getTestMatchesList(): HttpStatus<MatchList.Data>? {

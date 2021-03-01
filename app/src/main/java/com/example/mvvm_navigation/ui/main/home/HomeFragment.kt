@@ -11,7 +11,7 @@ import com.example.mvvm_navigation.BR
 import com.example.mvvm_navigation.R
 import com.example.mvvm_navigation.base.BaseFragment
 import com.example.mvvm_navigation.databinding.FragmentHomeBinding
-import com.example.mvvm_navigation.di.mainModule
+import com.example.mvvm_navigation.di.homeModule
 import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeContract
 import com.example.mvvm_navigation.widget.LogoToolBarWidget
 import com.google.android.material.navigation.NavigationView
@@ -32,7 +32,7 @@ class HomeFragment : BaseFragment() {
 
     override val kodein = Kodein.lazy {
         bind<HomeFragment>(HomeFragment::class.java.simpleName) with singleton { this@HomeFragment }
-        import(mainModule)
+        import(homeModule)
     }
 
     private val viewModel by kodein.instance<HomeContract.ViewModelImpl>()

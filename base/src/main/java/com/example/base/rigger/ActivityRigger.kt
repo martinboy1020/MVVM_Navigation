@@ -32,6 +32,14 @@ open class ActivityRigger : AppCompatActivity(){
 //        PermissionManager.onRequestPermissionResult(this, requestCode, permissions, grantResults)
     }
 
+    fun transFragment(id: Int){
+        val navHostId = AnnotationParse.getAnnotatedNavHost(this)
+        // 為了配合未來BottomNavigation的需求 在切換Fragment時需要先做navigateUp再切換
+        // 避免已經載入過的Fragment重複被載入而發生cannot be found from the current destination錯誤
+        Navigation.findNavController(this, navHostId).navigateUp()
+        Navigation.findNavController(this, navHostId).navigate(id)
+    }
+
     fun transActivity(id: Int, args: Bundle? = null){
         try {
             val navHostId = AnnotationParse.getAnnotatedNavHost(this)

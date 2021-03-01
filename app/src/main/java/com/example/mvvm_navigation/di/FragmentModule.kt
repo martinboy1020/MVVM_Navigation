@@ -12,10 +12,14 @@ import com.example.mvvm_navigation.ui.filter.viewmodel.incorrect_score_filter.In
 import com.example.mvvm_navigation.ui.filter.viewmodel.match_filter.MatchFilterViewModel
 import com.example.mvvm_navigation.ui.main.home.BottomSheetDetailFragment
 import com.example.mvvm_navigation.ui.main.home.HomeFragment
+import com.example.mvvm_navigation.ui.main.home.HomeFragmentV2
+import com.example.mvvm_navigation.ui.main.home.RecentMatchFragment
 import com.example.mvvm_navigation.ui.main.home.model.BottomSheetDetailModel
 import com.example.mvvm_navigation.ui.main.home.model.HomeModel
+import com.example.mvvm_navigation.ui.main.home.model.RecentMatchModel
 import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailViewModel
 import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeViewModel
+import com.example.mvvm_navigation.ui.main.home.viewmodel.recent_match.RecentMatchViewModel
 import com.example.mvvm_navigation.ui.match.matchlist.MatchListFragment
 import com.example.mvvm_navigation.ui.match.matchlist.model.MatchListModel
 import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListViewModel
@@ -29,18 +33,19 @@ import org.kodein.di.generic.singleton
 import java.lang.Exception
 import com.example.mvvm_navigation.ui.main.home.viewmodel.bottom_sheet.BottomSheetDetailContract.ViewModelImpl as BottomSheetDetailViewModelImpl
 import com.example.mvvm_navigation.ui.main.home.viewmodel.home.HomeContract.ViewModelImpl as HomeViewModelImpl
+import com.example.mvvm_navigation.ui.main.home.viewmodel.recent_match.RecentMatchContract.ViewModelImpl as RecentMatchViewModelImpl
 import com.example.mvvm_navigation.ui.match.matchlist.viewmodel.MatchListContract.ViewModelImpl as MatchListViewModelImpl
 import com.example.mvvm_navigation.ui.filter.viewmodel.match_filter.MatchFilterContract.ViewModelImpl as MatchFilterViewModelImpl
 import com.example.mvvm_navigation.ui.filter.viewmodel.incorrect_score_filter.IncorrectScoreFilterContract.ViewModelImpl as InCorrectScoreViewModelImpl
 import com.example.mvvm_navigation.ui.match_detail.viewmodel.MatchDetailContract.ViewModelImpl as MatchDetailViewModelImpl
 
-val mainModule = Kodein.Module(Contract.ModuleName.MAIN) {
+val homeModule = Kodein.Module(Contract.ModuleName.HOME) {
     bind<HomeViewModelImpl>() with singleton {
-        getMainViewModel(instance(HomeFragment::class.java.simpleName))
+        getHomeViewModel(instance(HomeFragment::class.java.simpleName))
     }
 }
 
-private fun getMainViewModel(fragment: HomeFragment): HomeViewModelImpl {
+private fun getHomeViewModel(fragment: HomeFragment): HomeViewModelImpl {
     val repository = Repository.getInstance(fragment.requireContext())
     val model = HomeModel.getInstance(repository)
     val factory = HomeViewModel.Factory(
@@ -50,6 +55,42 @@ private fun getMainViewModel(fragment: HomeFragment): HomeViewModelImpl {
         findNavController(fragment)
     )
     return ViewModelProvider(fragment, factory).get(HomeViewModel::class.java)
+}
+
+val homeV2Module = Kodein.Module(Contract.ModuleName.HOME_V2) {
+    bind<HomeViewModelImpl>() with singleton {
+        getHomeV2ViewModel(instance(HomeFragmentV2::class.java.simpleName))
+    }
+}
+
+private fun getHomeV2ViewModel(fragment: HomeFragmentV2): HomeViewModelImpl {
+    val repository = Repository.getInstance(fragment.requireContext())
+    val model = HomeModel.getInstance(repository)
+    val factory = HomeViewModel.Factory(
+        fragment.requireActivity().application,
+        fragment.requireContext(),
+        model,
+        findNavController(fragment)
+    )
+    return ViewModelProvider(fragment, factory).get(HomeViewModel::class.java)
+}
+
+val recentMatchModule = Kodein.Module(Contract.ModuleName.RECENT_MATCH) {
+    bind<RecentMatchViewModelImpl>() with singleton {
+        getRecentMatchViewModel(instance(RecentMatchFragment::class.java.simpleName))
+    }
+}
+
+private fun getRecentMatchViewModel(fragment: RecentMatchFragment): RecentMatchViewModelImpl {
+    val repository = Repository.getInstance(fragment.requireContext())
+    val model = RecentMatchModel.getInstance(repository)
+    val factory = RecentMatchViewModel.Factory(
+        fragment.requireActivity().application,
+        fragment.requireContext(),
+        model,
+        findNavController(fragment)
+    )
+    return ViewModelProvider(fragment, factory).get(RecentMatchViewModel::class.java)
 }
 
 val matchListModule = Kodein.Module(Contract.ModuleName.MATCH_LIST) {
